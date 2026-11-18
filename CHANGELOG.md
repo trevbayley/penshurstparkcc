@@ -4,6 +4,11 @@ This log records completed changes to the Penshurst Park Cricket Club website. A
 
 ## 18 November 2026
 
+### Mobile navigation fix
+- Restored the collapsed mobile navigation state at widths up to 760 pixels.
+- The menu is now hidden by default, opens as a full-width vertical menu, and remains visible on desktop and larger tablet layouts.
+- Confirmed the existing button, ARIA expanded state, Escape-key closing, focus handling, and desktop resize reset logic remain in place.
+
 ### Browser shortcut icon
 - Added club-crest favicon and Apple touch icon files generated from the existing PPCC club crest.
 - Updated `index.html` so browser tabs, bookmarks, and compatible home-screen shortcuts can use the club crest.

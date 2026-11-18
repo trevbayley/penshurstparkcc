@@ -116,9 +116,17 @@ footer {
     height: auto;
   }
   .menu-toggle {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
-  nav.open {
+  header nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    order: 3;
+  }
+  header nav.open {
     display: flex;
   }
   .menu-toggle,

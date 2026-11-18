@@ -1317,3 +1317,41 @@ footer {
     text-align: center;
   }
 }
+
+/* Portrait phone header: keep the menu control visible and prevent clipping */
+@media (max-width: 520px) and (orientation: portrait) {
+  header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 10px;
+  }
+  .brand {
+    min-width: 0;
+    gap: 8px;
+    font-size: clamp(0.82rem, 3.8vw, 1rem);
+    line-height: 1.15;
+    white-space: normal;
+  }
+  .brand img {
+    width: 34px;
+    flex: 0 0 auto;
+  }
+  .menu-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    margin-left: 0;
+    position: relative;
+    z-index: 2;
+    min-width: 72px;
+    padding: 7px 10px;
+  }
+  header nav {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+}

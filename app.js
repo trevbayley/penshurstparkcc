@@ -7,7 +7,8 @@ const CFG={w3w:'https://what3words.com/crisp.dates.daily',playCricket:'https://p
  teamPhotos:[
   ['media/teams/ladies-softball-team-2026.webp','Ladies softball team 2026'],
   ['media/teams/ladies-1st-xi-2026.webp','Ladies 1st XI 2026'],
-  ['media/teams/sunday-1st-xi-2026.webp','Sunday 1st XI 2026']
+  ['media/teams/sunday-1st-xi-2026.webp','Sunday 1st XI 2026'],
+  ['media/teams/sunday-2nd-xi-2026.webp','Sunday 2nd XI 2026']
  ],
  /* sponsors = [['Sponsor name','https://sponsor-website','sponsors/logo.png'], ...] (logo optional; the Sponsors footer stays hidden until at least one is added). */
  sponsors:[['Sevenoaks Window Cleaning Ltd','https://sevenoaks-cleaning.co.uk','media/sponsors/sevenoaks-window-cleaning.jpg'],['Making Scents Dog Training','https://makingscentsdogtraining.co.uk/','media/sponsors/making-scents-dog-training.webp'],['Amherst Consultancy','https://www.amherstaccountancy.co.uk','media/sponsors/amherst-consultancy.webp'],['Holme Run Fitness','https://www.holmerunfitness.com','media/sponsors/holme-run-fitness.webp'],['NSJ Joinery','https://www.nsjjoinery.co.uk','media/sponsors/nsj-joinery.webp'],['Estate and Field','https://www.estateandfield.co.uk','media/sponsors/estate-and-field.webp'],['Kent Heritage Works','https://www.kentheritageworks.uk','media/sponsors/kent-heritage-works.webp'],['Penshurst Fuels','https://penshurstfuels.com','media/sponsors/penshurst-fuels.webp'],['Kewell Converters','https://www.kewell-converters.co.uk','media/sponsors/kewell-converters.webp'],['The Leicester Arms','https://www.theleicesterarmspenshurst.co.uk/','media/sponsors/the-leicester-arms.webp'],['JMO Garden Services','mailto:jake_cheesman@yahoo.com','media/sponsors/jmo-garden-services.webp']],

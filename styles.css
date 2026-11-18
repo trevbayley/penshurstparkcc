@@ -726,14 +726,14 @@ footer {
   overflow: hidden;
 }
 .social-btn svg {
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
   display: block;
   fill: none;
 }
 .social-btn .social-facebook {
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
 }
 .social-btn[title*="Instagram"] svg {
   fill: url(#igGradient);
@@ -1250,15 +1250,27 @@ footer {
 .footer-copy {
   text-align: center;
 }
-.footer-accredited {
+.footer-accredited-link {
   position: absolute;
   right: 24px;
   top: 50%;
+  display: block;
   width: auto;
   height: 58px;
   max-width: 132px;
-  object-fit: contain;
   transform: translateY(-50%);
+}
+.footer-accredited {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: 132px;
+  object-fit: contain;
+}
+.footer-accredited-link:focus-visible {
+  outline: 3px solid var(--yel);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 @media (max-width: 700px) {
   footer {
@@ -1266,7 +1278,7 @@ footer {
     padding-right: 18px;
     padding-bottom: 64px;
   }
-  .footer-accredited {
+  .footer-accredited-link {
     right: 50%;
     top: auto;
     bottom: 14px;

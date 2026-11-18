@@ -1,3 +1,92 @@
+/* Restored structural component rules from the original single-file site */
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+header {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+nav a.on,
+nav a:hover {
+  background: var(--yel);
+  color: var(--navy);
+}
+main {
+  margin: auto;
+  min-width: 0;
+}
+button,
+.btn {
+  color: #fff;
+  border: 2px solid var(--yel);
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-block;
+}
+.follow {
+  text-align: center;
+  margin-top: 20px;
+}
+.social-btn {
+  width: 48px;
+  height: 48px;
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+.sponsors {
+  text-align: center;
+}
+.sponsors ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+.sponsors a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 64px;
+  padding: 8px 14px;
+  background: #fff;
+  color: var(--navy);
+  font: 700 0.9rem system-ui;
+  text-decoration: none;
+}
+footer {
+  text-align: center;
+  color: #fff;
+  font: 0.85rem system-ui;
+}
+
 /* ==========================================================
    1. FOUNDATION, THEME & ACCESSIBILITY
    ========================================================== */
@@ -58,8 +147,6 @@ textarea:focus-visible {
 #app h1[tabindex="-1"]:focus,
 #app h2[tabindex="-1"]:focus {
   outline: none;
-  border-left: 4px solid var(--yel);
-  padding-left: 10px;
 }
 
 .role select {
@@ -1024,5 +1111,189 @@ footer {
   nav a:hover,
   .sponsors a:hover {
     transform: none;
+  }
+}
+
+/* Join us action buttons and navigation placeholder alignment */
+.poster-actions button {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 17px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-2));
+  color: #fff;
+  box-shadow: 0 5px 14px rgba(8, 42, 87, 0.18);
+  font-weight: 750;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
+}
+.poster-actions button.y {
+  background: var(--yel);
+  color: var(--navy);
+  font-weight: 700;
+}
+.poster-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 20px rgba(8, 42, 87, 0.24);
+  filter: brightness(1.07);
+}
+.navsoon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+  border-radius: 999px;
+  box-sizing: border-box;
+}
+@media (min-width: 761px) {
+  nav .navsoon {
+    min-height: 36px;
+    padding: 9px 13px;
+  }
+}
+/* Home welcome panel: thin yellow border with a slow clockwise travelling glow */
+.hero {
+  border: 1mm solid #f5c518;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -1mm;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1mm;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--hero-glow-angle),
+    transparent 0deg 315deg,
+    rgba(255, 245, 120, 0.22) 322deg,
+    #fffbd1 338deg,
+    #ffff72 346deg,
+    #fffbd1 352deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 5px rgba(255, 245, 80, 0.8));
+  animation: hero-border-glow 9s linear infinite;
+}
+@property --hero-glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes hero-border-glow {
+  to { --hero-glow-angle: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero::before { animation: none; background: none; }
+}
+
+
+/* Non-home page title panels: match the Home welcome panel */
+.page-title {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 0 0 20px;
+  padding: 16px 22px;
+  border: 1mm solid #f5c518;
+  border-radius: 18px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--navy), var(--navy-2));
+  box-shadow: var(--shadow);
+}
+.page-title::before {
+  content: "";
+  position: absolute;
+  inset: -1mm;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1mm;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--hero-glow-angle),
+    transparent 0deg 315deg,
+    rgba(255, 245, 120, 0.22) 322deg,
+    #fffbd1 338deg,
+    #ffff72 346deg,
+    #fffbd1 352deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 5px rgba(255, 245, 80, 0.8));
+  animation: hero-border-glow 9s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-title::before { animation: none; background: none; }
+}
+
+/* Social media panel: match the 1mm club-yellow framed panels */
+.follow {
+  border: 1mm solid #f5c518;
+  box-sizing: border-box;
+}
+
+/* Footer Clubmark: independently positioned so copyright remains centred */
+footer {
+  position: relative;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-left: 150px;
+  padding-right: 150px;
+}
+.footer-copy {
+  text-align: center;
+}
+.footer-accredited {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  width: auto;
+  height: 58px;
+  max-width: 132px;
+  object-fit: contain;
+  transform: translateY(-50%);
+}
+@media (max-width: 700px) {
+  footer {
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: 64px;
+  }
+  .footer-accredited {
+    right: 50%;
+    top: auto;
+    bottom: 14px;
+    height: 48px;
+    transform: translateX(50%);
+  }
+}
+
+/* Join us: Cricketer Exchange */
+.cricketer-exchange {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 16px;
+}
+.cricketer-exchange-logo {
+  width: auto;
+  height: 58px;
+  max-width: 180px;
+  object-fit: contain;
+}
+.cricketer-exchange h2 {
+  margin: 0 0 8px;
+}
+@media (max-width: 600px) {
+  .cricketer-exchange {
+    flex-direction: column;
+    text-align: center;
   }
 }

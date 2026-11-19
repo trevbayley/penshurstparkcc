@@ -1,28 +1,27 @@
 # Security deployment notes
 
-The site now includes a browser-enforced CSP meta policy, URL scheme validation, and deployment header templates.
-
-## Deployment files
-
-- `_headers`: use on platforms that support a Netlify-style headers file.
-- `staticwebapp.config.json`: use when deploying to Azure Static Web Apps.
+The repository's primary deployment platform is GitHub Pages with a custom DNS name.
 
 ## GitHub Pages
 
-- Enforce HTTPS in the repository Pages settings.
-- GitHub Pages does not apply `_headers` or `staticwebapp.config.json`; keep them only as templates for hosts that support custom response headers.
-- The CSP meta element in `index.html` still provides browser-side restrictions, but response-header-only protections require a host that supports custom HTTP response headers.
+1. In repository **Settings → Pages**, select the `main` branch and root directory.
+2. Add and verify the production custom domain.
+3. Enable **Enforce HTTPS**.
+4. Wait for GitHub to issue and confirm the TLS certificate before enabling browser-only HTTPS policies.
 
-## HTTPS / HSTS
+GitHub Pages does not apply `_headers`, `staticwebapp.config.json`, HSTS response headers, or other server configuration files. These files must not be described as active GitHub Pages protections. The CSP and referrer policy in `index.html` are the browser-enforced policies for this deployment.
 
-Enable HSTS only after the production domain and every required subdomain are confirmed to work exclusively over HTTPS. A suggested production header is:
+## DNS
 
-`Strict-Transport-Security: max-age=31536000; includeSubDomains`
+Configure only the DNS records required by GitHub Pages. DNS changes do not enable HSTS and do not replace HTTPS enforcement in repository settings.
+
+Use DNSSEC at the registrar/DNS provider if offered. DNSSEC validates DNS responses, but it does not encrypt browser traffic.
 
 ## Pre-publish checks
 
-- Replace placeholder `example.com` application URLs before publication.
-- Review every external URL in `CFG`, `CLUB_DATA`, and the sponsors list.
-- Do not publish old ZIP files, backup HTML files, test reports, or source maps.
-- Disable directory listing on the host.
-- Confirm the live server returns the headers defined in the applicable deployment file.
+- Remove backup HTML, ZIP files, test reports, and unpublished source maps.
+- Disable directory listing on the hosting platform; GitHub Pages may expose repository-style directory listings when a directory lacks an index file.
+- Review every external URL in site configuration and navigation.
+- Ensure links opened in a new tab use `noopener noreferrer`.
+- Confirm HTTPS works before and after DNS changes.
+- Use private vulnerability reporting and keep security settings under source control where possible.

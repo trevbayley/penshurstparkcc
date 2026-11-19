@@ -4,6 +4,7 @@ media/club      Club crest and hero graphics
 media/teams     Team photographs
 media/sponsors  Sponsor logos
 media/events    Event artwork and photographs
+media/history   Historical photographs and timeline images
 media/posters   Recruitment posters
 
 All paths are relative to index.html. Use lower-case, hyphenated file names for new media.

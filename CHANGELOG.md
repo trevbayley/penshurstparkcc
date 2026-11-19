@@ -2,6 +2,29 @@
 
 This log records completed changes to the Penshurst Park Cricket Club website. Add a new dated section at the top after each development session.
 
+## 19 November 2026
+
+### History
+- Reworked the History timeline so years and descriptions scroll through a fixed central yellow selector.
+- Standardised automatic History timing to seven seconds and removed the separate ten-second interaction pause.
+- Added 1960, 2019 and 2026 historical imagery.
+- Added the 2026 Great Estates from Above entry and Channel 4 link.
+- Corrected History markup so the Channel 4 link is not nested inside another interactive control.
+
+### Members and About us
+- Moved Useful links to the Members right column and merged the YouTube training links into the same card.
+- Removed the Members Availability and Bookings coming-soon panel.
+- Improved About us headings, contact touch targets, directions link and map labelling.
+
+### Media and optimisation
+- Localised the Cricketer Exchange logo.
+- Retained JPEG/JPG originals as fallbacks where WebP is preferred.
+- Kept JPEG/JPG as the preferred source where conversion to WebP produced a larger file.
+
+### Security and maintenance
+- Updated GitHub Pages deployment notes and HTTPS guidance.
+- Removed the unused Availability button helper.
+
 ## 18 November 2026
 
 ### Mobile navigation fix

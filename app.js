@@ -345,3 +345,17 @@ const SOCIAL_ICONS={
 $('#soc').innerHTML=CFG.social.map(s=>{const name=s[0],url=s[1],icon=SOCIAL_ICONS[name]||esc(name);return `<a class="btn social-btn" href="${safeHref(url)}" target="_blank" rel="noopener noreferrer" title="Open ${esc(name)}" aria-label="Open ${esc(name)} (opens in a new tab)">${icon}<span class="sr-only">${esc(name)}</span></a>`}).join('');
 if(CFG.sponsors.length){$('#sponsorList').innerHTML=CFG.sponsors.map(x=>`<li><a href="${safeHref(x[1],['https:','mailto:'])}" target="_blank" rel="noopener noreferrer">${x[2]?`<img src="${safeAsset(x[2])}" loading="lazy" decoding="async" alt="${esc(x[0])}">`:esc(x[0])}</a></li>`).join('');$('#sponsors').hidden=false}
 route();
+
+// Discourage casual saving of club photographs while leaving logos/posters unaffected.
+document.addEventListener('contextmenu',e=>{
+ const img=e.target.closest('img');
+ if(!img)return;
+ const src=img.getAttribute('src')||'';
+ if(src.startsWith('media/history/')||src.startsWith('media/teams/')||img.closest('.event-media'))e.preventDefault();
+});
+document.addEventListener('dragstart',e=>{
+ const img=e.target.closest('img');
+ if(!img)return;
+ const src=img.getAttribute('src')||'';
+ if(src.startsWith('media/history/')||src.startsWith('media/teams/')||img.closest('.event-media'))e.preventDefault();
+});

@@ -1417,3 +1417,6 @@ footer {
 @media(max-width:980px){.teams-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.teams-group>summary{padding:13px 14px}.teams-count{display:none}.teams-grid{padding:0 10px 12px}.team-directory-card{grid-template-columns:1fr}.team-directory-card>img,.team-photo-placeholder{min-height:0;aspect-ratio:16/10}.team-directory-copy{padding:14px}}
 @media(prefers-color-scheme:dark){.teams-group>summary,.team-directory-copy h3{color:var(--yel)}}
+
+/* Discourage casual saving of club photographs. */
+.history-image-frame img,.team-history-card img,.team-directory-card>img,.event-media img{-webkit-user-drag:none;user-select:none}

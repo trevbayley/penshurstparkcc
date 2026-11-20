@@ -1420,3 +1420,13 @@ footer {
 
 /* Discourage casual saving of club photographs. */
 .history-image-frame img,.team-history-card img,.team-directory-card>img,.event-media img{-webkit-user-drag:none;user-select:none}
+
+/* Members training season accordions */
+.training-season{padding:0;overflow:hidden}
+.training-season>summary{display:flex;align-items:center;min-height:56px;padding:14px 20px;color:var(--navy);font-weight:800;font-size:1.12rem;cursor:pointer;list-style:none}
+.training-season>summary::-webkit-details-marker{display:none}
+.training-season>summary::after{content:'+';display:grid;place-items:center;width:30px;height:30px;margin-left:auto;border-radius:50%;background:var(--navy);color:var(--yel);font-size:1.35rem;line-height:1}
+.training-season[open]>summary::after{content:'−'}
+.training-season>summary:focus-visible{outline:3px solid var(--yel);outline-offset:-3px}
+.training-season-content{padding:0 clamp(16px,2vw,24px) clamp(16px,2vw,24px)}
+@media(prefers-color-scheme:dark){.training-season>summary{color:var(--yel)}}

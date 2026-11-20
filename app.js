@@ -1,34 +1,42 @@
 
 // ===== CONFIG: replace these with real values =====
-const CFG={w3w:'https://what3words.com/crisp.dates.daily',playCricket:'https://penshurstpark.play-cricket.com/',
- form:'https://forms.cloud.microsoft/r/4ELsii0BbM',availability:'https://example.com/availability-app',
+const CFG={w3w:'https://what3words.com/crisp.dates.daily',
+ form:'https://forms.cloud.microsoft/r/4ELsii0BbM',
  taster:'https://forms.cloud.microsoft/r/KKpWD1TPC1',camp:'https://forms.cloud.microsoft/r/3DTM6zih0w',
- /* Team gallery: list JPEG files here in display order. Paths are relative to index.html. */
+ /* Team photos: set currentSeason once each year. Home shows that season, or the latest available season as a fallback. */
+ currentSeason:2026,
  teamPhotos:[
-  ['media/teams/ladies-softball-team-2026.webp','Ladies softball team 2026'],
-  ['media/teams/ladies-1st-xi-2026.webp','Ladies 1st XI 2026'],
-  ['media/teams/sunday-1st-xi-2026.webp','Sunday 1st XI 2026'],
-  ['media/teams/sunday-2nd-xi-2026.webp','Sunday 2nd XI 2026']
+  {image:'media/teams/ladies-softball-team-2026.webp',caption:'Ladies softball team 2026',season:2026},
+  {image:'media/teams/ladies-1st-xi-2026.webp',caption:'Ladies 1st XI 2026',season:2026},
+  {image:'media/teams/sunday-1st-xi-2026.webp',caption:'Sunday 1st XI 2026',season:2026},
+  {image:'media/teams/sunday-2nd-xi-2026.webp',caption:'Sunday 2nd XI 2026',season:2026},
+  {image:'media/teams/u13-girls-kent-champions.webp',caption:'U13 Girls Kent Champions',season:2026},
+  {image:'media/teams/2024-presidents-day.webp',caption:"2024 President's Day",season:2024},
+  {image:'media/teams/2024-ladies-softball-team-lords.webp',caption:"2024 Ladies Softball team go to Lord's",season:2024},
+  {image:'media/teams/2023-touring-side-boys-go-dutch.webp',caption:'2023 Touring side - Boys go Dutch',season:2023},
+  {image:'media/teams/2023-ladies-softball-three-time-winners.webp',caption:'Ladies Softball three-time winners - 2021, 2022 and 2023',season:2023},
+  {image:'media/teams/2022-ladies-softball-two-time-winners.webp',caption:'Ladies Softball two-time winners - 2021 and 2022',season:2022},
+  {image:'media/teams/2021-ladies-softball-kent-winners.webp',caption:'Ladies Softball Kent Winners 2021',season:2021},
+  {image:'media/teams/2021-u9-softball-kent-finals-beckenham.webp',caption:'U9 Softball - Kent Finals Day at Beckenham - 4th place',season:2021}
  ],
  /* sponsors = [['Sponsor name','https://sponsor-website','sponsors/logo.png'], ...] (logo optional; the Sponsors footer stays hidden until at least one is added). */
- sponsors:[['Sevenoaks Window Cleaning Ltd','https://sevenoaks-cleaning.co.uk','media/sponsors/sevenoaks-window-cleaning.webp'],['Making Scents Dog Training','https://makingscentsdogtraining.co.uk/','media/sponsors/making-scents-dog-training.webp'],['Amherst Consultancy','https://www.amherstaccountancy.co.uk','media/sponsors/amherst-consultancy.webp'],['Holme Run Fitness','https://www.holmerunfitness.com','media/sponsors/holme-run-fitness.webp'],['NSJ Joinery','https://www.nsjjoinery.co.uk','media/sponsors/nsj-joinery.webp'],['Estate and Field','https://www.estateandfield.co.uk','media/sponsors/estate-and-field.webp'],['Kent Heritage Works','https://www.kentheritageworks.uk','media/sponsors/kent-heritage-works.webp'],['Penshurst Fuels','https://penshurstfuels.com','media/sponsors/penshurst-fuels.webp'],['Kewell Converters','https://www.kewell-converters.co.uk','media/sponsors/kewell-converters.webp'],['The Leicester Arms','https://www.theleicesterarmspenshurst.co.uk/','media/sponsors/the-leicester-arms.webp'],['JMO Garden Services','mailto:jake_cheesman@yahoo.com','media/sponsors/jmo-garden-services.webp']],
+ sponsors:[['Sevenoaks Window Cleaning Ltd','https://sevenoaks-cleaning.co.uk','media/sponsors/sevenoaks-window-cleaning.webp'],['Making Scents Dog Training','https://makingscentsdogtraining.co.uk/','media/sponsors/making-scents-dog-training.webp'],['Amherst Consultancy','https://www.amherstaccountancy.co.uk','media/sponsors/amherst-consultancy.webp'],['Holme Run Fitness','https://www.holmerunfitness.com','media/sponsors/holme-run-fitness.webp'],['NSJ Joinery','https://www.nsjjoinery.co.uk','media/sponsors/nsj-joinery.webp'],['Estate and Field','https://www.estateandfield.co.uk','media/sponsors/estate-and-field.webp'],['Kent Heritage Works','https://www.kentheritageworks.uk','media/sponsors/kent-heritage-works.webp'],['Penshurst Fuels','https://penshurstfuels.com','media/sponsors/penshurst-fuels.webp'],['Kewell Converters','https://www.kewell-converters.co.uk','media/sponsors/kewell-converters.webp'],['The Leicester Arms','https://www.theleicesterarmspenshurst.co.uk/','media/sponsors/the-leicester-arms.webp'],['JMO Garden Services','mailto:jake_cheesman@yahoo.com','media/sponsors/jmo-garden-services.webp'],['Penshurst Fine Foods','https://www.penshurstfinefoods.co.uk/','media/sponsors/penshurst-fine-foods.webp']],
  /* booking = address of the separate booking app (blank = shows 'coming soon'). */
  booking:'',
- phone:'0791 7730761',social:[['Facebook','https://www.facebook.com/PenshurstPark'],['Instagram','https://www.instagram.com/penshurstparkcc/'],['YouTube','https://www.youtube.com/@PPCC-Cam']],email:'jake_cheesman@yahoo.com',mapQ:'Penshurst+Park+Cricket+Club+TN11+8DH',
- teams:[['Men\'s 1st XI','Kent County Village League – Top Division'],['Men\'s 2nd XI','Kent Village League'],['Ladies','West Kent Ladies August League / Kent Women\'s Softball League'],['Juniors','Softball & hardball age groups (c. 90 members)']]};
+ phone:'0791 7730761',social:[['Facebook','https://www.facebook.com/PenshurstPark'],['Instagram','https://www.instagram.com/penshurstparkcc/'],['YouTube','https://www.youtube.com/@PPCC-Cam']],email:'jake_cheesman@yahoo.com',mapQ:'Penshurst+Park+Cricket+Club+TN11+8DH'};
 const iso=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`};
 // ===== CLUB DATA: edit these entries in this file, then republish =====
 const CLUB_DATA={
  ev:[
   {id:'event-winter-training-2026',type:'event',date:'2026-11-14',time:'',title:'Winter training',detail:'',photo:'media/events/winter-training-2026.webp'},
   {id:'event-1',type:'event',date:'2026-10-03',time:'18:00',title:'2026 Club dinner and awards',detail:'Venue: Penshurst Place',photo:'media/events/club-dinner-awards-2026.webp'},
-  {id:'event-2',type:'event',date:'2026-12-13',time:'17:00',title:'2026 Christmas Raffle',detail:'Prizes in abundance from bats to fine dining',url:'https://www.zeffy.com/en-GB/ticketing/penshurst-park-cricket-clubs-christmas-raffle--2026',photo:'media/events/christmas-raffle-2026.jpg'},
+  {id:'event-2',type:'event',date:'2026-12-13',time:'17:00',title:'2026 Christmas Raffle',detail:'Prizes in abundance from bats to fine dining',url:'https://www.zeffy.com/en-GB/ticketing/penshurst-park-cricket-clubs-christmas-raffle--2026',photo:'media/events/christmas-raffle-2026.webp'},
   {id:'event-3',type:'event',date:'2027-01-07',time:'19:30',title:'2027 Club AGM',detail:'Venue: The Leicester Arms'},
   {id:'event-4',type:'event',date:'2027-02-06',time:'18:30',title:'2027 Club quiz',detail:'Venue: Penshurst Village Hall',url:'https://wa.me/447917730761?text=I%20would%20like%20to%20book%20a%20table%20for%20a%20quiz%20team%20on%20the%206th%20Feb.%20Our%20team%20has%206%20members%20and%20our%20Team%20name%20is%3A',action:'Book a quiz table on WhatsApp',photo:'media/events/quiz-night.webp'}
  ],
 history:[
   ['1719','Penshurst cricketers at bowling practice','media/history/1719.webp'],
-  ['1723','The club is founded, as is shown on our crest.'],
+  ['1723','The club is founded, as is shown on our crest.','media/history/1723-club-crest.webp'],
   ['1724','First recorded match at Penshurst Park (Penshurst, Tonbridge & Wadhurst v Dartford).'],
   ['1728–29','Kent patron Edwin Stead stages major matches at the ground.'],
   ['1747',"George Vertue's print of 1747, with new dedication, included in Volume I of Hasted's Kent in 1778.",'media/history/1747.webp'],
@@ -37,10 +45,12 @@ history:[
   ['1969 & 1972','Club hosts the visiting Toronto Cricket Club.'],
   ['1996','Club begins unbroken spell in the top division of the Kent County Village League.'],
   ['2012–2014','Three consecutive league titles.'],
-  ['2019','Singapore CC touring side v Penshurst Park. Ladies and junior cricket (re)introduced; junior section grows from 32 to c. 90.','media/history/2019.jpeg'],
+  ['2019','Singapore CC touring side v Penshurst Park. Ladies and junior cricket (re)introduced; junior section grows from 32 to c. 90.','media/history/2019.webp'],
+  ['2022','Jake wins another award - Kent Cricket Innovators Award 2022.','media/history/2022-kent-cricket-innovators-award.webp'],
   ['2023',"Third consecutive Kent Women's Softball League title; hosts the Finals Day."],
+  ['2024','The opening of the first permanent net - Net 1, performed by Russell Hammond, son of George Hammond, long-standing chairman of Penshurst Park Cricket Club.','media/history/2024-net-1-opening.webp'],
   ['2026',"Ladies 1st XI win Kent Women's Championship League title.",'media/history/2026-ladies-1st-xi.webp'],
-  ['2026',"Great Estates from Above: a film crew visits the estate on President's Match Day.",'media/history/2026-great-estates-from-above.jpeg','https://www.channel4.com/programmes/great-estates-from-above/on-demand/77687-003','Watch on Channel 4']
+  ['2025',"Great Estates from Above: a film crew visits the estate on President's Match Day.",'media/history/2025-great-estates-from-above.webp','https://www.channel4.com/programmes/great-estates-from-above/on-demand/77687-003','Watch on Channel 4']
  ],
 links:[
   {title:'Cricket resources',items:[
@@ -68,7 +78,6 @@ const safeHref=(value,allowed=['https:'])=>{
   return esc(url.href);
  }catch{return '#'}
 };
-const webpFor=value=>/\.(?:jpe?g)$/i.test(String(value||''))?String(value).replace(/\.(?:jpe?g)$/i,'.webp'):String(value||'');
 const safeAsset=value=>{
  const raw=String(value??'').trim();
  if(!raw||raw.startsWith('//')||raw.includes('\\'))return '';
@@ -82,8 +91,9 @@ const safeAsset=value=>{
 };
 const fmt=d=>new Date(d+'T00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
 const today=iso(new Date());
+const teamSeasons=()=>[...new Set((CFG.teamPhotos||[]).map(x=>Number(x.season)).filter(Number.isFinite))].sort((a,b)=>b-a);
+function homeTeamSelection(){const seasons=teamSeasons();const selected=seasons.includes(Number(CFG.currentSeason))?Number(CFG.currentSeason):(seasons[0]||Number(CFG.currentSeason));return {season:selected,photos:(CFG.teamPhotos||[]).filter(x=>Number(x.season)===selected)}}
 const isPH=u=>!u||/^https?:\/\/(?:www\.)?example\.com(?:\/|$)/i.test(u);
-const bookBtn=c=>isPH(CFG.booking)?'<span class="btn" aria-disabled="true" title="Bookings – coming soon">Bookings – coming soon</span>':`<a class="btn ${c||''}" href="${safeHref(CFG.booking)}" target="_blank" rel="noopener noreferrer">Book coaching &amp; lanes ↗</a>`;
 const pages={home,aboutUs,history,members,join,fundraising,admin};
 const routeCleanups=[];
 const registerRouteCleanup=fn=>routeCleanups.push(fn);
@@ -96,10 +106,7 @@ function nav(){const p=cur;
  $('#nav').innerHTML=links.join('')}
 let initialRoute=true;
 
-const IMAGE_FALLBACKS={'media/history/1960.webp':'media/history/1960.jpg','media/sponsors/sevenoaks-window-cleaning.webp':'media/sponsors/sevenoaks-window-cleaning.jpg'};
-function applyImageFallbacks(root=document){root.querySelectorAll('img').forEach(img=>{const src=img.getAttribute('src');const fallback=IMAGE_FALLBACKS[src];if(fallback&&!img.dataset.fallbackBound){img.dataset.fallbackBound='1';img.addEventListener('error',()=>{if(img.getAttribute('src')!==fallback)img.src=fallback},{once:true})}})}
 function enhancePageMedia(){
- applyImageFallbacks(document);
  document.querySelectorAll('#app img:not(.hero-logo):not(.hero-ball-grass),#sponsorList img').forEach(img=>{img.loading='lazy';img.decoding='async'});
  document.querySelectorAll('#app iframe').forEach(frame=>{frame.loading='lazy';if(!frame.referrerPolicy)frame.referrerPolicy='no-referrer-when-downgrade'});
 }
@@ -215,92 +222,54 @@ window.runDesktopNavigationTest=async function(){
 addEventListener('hashchange',()=>{cur=location.hash.slice(1)||'home';closeMenu();route()});
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();closeMenu();cur=a.getAttribute('href').slice(1)||'home';try{history.replaceState(null,'','#'+cur)}catch(x){}route()});
 function evLine(e){const photo=e.photo?`<div class="event-media"><img src="${safeAsset(e.photo)}" loading="lazy" decoding="async" alt="${esc(e.title)} event poster"></div>`:'';const linkedPhoto=e.url&&photo?`<a class="event-media-link" href="${safeHref(e.url,['https:','mailto:'])}" target="_blank" rel="noopener noreferrer" title="Open ${esc(e.title)} link">${photo}</a>`:photo;return `<div class="card">${linkedPhoto}<b>${esc(e.title)}</b><br><span class="mut">${fmt(e.date)} ${e.time||''}</span>${e.detail?`<br>${esc(e.detail)}`:''}${e.url?`<br><a class="btn" href="${safeHref(e.url,['https:','mailto:'])}" target="_blank" rel="noopener noreferrer" title="${esc(e.action||'Open event link')}">${esc(e.action||'Buy raffle tickets')} ↗</a>`:''}</div>`}
-function home(){const recent=S.ev.filter(e=>e.date<today).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+function home(){const homeTeams=homeTeamSelection();const recent=S.ev.filter(e=>e.date<today).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
  const upcoming=S.ev.filter(e=>e.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,7);
  $('#app').innerHTML=`<section class="hero"><div class="txt"><div class="hero-heading"><h1 class="hero-title">Welcome to Penshurst Park Cricket Club</h1></div><div class="hero-marks"><img src="media/club/club-crest.webp" alt="" width="70" class="hero-logo"></div><img class="hero-ball-grass" src="media/club/red-cricket-ball-grass.webp" alt="Red cricket ball resting on short-cut grass"><img class="hero-ball-grass hero-ball-grass-pink" src="media/club/pink-cricket-ball-grass.webp" alt="Pink cricket ball resting on short-cut grass"></div></section>
  <div class="grid"><aside><h2>Recent events</h2><div id="recentEventCycle"></div></aside>
  <section><h2>About the club</h2><p>One of England's oldest cricket grounds, Penshurst Park hosted its first recorded match in 1724, and the club has played here since 1723 in the grounds of Penshurst Place. We are a friendly village club with men's, ladies and junior sections, and have been in the top division of the Kent County Village League since 1996, winning titles in 2012–14. Our ladies are Kent Women's Softball League champions (2023), <a href="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/" target="_blank" rel="noopener noreferrer" title="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/">KWCL Championship winners (2026)</a>, and the junior section has grown to around 180 members.</p>
- <section class="team-gallery" aria-labelledby="team-gallery-title"><h3 id="team-gallery-title">Team photo gallery</h3><div id="teamGallery"></div></section>
+ <section class="team-gallery" aria-labelledby="team-gallery-title"><h3 id="team-gallery-title">Our teams</h3><p class="team-season-label">${esc(homeTeams.season)} season</p><div id="teamGallery"></div></section>
  
 </section>
- <aside><h2>Upcoming events</h2><div id="upcomingEventCycle"></div></aside></div>`;initEventCycle('#recentEventCycle',recent,true);initEventCycle('#upcomingEventCycle',upcoming,false);initTeamGallery()}
+ <aside><h2>Upcoming events</h2><div id="upcomingEventCycle"></div></aside></div>`;initEventCycle('#recentEventCycle',recent,true);initEventCycle('#upcomingEventCycle',upcoming,false);initTeamGallery(homeTeams.photos)}
 function initEventCycle(selector,events,isRecent){const host=$(selector);if(!host)return;if(!events.length){host.innerHTML=isRecent?'<div class="photo" aria-hidden="true"></div><p class="mut">No recent events yet.</p>':'<p class="mut">No upcoming events at the moment.</p>';return}let current=0,timer=null,fadeTimer=null;const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;host.innerHTML='<div class="event-cycle-content"></div>';const content=host.querySelector('.event-cycle-content');function render(index){current=(index+events.length)%events.length;content.innerHTML=evLine(events[current])}function show(index){clearTimeout(fadeTimer);if(reduceMotion){render(index);return}content.classList.add('is-fading');fadeTimer=setTimeout(()=>{render(index);requestAnimationFrame(()=>content.classList.remove('is-fading'))},500)}function start(){if(events.length>1&&!reduceMotion)timer=setInterval(()=>show(current+1),12000)}registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(fadeTimer)});render(0);start()}
 
-function initTeamGallery(){
- const host=$('#teamGallery');if(!host)return;const photos=(CFG.teamPhotos||[]).filter(x=>x&&x[0]);
+function initTeamGallery(teamPhotos){
+ const host=$('#teamGallery');if(!host)return;const photos=(teamPhotos||[]).filter(x=>x&&x.image);
  if(!photos.length){host.innerHTML='<div class="team-gallery-empty">Team photos will be added here.</div>';return}
  let current=0,timer=null,fadeTimer=null;const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  host.innerHTML=`<div class="team-gallery-frame"><img id="teamGalleryImage" src="" alt=""></div><div id="teamGalleryName" class="team-gallery-name" aria-live="polite"></div>`;
  const image=$('#teamGalleryImage'),name=$('#teamGalleryName');
- function render(index){current=(index+photos.length)%photos.length;image.src=photos[current][0];const team=photos[current][1]||`Penshurst Park Cricket Club team photo ${current+1}`;image.alt=team;name.textContent=team}
+ function render(index){current=(index+photos.length)%photos.length;image.src=photos[current].image;const team=photos[current].caption||`Penshurst Park Cricket Club team photo ${current+1}`;image.alt=team;name.textContent=team}
  function show(index){clearTimeout(fadeTimer);if(reduceMotion){render(index);return}image.classList.add('is-fading');fadeTimer=setTimeout(()=>{render(index);requestAnimationFrame(()=>image.classList.remove('is-fading'))},500)}
  function start(){if(photos.length>1&&!reduceMotion)timer=setInterval(()=>show(current+1),12000)}
- registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(fadeTimer)});
- render(0);start()
+ registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(fadeTimer)});render(0);start()
 }
 function aboutUs(){$('#app').innerHTML=`<h1 class="page-title">About us</h1><div class="grid location-grid"><section class="card about-contact" aria-labelledby="club-location-title"><h2 id="club-location-title">Address</h2><address>Penshurst Park Cricket Club<br>Penshurst Place, Penshurst<br>Tonbridge, Kent TN11 8DH</address><div class="about-location-actions"><a class="w3w-link" href="${safeHref(CFG.w3w)}" target="_blank" rel="noopener noreferrer" title="Open ///crisp.dates.daily in what3words"><span class="w3w-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5"/><path d="M9.1 6.6 6.2 17.4M13.6 6.6l-2.9 10.8M18.1 6.6l-2.9 10.8"/></svg></span><span>///crisp.dates.daily</span></a><a class="btn about-directions" href="${safeHref('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(CFG.mapQ))}" target="_blank" rel="noopener noreferrer">Get directions ↗</a></div><h2>Contact</h2><div class="about-contact-actions"><a class="phone-line phone-link" href="${safeHref('tel:'+CFG.phone.replace(/\s+/g,''),['tel:'])}" title="Call ${esc(CFG.phone)}"><span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.6 3.1 3.5 5 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.7c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg></span><span>${esc(CFG.phone)}</span></a><a class="email-link" href="${safeHref('mailto:'+CFG.email,['mailto:'])}" title="Email ${esc(CFG.email)}"><span class="email-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l9 5.6 9-5.6V7H3Zm18 10V9.8l-8.47 5.27a1 1 0 0 1-1.06 0L3 9.8V17h18Z"/></svg></span><span>${esc(CFG.email)}</span></a></div><p><a class="btn" href="${safeHref('https://penshurstpark.play-cricket.com/Aboutus#collapseTwo')}" target="_blank" rel="noopener noreferrer" title="Open Penshurst Park CC club officials on Play-Cricket">Club officials ↗</a></p></section><iframe class="location-map" title="Map showing Penshurst Park Cricket Club at Penshurst Place" loading="lazy" src="https://www.google.com/maps?q=${encodeURIComponent(CFG.mapQ)}&output=embed"></iframe></div>`}
 function history(){
- const items=S.history.map((x,i)=>({year:x[0],description:x[1],image:x[2]||'',url:x[3]||'',linkLabel:x[4]||'',index:i}));
- $('#app').innerHTML=`<h1 class="page-title">History</h1><section class="history-experience"><div class="history-visual" aria-live="polite"><div class="history-image-frame"><img id="historyImage" alt="" hidden></div></div><div class="history-timeline-shell"><div class="history-current-marker" aria-hidden="true"></div><div class="history-timeline" role="list" tabindex="0" aria-label="Club history. Scroll up or down to select a year.">${items.map((x,i)=>`<div class="history-year${i===0?' is-active':''}" data-history-index="${i}" role="listitem" tabindex="0" aria-current="${i===0?'true':'false'}"><span class="history-copy"><strong>${esc(x.year)}</strong><span class="history-description">${esc(x.description)}${x.url?` <a class="history-link" href="${safeHref(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.linkLabel||'More information')} ↗</a>`:''}</span></span></div>`).join('')}</div></div></section>`;
- const timeline=$('.history-timeline'),buttons=[...document.querySelectorAll('.history-year')],image=$('#historyImage'),marker=$('.history-current-marker');
- let current=0,timer=null,fadeTimer=null,scrollTimer=null,userPauseTimer=null,isProgrammatic=false;
- const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- function sizeMarker(index){const button=buttons[index];if(!button||!marker)return;marker.style.height=`${button.offsetHeight}px`}
- function render(index){
-  current=Math.max(0,Math.min(items.length-1,index));const item=items[current];sizeMarker(current);
-  buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-current',String(active))});
-  if(item.image){const src=safeAsset(item.image);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else image.hidden=true}
-  else{image.removeAttribute('src');image.alt='';image.hidden=true}
- }
- function fadeTo(index){
-  if(index===current)return;
-  clearTimeout(fadeTimer);
-  if(reduceMotion){render(index);return}
-  image.classList.add('is-fading');
-  fadeTimer=setTimeout(()=>{render(index);requestAnimationFrame(()=>image.classList.remove('is-fading'))},400)
- }
- function scrollToYear(index,behaviour=reduceMotion?'auto':'smooth'){
-  index=Math.max(0,Math.min(items.length-1,index));
-  const button=buttons[index];if(!button)return;
-  isProgrammatic=true;
-  sizeMarker(index);
-  render(index);
-  const markerTop=timeline.clientHeight*.5-button.offsetHeight/2;
-  timeline.scrollTo({top:button.offsetTop-markerTop,behavior:behaviour});
-  clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{isProgrammatic=false},700)
- }
- function nearestYear(){
-  const target=timeline.getBoundingClientRect().top+timeline.clientHeight*.5;
-  let nearest=0,distance=Infinity;
-  buttons.forEach((button,i)=>{const d=Math.abs((button.getBoundingClientRect().top+button.offsetHeight/2)-target);if(d<distance){distance=d;nearest=i}});
-  return nearest;
- }
- function handleScroll(){
-  if(isProgrammatic)return;
-  clearTimeout(scrollTimer);
-  scrollTimer=setTimeout(()=>{const next=nearestYear();sizeMarker(next);if(next!==current)render(next);restartAfterUser()},40)
- }
- function scheduleNext(delay=7000){clearTimeout(timer);if(items.length>1&&!reduceMotion)timer=setTimeout(()=>{const next=current<items.length-1?current+1:0;scrollToYear(next);scheduleNext(7000)},delay)}
- function start(){scheduleNext(7000)}
- function restartAfterUser(){clearTimeout(timer);clearTimeout(userPauseTimer);scheduleNext(7000)}
- buttons.forEach((button,i)=>{button.addEventListener('click',e=>{if(e.target.closest('a'))return;scrollToYear(i);restartAfterUser()});button.addEventListener('keydown',e=>{if(e.target.closest('a'))return;if(e.key==='Enter'||e.key===' '){e.preventDefault();scrollToYear(i);restartAfterUser()}})});
- timeline.addEventListener('scroll',handleScroll,{passive:true});
- timeline.addEventListener('wheel',restartAfterUser,{passive:true});
- timeline.addEventListener('touchstart',restartAfterUser,{passive:true});
- timeline.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const step=e.key==='ArrowDown'?1:-1;scrollToYear(Math.max(0,Math.min(items.length-1,current+step)));restartAfterUser()}});
- registerRouteCleanup(()=>{clearInterval(timer);clearTimeout(fadeTimer);clearTimeout(scrollTimer);clearTimeout(userPauseTimer)});
- requestAnimationFrame(()=>{isProgrammatic=true;const first=buttons[0];if(first){sizeMarker(0);const markerTop=timeline.clientHeight*.5-first.offsetHeight/2;timeline.scrollTop=first.offsetTop-markerTop}render(0);requestAnimationFrame(()=>{isProgrammatic=false;scheduleNext(7000)})});
+ $('#app').innerHTML=`<h1 class="page-title">History</h1><div class="history-tabs" role="tablist" aria-label="History sections"><button type="button" role="tab" id="clubHistoryTab" aria-controls="clubHistoryPanel" aria-selected="true">Club history</button><button type="button" role="tab" id="teamHistoryTab" aria-controls="teamHistoryPanel" aria-selected="false" tabindex="-1">Team history</button></div><section id="clubHistoryPanel" role="tabpanel" aria-labelledby="clubHistoryTab"></section><section id="teamHistoryPanel" role="tabpanel" aria-labelledby="teamHistoryTab" hidden></section>`;
+ const tabs=[...document.querySelectorAll('.history-tabs [role="tab"]')],clubPanel=$('#clubHistoryPanel'),teamPanel=$('#teamHistoryPanel');
+ function selectTab(tab,focus=true){tabs.forEach(button=>{const active=button===tab;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});const club=tab.id==='clubHistoryTab';clubPanel.hidden=!club;teamPanel.hidden=club;if(focus)tab.focus();if(club)renderClubHistory();else renderTeamHistory()}
+ tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(tab,false));tab.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[next])})});
+ function renderTeamHistory(){const displayedSeason=homeTeamSelection().season;const previous=(CFG.teamPhotos||[]).filter(x=>Number(x.season)<displayedSeason).sort((a,b)=>Number(b.season)-Number(a.season));if(!previous.length){teamPanel.innerHTML='<p class="mut">Previous-season team photographs will appear here.</p>';return}const groups=[...new Set(previous.map(x=>Number(x.season)))];teamPanel.innerHTML=groups.map(year=>`<section class="team-history-season" aria-labelledby="team-season-${year}"><h2 id="team-season-${year}">${year} season</h2><div class="team-history-grid">${previous.filter(x=>Number(x.season)===year).map(x=>`<figure class="team-history-card"><img src="${safeAsset(x.image)}" loading="lazy" decoding="async" alt="${esc(x.caption)}"><figcaption>${esc(x.caption)}</figcaption></figure>`).join('')}</div></section>`).join('')}
+ function renderClubHistory(){if(clubPanel.dataset.ready)return;clubPanel.dataset.ready='true';const items=S.history.map((x,i)=>({year:x[0],description:x[1],image:x[2]||'',url:x[3]||'',linkLabel:x[4]||'',index:i}));clubPanel.innerHTML=`<section class="history-experience"><div class="history-visual" aria-live="polite"><div class="history-image-frame"><img id="historyImage" alt="" hidden></div></div><div class="history-timeline-shell"><div class="history-current-marker" aria-hidden="true"></div><div class="history-timeline" role="list" tabindex="0" aria-label="Club history. Scroll up or down to select a year.">${items.map((x,i)=>`<div class="history-year${i===0?' is-active':''}" data-history-index="${i}" role="listitem" tabindex="0" aria-current="${i===0?'true':'false'}"><span class="history-copy"><strong>${esc(x.year)}</strong><span class="history-description">${esc(x.description)}${x.url?` <a class="history-link" href="${safeHref(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.linkLabel||'More information')} ↗</a>`:''}</span></span></div>`).join('')}</div></div></section>`;
+ const timeline=clubPanel.querySelector('.history-timeline'),buttons=[...clubPanel.querySelectorAll('.history-year')],image=clubPanel.querySelector('#historyImage'),marker=clubPanel.querySelector('.history-current-marker');let current=0,timer=null,fadeTimer=null,scrollTimer=null,isProgrammatic=false;const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function sizeMarker(index){const button=buttons[index];if(button&&marker)marker.style.height=`${button.offsetHeight}px`}
+ function render(index){current=Math.max(0,Math.min(items.length-1,index));const item=items[current];sizeMarker(current);buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-current',String(active))});if(item.image){const src=safeAsset(item.image);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else image.hidden=true}else{image.removeAttribute('src');image.alt='';image.hidden=true}}
+ function scrollToYear(index,behaviour=reduceMotion?'auto':'smooth'){index=Math.max(0,Math.min(items.length-1,index));const button=buttons[index];if(!button)return;isProgrammatic=true;render(index);const markerTop=timeline.clientHeight*.5-button.offsetHeight/2;timeline.scrollTo({top:button.offsetTop-markerTop,behavior:behaviour});clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{isProgrammatic=false},700)}
+ function nearestYear(){const target=timeline.getBoundingClientRect().top+timeline.clientHeight*.5;let nearest=0,distance=Infinity;buttons.forEach((button,i)=>{const d=Math.abs((button.getBoundingClientRect().top+button.offsetHeight/2)-target);if(d<distance){distance=d;nearest=i}});return nearest}
+ function scheduleNext(){clearTimeout(timer);if(items.length>1&&!reduceMotion)timer=setTimeout(()=>{scrollToYear(current<items.length-1?current+1:0);scheduleNext()},7000)}
+ timeline.addEventListener('scroll',()=>{if(isProgrammatic)return;clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{const next=nearestYear();if(next!==current)render(next);scheduleNext()},40)},{passive:true});buttons.forEach((button,i)=>{button.addEventListener('click',e=>{if(!e.target.closest('a')){scrollToYear(i);scheduleNext()}});button.addEventListener('keydown',e=>{if(!e.target.closest('a')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();scrollToYear(i);scheduleNext()}})});timeline.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();scrollToYear(current+(e.key==='ArrowDown'?1:-1));scheduleNext()}});registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(fadeTimer);clearTimeout(scrollTimer)});requestAnimationFrame(()=>{const first=buttons[0];if(first){sizeMarker(0);timeline.scrollTop=first.offsetTop-(timeline.clientHeight*.5-first.offsetHeight/2)}render(0);scheduleNext()})}
+ renderClubHistory()
 }
-
 function members(){$('#app').innerHTML=`<h1 class="page-title">Members area</h1><div class="members-layout"><div class="members-main"><section class="card" aria-labelledby="winter-training-title"><h2 id="winter-training-title">Winter training schedules</h2><section aria-labelledby="junior-training-title"><h3 id="junior-training-title">Junior training</h3><div class="scroll"><table class="training-table"><caption class="sr-only">Junior winter training schedule</caption><thead><tr><th scope="col">Age group</th><th scope="col">Venue</th><th scope="col">Time</th><th scope="col">Dates</th></tr></thead><tbody><tr><th scope="row">U6/7</th><td rowspan="2">Holmewood House</td><td>13:00–14:00</td><td rowspan="2">24th, 31st Jan; 7th, 14th, 21st, 28th Feb; 14th, 21st Mar</td></tr><tr><th scope="row">U8/9/10</th><td>14:00–15:00</td></tr><tr><th scope="row">U11</th><td rowspan="2">The Judd School</td><td>14:00–15:00</td><td rowspan="2">1st, 15th, 29th Nov; 13th Dec; 10th, 17th, 24th, 31st Jan; 7th, 14th, 21st, 28th Feb; 7th, 14th, 21st Mar</td></tr><tr><th scope="row">U13s and U15 girls</th><td>15:00–16:00</td></tr></tbody></table></div></section><section class="senior-training" aria-labelledby="senior-training-title"><h3 id="senior-training-title">Senior training</h3><div class="scroll"><table class="training-table"><caption class="sr-only">Senior winter training schedule</caption><thead><tr><th scope="col">Group</th><th scope="col">Venue</th><th scope="col">Time</th><th scope="col">Dates</th></tr></thead><tbody><tr><th scope="row">Ladies hardball</th><td>The Judd School</td><td>17:30–18:30</td><td>9th, 23rd Jan; 6th, 20th Feb; 6th, 20th Mar</td></tr><tr><th scope="row">Ladies softball</th><td>Details will follow</td><td>Details will follow</td><td>Details will follow</td></tr><tr><th scope="row">U15 boys, invited players and men</th><td>Holmewood House</td><td>19:00–20:30</td><td>15th, 22nd, 29th Jan; 5th, 12th, 19th, 26th Feb; 5th, 12th, 19th, 26th Mar; 2nd, 9th, 16th Apr</td></tr></tbody></table></div></section></section>
 <section class="card" aria-labelledby="club-kit-title"><h2 id="club-kit-title">Club kit</h2><p>Order Penshurst Park Cricket Club match kit from the club shop.</p><p><a class="btn y" href="https://www.mrcrickethockey.com/product-category/club-shop/penshurst-cricket-club/penshurst-cricket-club-match-kit/" target="_blank" rel="noopener noreferrer" title="Open Penshurst Cricket Club match kit shop">Club kit shop ↗</a></p><div class="note">See members WhatsApp channel for Club shop access code.</div><p><b>U15 boy and senior men team players:</b> please have a <a href="https://www.mrcrickethockey.com/product/penshurst-cricket-club-ergo-match-shirt-long-sleeve-navy/" target="_blank" rel="noopener noreferrer">white senior shirt</a>.</p><p><b>U15 girls and senior ladies team players:</b> please have a <a href="https://www.mrcrickethockey.com/product/penshurst-cricket-club-dual-ladies-bespoke-hardball-match-shirt/" target="_blank" rel="noopener noreferrer">blue senior shirt</a>.</p></section>
 <section class="card" aria-labelledby="player-development-title"><h2 id="player-development-title">Player development resources</h2><p>Resources for players who want to develop their cricket skills through additional practice and learning. icoachcricket includes games and practices covering batting, bowling, fielding and wicketkeeping, together with technical, tactical, physical and mental areas.</p><p><a class="btn" href="https://icoachcricket.ecb.co.uk/index.php?r=site/index" target="_blank" rel="noopener noreferrer">icoachcricket resources ↗</a> <a class="btn" href="https://www.ecb.co.uk/play/coaching/workshops" target="_blank" rel="noopener noreferrer">ECB player development workshops ↗</a></p></section>
 <section class="card" aria-labelledby="coach-training-title"><h2 id="coach-training-title">Coach training</h2><p>Coaches and anyone interested in developing their coaching can use the ECB coaching resources and icoachcricket for ongoing learning, ideas and session support.</p><p><a class="btn" href="https://www.ecb.co.uk/play/coaching/coaches-association" target="_blank" rel="noopener noreferrer">ECB Coaches Association ↗</a> <a class="btn" href="https://icoachcricket.ecb.co.uk/index.php?r=site/login" target="_blank" rel="noopener noreferrer">icoachcricket ↗</a></p></section>
 <section class="card" aria-labelledby="umpire-training-title"><h2 id="umpire-training-title">Umpire training</h2><p>The ECB Association of Cricket Officials provides information and development opportunities for cricket officials, including umpires. The ECB also provides umpiring courses for people starting their umpiring journey.</p><p><a class="btn" href="https://www.ecb.co.uk/play/officials/ecb-aco" target="_blank" rel="noopener noreferrer">ECB Association of Cricket Officials ↗</a> <a class="btn" href="https://www.ecb.co.uk/play/officials/courses" target="_blank" rel="noopener noreferrer">ECB umpiring courses ↗</a></p></section>
 </div><div class="members-side-stack"><section class="card" aria-labelledby="useful-title"><h2 id="useful-title">Useful links</h2><div class="link-cols">${S.links.filter(g=>g.title!=='Training videos on YouTube').map(g=>`<div><h4>${esc(g.title)}</h4><ul class="link-list">${g.items.map(x=>`<li><a href="${safeHref(x[1],['https:','mailto:'])}" target="_blank" rel="noopener noreferrer">${esc(x[0])}<span class="external-mark" aria-hidden="true">&nbsp;↗</span></a>${x[2]?`<br><span class="mut">${esc(x[2])}</span>`:''}</li>`).join('')}</ul></div>`).join('')}</div><div class="useful-youtube"><h4>Training videos on YouTube</h4><ul class="link-list">${(S.links.find(g=>g.title==='Training videos on YouTube')?.items||[]).map(x=>`<li><a href="${safeHref(x[1],['https:','mailto:'])}" target="_blank" rel="noopener noreferrer">${esc(x[0])}<span class="external-mark" aria-hidden="true">&nbsp;↗</span></a>${x[2]?`<br><span class="mut">${esc(x[2])}</span>`:''}</li>`).join('')}</ul></div></section></div></div>`}
-function join(){$('#app').innerHTML=`<h1 class="page-title">Join us</h1><div class="card"><a class="btn y" href="${safeHref(CFG.form)}" target="_blank" rel="noopener noreferrer">Register as a new member</a> <a class="btn" href="${safeHref(CFG.taster)}" target="_blank" rel="noopener noreferrer">Trial session registration</a> <a class="btn" href="${safeHref(CFG.camp)}" target="_blank" rel="noopener noreferrer">Summer camp registration</a></div><section class="card cricketer-exchange" aria-labelledby="cricketer-exchange-title"><img class="cricketer-exchange-logo" src="media/club/cricketer-exchange.png" alt="Cricketer Exchange"><div><h2 id="cricketer-exchange-title">Cricketer Exchange</h2><a class="btn y" href="https://cricketerexchange.com/club/penshurst-park-cricket-club" target="_blank" rel="noopener noreferrer">View Penshurst Park CC on Cricketer Exchange ↗</a></div></section><div class="join-posters"><section class="poster-card"><h2>Recruitment poster</h2><img id="poster2026" loading="lazy" decoding="async" src="media/posters/recruitment-poster.jpg" alt="Penshurst Park recruitment poster 2026"><div class="poster-actions"><button type="button" class="y" data-save-poster="poster2026" data-filename="Penshurst-Park-Recruitment-2026.jpeg">Save poster</button><button type="button" data-print-poster="poster2026">Send to printer</button></div></section><section class="poster-card"><h2>Youth recruitment poster</h2><img id="poster2027" loading="lazy" decoding="async" src="media/posters/youth-recruitment-poster.jpg" alt="Penshurst Park youth recruitment poster 2027"><div class="poster-actions"><button type="button" class="y" data-save-poster="poster2027" data-filename="Penshurst-Park-Youth-Recruitment-2027.jpeg">Save poster</button><button type="button" data-print-poster="poster2027">Send to printer</button></div></section></div>`;initPosterActions()}
+function join(){$('#app').innerHTML=`<h1 class="page-title">Join us</h1><div class="card"><a class="btn y" href="${safeHref(CFG.form)}" target="_blank" rel="noopener noreferrer">Register as a new member</a> <a class="btn" href="${safeHref(CFG.taster)}" target="_blank" rel="noopener noreferrer">Trial session registration</a> <a class="btn" href="${safeHref(CFG.camp)}" target="_blank" rel="noopener noreferrer">Summer camp registration</a></div><section class="card cricketer-exchange" aria-labelledby="cricketer-exchange-title"><img class="cricketer-exchange-logo" src="media/club/cricketer-exchange.png" alt="Cricketer Exchange"><div><h2 id="cricketer-exchange-title">Cricketer Exchange</h2><a class="btn y" href="https://cricketerexchange.com/club/penshurst-park-cricket-club" target="_blank" rel="noopener noreferrer">View Penshurst Park CC on Cricketer Exchange ↗</a></div></section><div class="join-posters"><section class="poster-card"><h2>Recruitment poster</h2><img id="poster2026" loading="lazy" decoding="async" src="media/posters/recruitment-poster.webp" alt="Penshurst Park recruitment poster 2026"><div class="poster-actions"><button type="button" class="y" data-save-poster="poster2026" data-filename="Penshurst-Park-Recruitment-2026.webp">Save poster</button><button type="button" data-print-poster="poster2026">Send to printer</button></div></section><section class="poster-card"><h2>Youth recruitment poster</h2><img id="poster2027" loading="lazy" decoding="async" src="media/posters/youth-recruitment-poster.webp" alt="Penshurst Park youth recruitment poster 2027"><div class="poster-actions"><button type="button" class="y" data-save-poster="poster2027" data-filename="Penshurst-Park-Youth-Recruitment-2027.webp">Save poster</button><button type="button" data-print-poster="poster2027">Send to printer</button></div></section></div>`;initPosterActions()}
 function initPosterActions(){
- document.querySelectorAll('[data-save-poster]').forEach(b=>b.addEventListener('click',()=>{const img=document.getElementById(b.dataset.savePoster);if(!img)return;const a=document.createElement('a');a.href=img.src;a.download=b.dataset.filename||'poster.jpeg';document.body.appendChild(a);a.click();a.remove()}));
+ document.querySelectorAll('[data-save-poster]').forEach(b=>b.addEventListener('click',()=>{const img=document.getElementById(b.dataset.savePoster);if(!img)return;const a=document.createElement('a');a.href=img.src;a.download=b.dataset.filename||'poster.webp';document.body.appendChild(a);a.click();a.remove()}));
  document.querySelectorAll('[data-print-poster]').forEach(b=>b.addEventListener('click',()=>{
   const img=document.getElementById(b.dataset.printPoster);
   if(!img)return;

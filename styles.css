@@ -950,15 +950,34 @@ footer {
   align-items: center;
   min-height: 230px;
   overflow: hidden;
-  border: 0;
+  border: 1mm solid #f5c518;
   border-radius: 24px;
   color: #fff;
   background: linear-gradient(135deg, var(--navy), var(--navy-2));
   box-shadow: var(--shadow-lg);
 }
-.hero:before,
-.hero:after {
-  content: none;
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -1mm;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1mm;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--hero-glow-angle),
+    transparent 0deg 315deg,
+    rgba(255, 245, 120, 0.22) 322deg,
+    #fffbd1 338deg,
+    #ffff72 346deg,
+    #fffbd1 352deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 5px rgba(255, 245, 80, 0.8));
+  animation: hero-border-glow 9s linear infinite;
 }
 .hero .txt {
   position: relative;
@@ -1159,33 +1178,6 @@ footer {
     min-height: 36px;
     padding: 9px 13px;
   }
-}
-/* Home welcome panel: thin yellow border with a slow clockwise travelling glow */
-.hero {
-  border: 1mm solid #f5c518;
-}
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: -1mm;
-  z-index: 3;
-  border-radius: inherit;
-  padding: 1mm;
-  pointer-events: none;
-  background: conic-gradient(
-    from var(--hero-glow-angle),
-    transparent 0deg 315deg,
-    rgba(255, 245, 120, 0.22) 322deg,
-    #fffbd1 338deg,
-    #ffff72 346deg,
-    #fffbd1 352deg,
-    transparent 360deg
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  filter: drop-shadow(0 0 5px rgba(255, 245, 80, 0.8));
-  animation: hero-border-glow 9s linear infinite;
 }
 @property --hero-glow-angle {
   syntax: "<angle>";
@@ -1405,24 +1397,26 @@ footer {
 .members-side-stack>.card,.members-side-stack>.members-side-panel{margin:0;width:100%}
 .members-side-stack h2{margin:0 0 12px;font-size:1.2rem;line-height:1.2}
 .members-side-stack h4{margin:10px 0 6px;font-size:1rem;line-height:1.25}
-.members-side-stack .link-list{margin:0;padding-left:18px}
-.members-side-stack .link-list li{margin-bottom:9px}
+.members-side-stack .link-list{display:block;width:100%;margin:6px 0 0;padding:0;list-style:none}
+.members-side-stack .link-list>li{display:block;width:100%;margin:8px 0;padding:0;text-indent:0}
+.members-side-stack .link-list>li>a{display:inline;padding:0;margin:0}
 .members-side-stack .link-list .mut{font-size:.88rem;line-height:1.28}
-@media(max-width:900px){.members-side-stack{position:static;width:100%}}
-
-/* Compact merged Members resource list */
-.members-side-stack .link-list{padding-left:10px;list-style-position:outside}
-.members-side-stack .link-list li{padding-left:1px}
+.members-side-stack .link-cols,.members-side-stack .link-cols>div{display:block;width:100%;margin:0;padding:0}
 .members-side-stack .useful-youtube{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
 .members-side-stack .useful-youtube h4{margin-top:0}
-
-/* Flush Members resource links: maximise width in narrow right panel */
-.members-side-stack .link-list{padding-left:0;margin-left:0;list-style:none}
-.members-side-stack .link-list li{padding-left:0;margin-left:0}
-
-/* Final Members resource alignment and external-link marker */
-.members-side-stack .link-cols,.members-side-stack .link-cols>div{display:block;width:100%;margin:0;padding:0}
-.members-side-stack ul.link-list{display:block;width:100%;margin:6px 0 0!important;padding:0!important;list-style:none!important}
-.members-side-stack ul.link-list>li{display:block;width:100%;margin:8px 0!important;padding:0!important;text-indent:0!important}
-.members-side-stack ul.link-list>li>a{display:inline;padding:0;margin:0}
 .members-side-stack .external-mark{white-space:nowrap}
+@media(max-width:900px){.members-side-stack{position:static;width:100%}}
+
+/* History section tabs and team archive */
+.history-tabs{display:flex;gap:8px;margin:-4px 0 20px;padding:5px;border:1px solid color-mix(in srgb,var(--navy) 25%,transparent);border-radius:14px;background:color-mix(in srgb,var(--navy) 7%,transparent);width:max-content;max-width:100%}
+.history-tabs [role="tab"]{min-height:44px;padding:9px 18px;border:0;border-radius:10px;background:transparent;color:var(--navy);font-weight:800;box-shadow:none}
+.history-tabs [role="tab"][aria-selected="true"]{background:var(--navy);color:var(--yel)}
+.history-tabs [role="tab"]:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+.team-season-label{margin:-6px 0 10px;color:var(--mut);font-weight:700}
+.team-history-season{margin:0 0 28px}.team-history-season h2{margin-bottom:12px}
+.team-history-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.team-history-card{margin:0;padding:10px;border:1px solid color-mix(in srgb,var(--navy) 18%,transparent);border-radius:16px;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
+.team-history-card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px}
+.team-history-card figcaption{padding:10px 4px 4px;color:var(--navy);font-weight:800}
+@media(max-width:700px){.history-tabs{width:100%}.history-tabs [role="tab"]{flex:1;padding-inline:10px}.team-history-grid{grid-template-columns:1fr}}
+@media(prefers-color-scheme:dark){.history-tabs [role="tab"]{color:var(--yel)}.history-tabs [role="tab"][aria-selected="true"]{background:var(--yel);color:var(--navy)}.team-history-card figcaption{color:var(--yel)}}

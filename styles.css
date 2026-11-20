@@ -90,8 +90,6 @@ footer {
 /* ==========================================================
    1. FOUNDATION, THEME & ACCESSIBILITY
    ========================================================== */
-@media (prefers-color-scheme: dark) {
-}
 * {
   box-sizing: border-box;
 }
@@ -157,10 +155,6 @@ textarea:focus-visible {
   outline: none;
 }
 
-.role select {
-  padding: 4px;
-  border-radius: 6px;
-}
 /* ==========================================================
    2. CORE LAYOUT & LOCATION
    ========================================================== */
@@ -283,32 +277,6 @@ button.y,
   background: var(--yel);
   color: var(--navy);
   font-weight: 700;
-}
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: end;
-}
-.tl {
-  border-left: 4px solid var(--yel);
-  margin-left: 8px;
-  padding-left: 16px;
-}
-.tl div {
-  margin-bottom: 16px;
-  position: relative;
-}
-.tl div:before {
-  content: "";
-  position: absolute;
-  left: -24px;
-  top: 4px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--navy);
-  border: 3px solid var(--yel);
 }
 .scroll {
   overflow-x: auto;
@@ -1420,3 +1388,32 @@ footer {
 .team-history-card figcaption{padding:10px 4px 4px;color:var(--navy);font-weight:800}
 @media(max-width:700px){.history-tabs{width:100%}.history-tabs [role="tab"]{flex:1;padding-inline:10px}.team-history-grid{grid-template-columns:1fr}}
 @media(prefers-color-scheme:dark){.history-tabs [role="tab"]{color:var(--yel)}.history-tabs [role="tab"][aria-selected="true"]{background:var(--yel);color:var(--navy)}.team-history-card figcaption{color:var(--yel)}}
+
+
+/* Our teams directory */
+.teams-intro{max-width:76ch;margin:0 0 20px}
+.teams-directory{display:grid;gap:16px}
+.teams-group{border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
+.teams-group>summary{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:56px;padding:14px 18px;color:var(--navy);font-weight:800;font-size:1.08rem;cursor:pointer;list-style:none}
+.teams-group>summary::-webkit-details-marker{display:none}
+.teams-group>summary::after{content:'+';display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:var(--yel);font-size:1.35rem;line-height:1;flex:0 0 auto}
+.teams-group[open]>summary::after{content:'−'}
+.teams-group>summary:focus-visible{outline:3px solid var(--yel);outline-offset:-3px}
+.teams-count{margin-left:auto;color:var(--mut);font-size:.86rem;font-weight:700}
+.teams-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:0 16px 18px}
+.team-directory-card{display:grid;grid-template-columns:minmax(150px,.85fr) minmax(0,1.15fr);min-width:0;border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--bg)}
+.team-directory-card>img,.team-photo-placeholder{display:block;width:100%;height:100%;min-height:210px;aspect-ratio:4/3;object-fit:cover;background:linear-gradient(135deg,var(--navy),var(--navy-2))}
+.team-photo-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:18px;color:#fff;text-align:center}
+.team-photo-placeholder img{width:min(112px,48%);height:auto;aspect-ratio:auto;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
+.team-photo-placeholder small{font-size:.84rem}
+.team-directory-copy{display:flex;flex-direction:column;padding:16px;min-width:0}
+.team-directory-copy h3{margin:0 0 12px;color:var(--navy);font-size:1.12rem}
+.team-directory-copy dl{margin:0 0 14px}.team-directory-copy dl div+div{margin-top:10px}
+.team-directory-copy dt{color:var(--mut);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.team-directory-copy dd{margin:2px 0 0;font-weight:700;overflow-wrap:anywhere}
+.team-directory-copy .team-whatsapp{align-self:flex-start;margin-top:auto}
+.team-contact-pending{display:inline-block;align-self:flex-start;margin-top:auto;padding:8px 10px;border:1px dashed var(--mut);border-radius:9px;color:var(--mut);font-size:.84rem;font-weight:700}
+.teams-play-cricket{margin-top:20px}.teams-play-cricket h2{margin-top:0}
+@media(max-width:980px){.teams-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.teams-group>summary{padding:13px 14px}.teams-count{display:none}.teams-grid{padding:0 10px 12px}.team-directory-card{grid-template-columns:1fr}.team-directory-card>img,.team-photo-placeholder{min-height:0;aspect-ratio:16/10}.team-directory-copy{padding:14px}}
+@media(prefers-color-scheme:dark){.teams-group>summary,.team-directory-copy h3{color:var(--yel)}}

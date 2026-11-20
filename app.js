@@ -67,6 +67,40 @@ links:[
    ['Fielding','https://www.youtube.com/results?search_query=cricket+fielding+drills+coaching','Catching, ground fielding and throwing']]}
  ]
 };
+const TEAM_DIRECTORY=[
+ {group:'Senior men hardball',teams:[
+  {name:'Saturday 1st XI',league:'Kent County Village League Division 1'},
+  {name:'Saturday 2nd XI',league:'Kent County Village League Division 6'},
+  {name:'Sunday 1st XI',league:'To be confirmed',photo:'media/teams/sunday-1st-xi-2026.webp'},
+  {name:'Sunday 2nd XI',league:'To be confirmed',photo:'media/teams/sunday-2nd-xi-2026.webp'}
+ ]},
+ {group:'Senior women hardball',teams:[
+  {name:'Women’s 1st XI',league:'Kent Women’s Premiership',photo:'media/teams/ladies-1st-xi-2026.webp'},
+  {name:'Women’s 2nd XI',league:'Kent Women’s Championship'}
+ ]},
+ {group:'Junior hardball',teams:[
+  {name:'U15 Girls A',league:'To be confirmed'},
+  {name:'U15 Boys A',league:'To be confirmed'},
+  {name:'U13 Boys A',league:'To be confirmed'},
+  {name:'U13 Boys B',league:'To be confirmed'},
+  {name:'U13 Boys C',league:'To be confirmed'},
+  {name:'U13 Girls A',league:'To be confirmed',photo:'media/teams/u13-girls-kent-champions.webp'},
+  {name:'U11 Boys A',league:'To be confirmed'},
+  {name:'U11 Girls A',league:'To be confirmed'},
+  {name:'U9 Boys A',league:'To be confirmed'},
+  {name:'U9 Girls A',league:'To be confirmed'}
+ ]},
+ {group:'Senior women softball',teams:[
+  {name:'Women’s Softball 1st Team',league:'To be confirmed',photo:'media/teams/ladies-softball-team-2026.webp'}
+ ]},
+ {group:'Junior softball',teams:[
+  {name:'Mixed U10',league:'To be confirmed'},
+  {name:'Mixed U9',league:'To be confirmed'},
+  {name:'Mixed U8',league:'To be confirmed'},
+  {name:'Mixed U7',league:'To be confirmed'},
+  {name:'Mixed U6',league:'To be confirmed'}
+ ]}
+];
 const S=CLUB_DATA;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -94,15 +128,15 @@ const today=iso(new Date());
 const teamSeasons=()=>[...new Set((CFG.teamPhotos||[]).map(x=>Number(x.season)).filter(Number.isFinite))].sort((a,b)=>b-a);
 function homeTeamSelection(){const seasons=teamSeasons();const selected=seasons.includes(Number(CFG.currentSeason))?Number(CFG.currentSeason):(seasons[0]||Number(CFG.currentSeason));return {season:selected,photos:(CFG.teamPhotos||[]).filter(x=>Number(x.season)===selected)}}
 const isPH=u=>!u||/^https?:\/\/(?:www\.)?example\.com(?:\/|$)/i.test(u);
-const pages={home,aboutUs,history,members,join,fundraising,admin};
+const pages={home,aboutUs,history,members,teams,join,fundraising,admin};
 const routeCleanups=[];
 const registerRouteCleanup=fn=>routeCleanups.push(fn);
 function cleanupRoute(){while(routeCleanups.length){try{routeCleanups.pop()()}catch(error){console.error('Route cleanup failed',error)}}}
 let cur=location.hash.slice(1)||'home';
 function nav(){const p=cur;
- const labels={home:'Home',aboutUs:'About us',history:'History',members:'Members area',join:'Join us',fundraising:'Fundraising',admin:'Site updates'};
- const a=k=>`<a href="#${k}" class="${k==p?'on':''}" ${k==p?'aria-current="page"':''}>${labels[k]}</a>`;const links=['home','aboutUs','history','members','join'].map(a);
- links.push(`<a href="https://penshurstpark.play-cricket.com/Teams" target="_blank" rel="noopener noreferrer">Our teams ↗</a>`,isPH(CFG.booking)?'<span class="navsoon" aria-disabled="true" title="Bookings – coming soon">Bookings – coming soon</span>':`<a href="${safeHref(CFG.booking)}" target="_blank" rel="noopener noreferrer">Bookings ↗</a>`,a('fundraising'));
+ const labels={home:'Home',aboutUs:'About us',history:'History',members:'Members area',teams:'Our teams',join:'Join us',fundraising:'Fundraising',admin:'Site updates'};
+ const a=k=>`<a href="#${k}" class="${k==p?'on':''}" ${k==p?'aria-current="page"':''}>${labels[k]}</a>`;const links=['home','aboutUs','history','members','teams','join'].map(a);
+ links.push(isPH(CFG.booking)?'<span class="navsoon" aria-disabled="true" title="Bookings – coming soon">Bookings – coming soon</span>':`<a href="${safeHref(CFG.booking)}" target="_blank" rel="noopener noreferrer">Bookings ↗</a>`,a('fundraising'));
  $('#nav').innerHTML=links.join('')}
 let initialRoute=true;
 
@@ -116,7 +150,7 @@ function route(){
  nav();
  pages[k]();
  enhancePageMedia();
- document.title=`${({home:'Home',aboutUs:'About us',members:'Members',join:'Join us',admin:'Site updates'})[k]||k[0].toUpperCase()+k.slice(1)} | Penshurst Park Cricket Club`;
+ document.title=`${({home:'Home',aboutUs:'About us',members:'Members area',teams:'Our teams',join:'Join us',admin:'Site updates'})[k]||k[0].toUpperCase()+k.slice(1)} | Penshurst Park Cricket Club`;
  window.scrollTo(0,0);
  if(!initialRoute){
   const heading=document.querySelector('#app h1');
@@ -183,7 +217,7 @@ window.runDesktopNavigationTest=async function(){
  const originalCur=cur;
  try{
   closeMenu();nav();await wait();
-  const expected=['Home','About us','History','Members area','Join us','Our teams ↗','Bookings – coming soon','Fundraising'];
+  const expected=['Home','About us','History','Members area','Our teams','Join us','Bookings – coming soon','Fundraising'];
   const items=[...mainNav.children].map(x=>x.textContent.trim());
   check('Desktop navigation contains every expected item',expected.every(x=>items.includes(x)),items.join(' | '));
   check('Mobile menu is not open',!mainNav.classList.contains('open'));
@@ -201,7 +235,7 @@ window.runDesktopNavigationTest=async function(){
   const members=mainNav.querySelector('a[href="#members"]');
   if(members){members.click();await wait();}
   check('Members route opens',cur==='members'&&location.hash==='#members');
-  check('Members heading renders',document.querySelector('#app h1')?.textContent.trim()==='Members');
+  check('Members heading renders',document.querySelector('#app h1')?.textContent.trim()==='Members area');
 
   const external=[...mainNav.querySelectorAll('a[target="_blank"]')];
   check('External navigation links use noopener',external.every(a=>a.rel.split(/\s+/).includes('noopener')));
@@ -267,6 +301,11 @@ function members(){$('#app').innerHTML=`<h1 class="page-title">Members area</h1>
 <section class="card" aria-labelledby="coach-training-title"><h2 id="coach-training-title">Coach training</h2><p>Coaches and anyone interested in developing their coaching can use the ECB coaching resources and icoachcricket for ongoing learning, ideas and session support.</p><p><a class="btn" href="https://www.ecb.co.uk/play/coaching/coaches-association" target="_blank" rel="noopener noreferrer">ECB Coaches Association ↗</a> <a class="btn" href="https://icoachcricket.ecb.co.uk/index.php?r=site/login" target="_blank" rel="noopener noreferrer">icoachcricket ↗</a></p></section>
 <section class="card" aria-labelledby="umpire-training-title"><h2 id="umpire-training-title">Umpire training</h2><p>The ECB Association of Cricket Officials provides information and development opportunities for cricket officials, including umpires. The ECB also provides umpiring courses for people starting their umpiring journey.</p><p><a class="btn" href="https://www.ecb.co.uk/play/officials/ecb-aco" target="_blank" rel="noopener noreferrer">ECB Association of Cricket Officials ↗</a> <a class="btn" href="https://www.ecb.co.uk/play/officials/courses" target="_blank" rel="noopener noreferrer">ECB umpiring courses ↗</a></p></section>
 </div><div class="members-side-stack"><section class="card" aria-labelledby="useful-title"><h2 id="useful-title">Useful links</h2><div class="link-cols">${S.links.filter(g=>g.title!=='Training videos on YouTube').map(g=>`<div><h4>${esc(g.title)}</h4><ul class="link-list">${g.items.map(x=>`<li><a href="${safeHref(x[1],['https:','mailto:'])}" target="_blank" rel="noopener noreferrer">${esc(x[0])}<span class="external-mark" aria-hidden="true">&nbsp;↗</span></a>${x[2]?`<br><span class="mut">${esc(x[2])}</span>`:''}</li>`).join('')}</ul></div>`).join('')}</div><div class="useful-youtube"><h4>Training videos on YouTube</h4><ul class="link-list">${(S.links.find(g=>g.title==='Training videos on YouTube')?.items||[]).map(x=>`<li><a href="${safeHref(x[1],['https:','mailto:'])}" target="_blank" rel="noopener noreferrer">${esc(x[0])}<span class="external-mark" aria-hidden="true">&nbsp;↗</span></a>${x[2]?`<br><span class="mut">${esc(x[2])}</span>`:''}</li>`).join('')}</ul></div></section></div></div>`}
+function teams(){
+ const contactFallback='To be confirmed after the club elections';
+ const groups=TEAM_DIRECTORY.map((group,index)=>`<details class="teams-group" ${index<2?'open':''}><summary><span>${esc(group.group)}</span><span class="teams-count">${group.teams.length} ${group.teams.length===1?'team':'teams'}</span></summary><div class="teams-grid">${group.teams.map(team=>{const photo=team.photo?`<img src="${safeAsset(team.photo)}" loading="lazy" decoding="async" alt="${esc(team.name)} team photograph">`:`<div class="team-photo-placeholder"><img src="media/club/club-crest.webp" loading="lazy" decoding="async" alt="Penshurst Park Cricket Club crest"><small>Team photo will be added</small></div>`;const contact=team.contact||contactFallback;const whatsapp=team.whatsapp?`<a class="btn team-whatsapp" href="${safeHref(team.whatsapp)}" target="_blank" rel="noopener noreferrer">Contact on WhatsApp ↗</a>`:`<span class="team-contact-pending">WhatsApp link will be added</span>`;return `<article class="team-directory-card">${photo}<div class="team-directory-copy"><h3>${esc(team.name)}</h3><dl><div><dt>Current league</dt><dd>${esc(team.league||'To be confirmed')}</dd></div><div><dt>Contact</dt><dd>${esc(contact)}</dd></div></dl>${whatsapp}</div></article>`}).join('')}</div></details>`).join('');
+ $('#app').innerHTML=`<h1 class="page-title">Our teams</h1><p class="teams-intro">Choose a section to view each team’s current league and contact details. Information marked as pending will be updated after the club elections.</p><section class="teams-directory" aria-label="Penshurst Park Cricket Club teams">${groups}</section><section class="card teams-play-cricket" aria-labelledby="play-cricket-teams-title"><h2 id="play-cricket-teams-title">Fixtures, results and statistics</h2><p>Visit Play-Cricket for published team fixtures, results, tables and player statistics.</p><a class="btn y" href="https://penshurstpark.play-cricket.com/Teams" target="_blank" rel="noopener noreferrer">View PPCC teams on Play-Cricket ↗</a></section>`;
+}
 function join(){$('#app').innerHTML=`<h1 class="page-title">Join us</h1><div class="card"><a class="btn y" href="${safeHref(CFG.form)}" target="_blank" rel="noopener noreferrer">Register as a new member</a> <a class="btn" href="${safeHref(CFG.taster)}" target="_blank" rel="noopener noreferrer">Trial session registration</a> <a class="btn" href="${safeHref(CFG.camp)}" target="_blank" rel="noopener noreferrer">Summer camp registration</a></div><section class="card cricketer-exchange" aria-labelledby="cricketer-exchange-title"><img class="cricketer-exchange-logo" src="media/club/cricketer-exchange.png" alt="Cricketer Exchange"><div><h2 id="cricketer-exchange-title">Cricketer Exchange</h2><a class="btn y" href="https://cricketerexchange.com/club/penshurst-park-cricket-club" target="_blank" rel="noopener noreferrer">View Penshurst Park CC on Cricketer Exchange ↗</a></div></section><div class="join-posters"><section class="poster-card"><h2>Recruitment poster</h2><img id="poster2026" loading="lazy" decoding="async" src="media/posters/recruitment-poster.webp" alt="Penshurst Park recruitment poster 2026"><div class="poster-actions"><button type="button" class="y" data-save-poster="poster2026" data-filename="Penshurst-Park-Recruitment-2026.webp">Save poster</button><button type="button" data-print-poster="poster2026">Send to printer</button></div></section><section class="poster-card"><h2>Youth recruitment poster</h2><img id="poster2027" loading="lazy" decoding="async" src="media/posters/youth-recruitment-poster.webp" alt="Penshurst Park youth recruitment poster 2027"><div class="poster-actions"><button type="button" class="y" data-save-poster="poster2027" data-filename="Penshurst-Park-Youth-Recruitment-2027.webp">Save poster</button><button type="button" data-print-poster="poster2027">Send to printer</button></div></section></div>`;initPosterActions()}
 function initPosterActions(){
  document.querySelectorAll('[data-save-poster]').forEach(b=>b.addEventListener('click',()=>{const img=document.getElementById(b.dataset.savePoster);if(!img)return;const a=document.createElement('a');a.href=img.src;a.download=b.dataset.filename||'poster.webp';document.body.appendChild(a);a.click();a.remove()}));

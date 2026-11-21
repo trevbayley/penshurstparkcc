@@ -1430,3 +1430,9 @@ footer {
 .training-season>summary:focus-visible{outline:3px solid var(--yel);outline-offset:-3px}
 .training-season-content{padding:0 clamp(16px,2vw,24px) clamp(16px,2vw,24px)}
 @media(prefers-color-scheme:dark){.training-season>summary{color:var(--yel)}}
+
+/* Home page: small usability improvements */
+.home-team-action{margin:12px 0 0;text-align:center}
+.home-upcoming h2{display:flex;align-items:center;gap:8px}
+.home-upcoming-mark{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--yel);box-shadow:0 0 0 4px rgba(255,210,41,.18);flex:0 0 auto}
+@media(prefers-reduced-motion:reduce){.home-upcoming-mark{box-shadow:none}}

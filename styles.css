@@ -1,4 +1,3 @@
-/* Restored structural component rules from the original single-file site */
 body {
   margin: 0;
   background: var(--bg);
@@ -910,7 +909,6 @@ footer {
 /* ==========================================================
    11. WELCOME / HERO BANNER
    ========================================================== */
-/* Consolidated Welcome banner */
 .hero {
   position: relative;
   isolation: isolate;
@@ -1300,7 +1298,7 @@ footer {
 @media(prefers-color-scheme:dark){.history-current-marker{background:rgba(255,210,41,.05)}.history-copy strong,.history-year.is-active .history-copy strong{color:var(--yel)}}
 @media(prefers-reduced-motion:reduce){.history-image-frame img,.history-year,.history-current-marker{transition:none}.history-timeline{scroll-behavior:auto}}
 
-/* Final mobile navigation safeguard: keep toggle visible in portrait and landscape */
+/* Mobile navigation */
 @media (max-width: 760px) {
   header {
     display: grid;

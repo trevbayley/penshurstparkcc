@@ -11,7 +11,6 @@ const CFG={w3w:'https://what3words.com/crisp.dates.daily',
   {image:'media/teams/sunday-1st-xi-2026.webp',caption:'Sunday 1st XI 2026',season:2026},
   {image:'media/teams/sunday-2nd-xi-2026.webp',caption:'Sunday 2nd XI 2026',season:2026},
   {image:'media/teams/u13-girls-kent-champions.webp',caption:'U13 Girls Kent Champions',season:2026},
-  {image:'media/teams/2024-presidents-day.webp',caption:"2024 President's Match - celebrating 300 years of cricket at Penshurst Park",season:2024},
   {image:'media/teams/2024-ladies-softball-team-lords.webp',caption:"2024 Ladies Softball team go to Lord's",season:2024},
   {image:'media/teams/2023-touring-side-boys-go-dutch.webp',caption:'2023 Touring side - Boys go Dutch',season:2023},
   {image:'media/teams/2023-ladies-softball-three-time-winners.webp',caption:'Ladies Softball three-time winners - 2021, 2022 and 2023',season:2023},
@@ -51,7 +50,8 @@ history:[
   ['2019','Singapore CC touring side v Penshurst Park. Ladies and junior cricket (re)introduced; junior section grows from 32 to c. 90.','media/history/2019.webp'],
   ['2022','Jake wins another award - Kent Cricket Innovators Award 2022.','media/history/2022-kent-cricket-innovators-award.webp'],
   ['2023',"Third consecutive Kent Women's Softball League title; hosts the Finals Day."],
-  ['2024',"The club marked 300 years of cricket at Penshurst Park in July 2024 with a celebratory week and a 25-over match between a President's XI (featuring Penshurst Place heir Dr Hon Phillip Sidney) and a Penshurst Park XI.",'media/history/2024-net-1-opening.webp'],
+  ['2024',"The club marked 300 years of cricket at Penshurst Park in July 2024 with a celebratory week and a 25-over match between a President's XI (featuring Penshurst Place heir Dr Hon Phillip Sidney) and a Penshurst Park XI.",'media/history/2024-presidents-day.webp'],
+    ['2024','Opening of Net 1 by Russell Hammond, son of George Hammond, a long standing Chairman of the club.','media/history/2024-net-1-opening.webp'],
   ['2025',"Great Estates from Above: a film crew visits the estate on President's Match Day.",'media/history/2025-great-estates-from-above.webp','https://www.channel4.com/programmes/great-estates-from-above/on-demand/77687-003','Watch on Channel 4'],
   ['2026',"Ladies 1st XI win Kent Women's Championship League title.",'media/history/2026-ladies-1st-xi.webp']
  ],
@@ -170,92 +170,6 @@ const mobileMenuQuery=window.matchMedia('(max-width:760px)');
 function resetMenuForViewport(){if(!mobileMenuQuery.matches)closeMenu()}
 if(mobileMenuQuery.addEventListener)mobileMenuQuery.addEventListener('change',resetMenuForViewport);else mobileMenuQuery.addListener(resetMenuForViewport);
 
-// Mobile menu regression test. Run in the browser console with: runMobileMenuTest()
-window.runMobileMenuTest=async function(){
- const results=[];
- const check=(name,pass,detail='')=>results.push({name,pass:Boolean(pass),detail});
- const wait=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
- const originalOpen=mainNav.classList.contains('open');
- const originalFocus=document.activeElement;
- try{
-  closeMenu();
-  check('Starts closed',!mainNav.classList.contains('open'));
-  check('Collapsed ARIA state',menuToggle.getAttribute('aria-expanded')==='false');
-  check('Collapsed label',menuToggle.textContent.trim()==='Menu');
-
-  menuToggle.click();await wait();
-  check('Opens from toggle',mainNav.classList.contains('open'));
-  check('Expanded ARIA state',menuToggle.getAttribute('aria-expanded')==='true');
-  check('Open label',menuToggle.textContent.trim()==='Close menu');
-  const firstLink=mainNav.querySelector('a');
-  check('Focus moves to first link',!firstLink||document.activeElement===firstLink);
-
-  document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));await wait();
-  check('Escape closes menu',!mainNav.classList.contains('open'));
-  check('Escape returns focus',document.activeElement===menuToggle);
-
-  menuToggle.click();await wait();
-  closeMenu();
-  check('Programmatic close resets ARIA',menuToggle.getAttribute('aria-expanded')==='false');
-  check('Programmatic close resets label',menuToggle.textContent.trim()==='Menu');
- }finally{
-  if(originalOpen){mainNav.classList.add('open');menuToggle.setAttribute('aria-expanded','true');menuToggle.textContent='Close menu'}else closeMenu();
-  if(originalFocus&&typeof originalFocus.focus==='function')originalFocus.focus({preventScroll:true});
- }
- const passed=results.filter(x=>x.pass).length;
- const summary={passed,total:results.length,success:passed===results.length,results};
- console.group(`Mobile menu test: ${passed}/${results.length} passed`);
- results.forEach(x=>console[x.pass?'log':'error'](`${x.pass?'PASS':'FAIL'}: ${x.name}`,x.detail));
- console.groupEnd();
- return summary;
-};
-
-
-// Desktop navigation regression test. Run in the browser console with: runDesktopNavigationTest()
-window.runDesktopNavigationTest=async function(){
- const results=[];
- const check=(name,pass,detail='')=>results.push({name,pass:Boolean(pass),detail});
- const wait=()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
- const originalHash=location.hash;
- const originalCur=cur;
- try{
-  closeMenu();nav();await wait();
-  const expected=['Home','About us','History','Members area','Our teams','Join us','Bookings – coming soon','Fundraising'];
-  const items=[...mainNav.children].map(x=>x.textContent.trim());
-  check('Desktop navigation contains every expected item',expected.every(x=>items.includes(x)),items.join(' | '));
-  check('Mobile menu is not open',!mainNav.classList.contains('open'));
-
-  const internal=[...mainNav.querySelectorAll('a[href^="#"]')];
-  check('Internal navigation links are present',internal.length>=6,String(internal.length));
-  check('Exactly one current-page link',mainNav.querySelectorAll('a[aria-current="page"]').length===1);
-
-  const about=mainNav.querySelector('a[href="#aboutUs"]');
-  if(about){about.click();await wait();}
-  check('About us route opens',cur==='aboutUs'&&location.hash==='#aboutUs');
-  check('About us becomes current page',mainNav.querySelector('a[href="#aboutUs"]')?.getAttribute('aria-current')==='page');
-  check('Page title updates',document.title.startsWith('About us |'));
-
-  const members=mainNav.querySelector('a[href="#members"]');
-  if(members){members.click();await wait();}
-  check('Members route opens',cur==='members'&&location.hash==='#members');
-  check('Members heading renders',document.querySelector('#app h1')?.textContent.trim()==='Members area');
-
-  const external=[...mainNav.querySelectorAll('a[target="_blank"]')];
-  check('External navigation links use noopener',external.every(a=>a.rel.split(/\s+/).includes('noopener')));
-  check('Desktop navigation stays closed after routing',!mainNav.classList.contains('open'));
- }finally{
-  cur=originalCur;
-  try{history.replaceState(null,'',originalHash||'#home')}catch(e){}
-  route();closeMenu();
- }
- const passed=results.filter(x=>x.pass).length;
- const summary={passed,total:results.length,success:passed===results.length,results};
- console.group(`Desktop navigation test: ${passed}/${results.length} passed`);
- results.forEach(x=>console[x.pass?'log':'error'](`${x.pass?'PASS':'FAIL'}: ${x.name}`,x.detail));
- console.groupEnd();
- return summary;
-};
-
 addEventListener('hashchange',()=>{cur=location.hash.slice(1)||'home';closeMenu();route()});
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();closeMenu();cur=a.getAttribute('href').slice(1)||'home';try{history.replaceState(null,'','#'+cur)}catch(x){}route()});
 function evLine(e){const photo=e.photo?`<div class="event-media"><img src="${safeAsset(e.photo)}" loading="lazy" decoding="async" alt="${esc(e.title)} event poster"></div>`:'';const linkedPhoto=e.url&&photo?`<a class="event-media-link" href="${safeHref(e.url,['https:','mailto:'])}" target="_blank" rel="noopener noreferrer" title="Open ${esc(e.title)} link">${photo}</a>`:photo;return `<div class="card">${linkedPhoto}<b>${esc(e.title)}</b><br><span class="mut">${fmt(e.date)} ${e.time||''}</span>${e.detail?`<br>${esc(e.detail)}`:''}${e.url?`<br><a class="btn" href="${safeHref(e.url,['https:','mailto:'])}" target="_blank" rel="noopener noreferrer" title="${esc(e.action||'Open event link')}">${esc(e.action||'Buy raffle tickets')} ↗</a>`:''}</div>`}
@@ -263,7 +177,7 @@ function home(){const homeTeams=homeTeamSelection();const recent=S.ev.filter(e=>
  const upcoming=S.ev.filter(e=>e.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,7);
  $('#app').innerHTML=`<section class="hero"><div class="txt"><div class="hero-heading"><h1 class="hero-title">Welcome to Penshurst Park Cricket Club</h1></div><div class="hero-marks"><img src="media/club/club-crest.webp" alt="" width="70" class="hero-logo"></div><img class="hero-ball-grass" src="media/club/red-cricket-ball-grass.webp" alt="Red cricket ball resting on short-cut grass"><img class="hero-ball-grass hero-ball-grass-pink" src="media/club/pink-cricket-ball-grass.webp" alt="Pink cricket ball resting on short-cut grass"></div></section>
  <div class="grid"><aside><h2>Recent events</h2><div id="recentEventCycle"></div></aside>
- <section><h2>About the club</h2><p>One of England's oldest cricket grounds, Penshurst Park hosted its first recorded match in 1724, and the club has played here since 1723 in the grounds of Penshurst Place.</p><p>We are a friendly village club with men's, ladies and junior sections, and have been in the top division of the Kent County Village League since 1996, winning titles in 2012–14. Our ladies are Kent Women's Softball League champions (2023), <a href="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/" target="_blank" rel="noopener noreferrer" title="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/">KWCL Championship winners (2026)</a>, and the junior section has grown to around 180 members.</p><p><a class="btn" href="#aboutUs">More about us</a></p>
+ <section><h2>About the club</h2><p>One of England’s oldest cricket venues, Penshurst Park has hosted cricket since the early 18th century, with its first recorded match played here in 1724. More than 300 years later, cricket continues in the historic surroundings of Penshurst Place.</p><p>Today, Penshurst Park is a thriving village club with men’s, women’s and junior cricket for a wide range of ages and abilities. Our women’s section has grown from softball cricket to become <a href="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/" target="_blank" rel="noopener noreferrer">2026 Kent Women’s Cricket League Championship winners</a>, while our expanding junior section is helping introduce a new generation to the game.</p><p><a class="btn" href="#aboutUs">More about us</a></p>
  <section class="team-gallery" aria-labelledby="team-gallery-title"><h3 id="team-gallery-title">Our teams</h3><p class="team-season-label">${esc(homeTeams.season)} season</p><div id="teamGallery"></div><p class="home-team-action"><a class="btn y" href="#teams">View all our teams</a></p></section>
  
 </section>
@@ -289,14 +203,14 @@ function history(){
  tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(tab,false));tab.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[next])})});
  function renderTeamHistory(){const displayedSeason=homeTeamSelection().season;const previous=(CFG.teamPhotos||[]).filter(x=>Number(x.season)<displayedSeason).sort((a,b)=>Number(b.season)-Number(a.season));if(!previous.length){teamPanel.innerHTML='<p class="mut">Previous-season team photographs will appear here.</p>';return}const groups=[...new Set(previous.map(x=>Number(x.season)))];teamPanel.innerHTML=groups.map(year=>`<section class="team-history-season" aria-labelledby="team-season-${year}"><h2 id="team-season-${year}">${year} season</h2><div class="team-history-grid">${previous.filter(x=>Number(x.season)===year).map(x=>`<figure class="team-history-card"><img src="${safeAsset(x.image)}" loading="lazy" decoding="async" alt="${esc(x.caption)}"><figcaption>${esc(x.caption)}</figcaption></figure>`).join('')}</div></section>`).join('')}
  function renderClubHistory(){if(clubPanel.dataset.ready)return;clubPanel.dataset.ready='true';const items=S.history.map((x,i)=>({year:x[0],description:x[1],image:x[2]||'',url:x[3]||'',linkLabel:x[4]||'',index:i}));clubPanel.innerHTML=`<section class="history-experience"><div class="history-visual" aria-live="polite"><div class="history-image-frame"><img id="historyImage" alt="" hidden></div></div><div class="history-timeline-shell"><div class="history-current-marker" aria-hidden="true"></div><div class="history-timeline" role="list" tabindex="0" aria-label="Club history. Scroll up or down to select a year.">${items.map((x,i)=>`<div class="history-year${i===0?' is-active':''}" data-history-index="${i}" role="listitem" tabindex="0" aria-current="${i===0?'true':'false'}"><span class="history-copy"><strong>${esc(x.year)}</strong><span class="history-description">${esc(x.description)}${x.url?` <a class="history-link" href="${safeHref(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.linkLabel||'More information')} ↗</a>`:''}</span></span></div>`).join('')}</div></div></section>`;
- const timeline=clubPanel.querySelector('.history-timeline'),buttons=[...clubPanel.querySelectorAll('.history-year')],image=clubPanel.querySelector('#historyImage'),marker=clubPanel.querySelector('.history-current-marker');let current=0,timer=null,fadeTimer=null,scrollTimer=null,isProgrammatic=false;const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const timeline=clubPanel.querySelector('.history-timeline'),buttons=[...clubPanel.querySelectorAll('.history-year')],image=clubPanel.querySelector('#historyImage'),marker=clubPanel.querySelector('.history-current-marker');let current=0,timer=null,scrollTimer=null,isProgrammatic=false;const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  function sizeMarker(index){const button=buttons[index];if(button&&marker)marker.style.height=`${button.offsetHeight}px`}
  function render(index){current=Math.max(0,Math.min(items.length-1,index));const item=items[current];sizeMarker(current);buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-current',String(active))});if(item.image){const src=safeAsset(item.image);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else image.hidden=true}else{image.removeAttribute('src');image.alt='';image.hidden=true}}
  function scrollToYear(index,behaviour=reduceMotion?'auto':'smooth'){index=Math.max(0,Math.min(items.length-1,index));const button=buttons[index];if(!button)return;isProgrammatic=true;render(index);const markerTop=timeline.clientHeight*.5-button.offsetHeight/2;timeline.scrollTo({top:button.offsetTop-markerTop,behavior:behaviour});clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{isProgrammatic=false},700)}
  function nearestYear(){const target=timeline.getBoundingClientRect().top+timeline.clientHeight*.5;let nearest=0,distance=Infinity;buttons.forEach((button,i)=>{const d=Math.abs((button.getBoundingClientRect().top+button.offsetHeight/2)-target);if(d<distance){distance=d;nearest=i}});return nearest}
  function scheduleNext(){clearTimeout(timer);if(items.length>1&&!reduceMotion)timer=setTimeout(()=>{scrollToYear(current<items.length-1?current+1:0);scheduleNext()},7000)}
  function clampTimeline(){const first=buttons[0],last=buttons[buttons.length-1];if(!first||!last)return;const centre=timeline.clientHeight/2;const min=Math.max(0,first.offsetTop-centre+first.offsetHeight/2);const max=Math.max(min,last.offsetTop-centre+last.offsetHeight/2);if(timeline.scrollTop<min)timeline.scrollTop=min;else if(timeline.scrollTop>max)timeline.scrollTop=max}
- timeline.addEventListener('scroll',()=>{if(isProgrammatic)return;clampTimeline();clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{const next=nearestYear();if(next!==current)render(next);scheduleNext()},40)},{passive:true});buttons.forEach((button,i)=>{button.addEventListener('click',e=>{if(!e.target.closest('a')){scrollToYear(i);scheduleNext()}});button.addEventListener('keydown',e=>{if(!e.target.closest('a')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();scrollToYear(i);scheduleNext()}})});timeline.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();scrollToYear(current+(e.key==='ArrowDown'?1:-1));scheduleNext()}});const onResize=()=>{clampTimeline();sizeMarker(current)};window.addEventListener('resize',onResize);registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(fadeTimer);clearTimeout(scrollTimer);window.removeEventListener('resize',onResize)});requestAnimationFrame(()=>{const first=buttons[0];if(first){sizeMarker(0);timeline.scrollTop=first.offsetTop-(timeline.clientHeight*.5-first.offsetHeight/2)}clampTimeline();render(0);scheduleNext()})}
+ timeline.addEventListener('scroll',()=>{if(isProgrammatic)return;clampTimeline();clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{const next=nearestYear();if(next!==current)render(next);scheduleNext()},40)},{passive:true});buttons.forEach((button,i)=>{button.addEventListener('click',e=>{if(!e.target.closest('a')){scrollToYear(i);scheduleNext()}});button.addEventListener('keydown',e=>{if(!e.target.closest('a')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();scrollToYear(i);scheduleNext()}})});timeline.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();scrollToYear(current+(e.key==='ArrowDown'?1:-1));scheduleNext()}});const onResize=()=>{clampTimeline();sizeMarker(current)};window.addEventListener('resize',onResize);registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(scrollTimer);window.removeEventListener('resize',onResize)});requestAnimationFrame(()=>{const first=buttons[0];if(first){sizeMarker(0);timeline.scrollTop=first.offsetTop-(timeline.clientHeight*.5-first.offsetHeight/2)}clampTimeline();render(0);scheduleNext()})}
  renderClubHistory()
 }
 function members(){$('#app').innerHTML=`<h1 class="page-title">Members area</h1><div class="members-layout"><div class="members-main"><details class="card training-season"><summary>Winter training schedules</summary><div class="training-season-content"><section aria-labelledby="junior-training-title"><h3 id="junior-training-title">Junior training</h3><div class="scroll"><table class="training-table"><caption class="sr-only">Junior winter training schedule</caption><thead><tr><th scope="col">Age group</th><th scope="col">Venue</th><th scope="col">Time</th><th scope="col">Dates</th></tr></thead><tbody><tr><th scope="row">U6/7</th><td rowspan="2">Holmewood House</td><td>13:00–14:00</td><td rowspan="2">24th, 31st Jan; 7th, 14th, 21st, 28th Feb; 14th, 21st Mar</td></tr><tr><th scope="row">U8/9/10</th><td>14:00–15:00</td></tr><tr><th scope="row">U11</th><td rowspan="2">The Judd School</td><td>14:00–15:00</td><td rowspan="2">1st, 15th, 29th Nov; 13th Dec; 10th, 17th, 24th, 31st Jan; 7th, 14th, 21st, 28th Feb; 7th, 14th, 21st Mar</td></tr><tr><th scope="row">U13s and U15 girls</th><td>15:00–16:00</td></tr></tbody></table></div></section><section class="senior-training" aria-labelledby="senior-training-title"><h3 id="senior-training-title">Senior training</h3><div class="scroll"><table class="training-table"><caption class="sr-only">Senior winter training schedule</caption><thead><tr><th scope="col">Group</th><th scope="col">Venue</th><th scope="col">Time</th><th scope="col">Dates</th></tr></thead><tbody><tr><th scope="row">Ladies hardball</th><td>The Judd School</td><td>17:30–18:30</td><td>9th, 23rd Jan; 6th, 20th Feb; 6th, 20th Mar</td></tr><tr><th scope="row">Ladies softball</th><td>Details will follow</td><td>Details will follow</td><td>Details will follow</td></tr><tr><th scope="row">U15 boys, invited players and men</th><td>Holmewood House</td><td>19:00–20:30</td><td>15th, 22nd, 29th Jan; 5th, 12th, 19th, 26th Feb; 5th, 12th, 19th, 26th Mar; 2nd, 9th, 16th Apr</td></tr></tbody></table></div></section></div></details>

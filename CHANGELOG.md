@@ -1,3 +1,27 @@
+### 21 November 2026 - Code cleanup
+
+#### JavaScript
+- Removed two browser-console regression-test helpers from the production JavaScript. They duplicated manual checks and were not used by the live site.
+- Removed an unused History fade-timer variable and its redundant cleanup call.
+
+#### CSS
+- Removed obsolete development comments while retaining the existing cascade and responsive safeguards.
+- Reviewed repeated selectors and retained those whose later declarations intentionally extend or override earlier component rules.
+
+#### Validation
+- Rechecked JavaScript syntax, local media references, image integrity and archive integrity after cleanup.
+
+### 21 November 2026 - Foundation baseline update
+
+#### Home page
+- Replaced the About the club introduction with the agreed heritage-and-modern-club wording.
+- Retained the Kent Cricket link on the 2026 Kent Women's Cricket League Championship reference.
+
+#### History
+- President's Match / 300 years celebration is the first of two 2024 Club History entries and uses `media/history/2024-presidents-day.webp`.
+- Net 1 opening is the second 2024 Club History entry with the revised Russell Hammond / George Hammond description.
+- The President's Day image is not part of Team History.
+
 # PPCC Website Daily Change Log
 
 This log records completed changes to the Penshurst Park Cricket Club website. Add a new dated section at the top after each development session.

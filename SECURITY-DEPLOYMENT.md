@@ -1,30 +1,37 @@
 # Security deployment notes
 
-The site now includes a browser-enforced CSP meta policy, URL scheme validation, and deployment header templates.
+The site includes a browser-enforced Content Security Policy in `index.html`, URL-scheme and asset-path validation in `app.js`, and an Azure Static Web Apps response-header template in `staticwebapp.config.json`.
 
-## Deployment files
-
-- `_headers`: use on platforms that support a Netlify-style headers file.
-- `staticwebapp.config.json`: use when deploying to Azure Static Web Apps.
-
-- The CSP uses `form-action 'none'` because the current site has no forms; this prevents form submissions if form markup were injected.
+The current CSP uses `form-action 'none'` because the website has no forms that submit directly from the site.
 
 ## GitHub Pages
 
 - Enforce HTTPS in the repository Pages settings.
-- GitHub Pages does not apply `_headers` or `staticwebapp.config.json`; keep them only as templates for hosts that support custom response headers.
-- The CSP meta element in `index.html` still provides browser-side restrictions, but response-header-only protections require a host that supports custom HTTP response headers.
+- GitHub Pages does not apply `staticwebapp.config.json` or arbitrary custom response-header configuration from repository files.
+- The CSP `<meta>` element in `index.html` still provides browser-side restrictions.
+- Response-header-only protections require hosting or a delivery layer that supports custom HTTP response headers.
+
+## Azure Static Web Apps
+
+`staticwebapp.config.json` defines the intended response headers, including CSP, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, framing restrictions and cross-origin policies. If the site is moved to Azure Static Web Apps, confirm the deployed responses actually contain the expected headers.
 
 ## HTTPS / HSTS
 
-Enable HSTS only after the production domain and every required subdomain are confirmed to work exclusively over HTTPS. A suggested production header is:
+Enable HSTS only after the production domain and every required subdomain are confirmed to work exclusively over HTTPS. A suggested production value is:
 
 `Strict-Transport-Security: max-age=31536000; includeSubDomains`
 
+## Repository safety
+
+- Never commit passwords, tokens, API keys, private keys or environment files containing credentials.
+- Keep local archives, browser-test reports, source maps and temporary backup files out of the public repository.
+- Treat club photographs published by the site as publicly retrievable even where the interface discourages casual saving.
+- Retain original/licensed archival material outside the public web repository when it is not required by the live site.
+
 ## Pre-publish checks
 
-- Replace placeholder `example.com` application URLs before publication.
-- Review every external URL in `CFG`, `CLUB_DATA`, and the sponsors list.
-- Do not publish old ZIP files, backup HTML files, test reports, or source maps.
-- Disable directory listing on the host.
-- Confirm the live server returns the headers defined in the applicable deployment file.
+- Review external URLs in `CFG`, `CLUB_DATA`, `TEAM_DIRECTORY` and sponsor entries.
+- Confirm all referenced local assets exist and use the intended media subfolder.
+- Do not publish old ZIP files, backup HTML files, test reports, source maps or credentials.
+- Confirm HTTPS is enabled for the production domain.
+- When using a host that supports response headers, confirm the live server returns the expected security headers.

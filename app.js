@@ -210,11 +210,6 @@ function history(){
   teamPanel.innerHTML=`<section class="history-experience history-rebuilt team-history-rebuilt">
    <div class="history-visual" aria-live="polite">
     <div class="history-image-frame"><img id="teamHistoryImage" alt=""></div>
-    <div class="history-selected-copy">
-     <p class="history-selected-position" id="teamHistoryPosition"></p>
-     <h2 id="teamHistorySeason"></h2>
-     <p id="teamHistoryCaption"></p>
-    </div>
    </div>
    <div class="history-timeline-shell">
     <div class="history-controls" aria-label="Team History controls">
@@ -230,22 +225,17 @@ function history(){
   const list=teamPanel.querySelector('.team-history-list');
   const buttons=[...teamPanel.querySelectorAll('.team-history-entry')];
   const image=teamPanel.querySelector('#teamHistoryImage');
-  const season=teamPanel.querySelector('#teamHistorySeason');
-  const caption=teamPanel.querySelector('#teamHistoryCaption');
   const previous=teamPanel.querySelector('.team-history-prev');
   const next=teamPanel.querySelector('.team-history-next');
   const position=teamPanel.querySelector('.history-position');
-  const selectedPosition=teamPanel.querySelector('#teamHistoryPosition');
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current=0;
   function select(index,{focus=false,scroll=true}={}){
    current=Math.max(0,Math.min(items.length-1,index));
    const item=items[current];
    buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
-   position.value=`${current+1} of ${items.length}`;position.textContent=position.value;
-   selectedPosition.textContent=`Photo ${current+1} of ${items.length}`;
    previous.disabled=current===0;next.disabled=current===items.length-1;
-   season.textContent=`${item.season} season`;caption.textContent=item.caption;
+   position.value=`${current+1} of ${items.length}`;position.textContent=position.value;
    const src=safeAsset(item.image);if(src){image.src=src;image.alt=item.caption;image.hidden=false}else{image.removeAttribute('src');image.alt='';image.hidden=true}
    const active=buttons[current];if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});if(focus)active.focus({preventScroll:true});
   }
@@ -262,12 +252,6 @@ function history(){
   clubPanel.innerHTML=`<section class="history-experience history-rebuilt">
    <div class="history-visual" aria-live="polite">
     <div class="history-image-frame"><img id="historyImage" alt="" hidden></div>
-    <div class="history-selected-copy">
-     <p class="history-selected-position" id="historyPosition"></p>
-     <h2 id="historySelectedYear"></h2>
-     <p id="historySelectedDescription"></p>
-     <p id="historySelectedLink"></p>
-    </div>
    </div>
    <div class="history-timeline-shell">
     <div class="history-controls" aria-label="History timeline controls">
@@ -283,25 +267,18 @@ function history(){
   const timeline=clubPanel.querySelector('.history-timeline');
   const buttons=[...clubPanel.querySelectorAll('.history-year')];
   const image=clubPanel.querySelector('#historyImage');
-  const year=clubPanel.querySelector('#historySelectedYear');
-  const description=clubPanel.querySelector('#historySelectedDescription');
-  const link=clubPanel.querySelector('#historySelectedLink');
   const previous=clubPanel.querySelector('.history-prev');
   const next=clubPanel.querySelector('.history-next');
   const position=clubPanel.querySelector('.history-position');
-  const selectedPosition=clubPanel.querySelector('#historyPosition');
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current=0,timer=null;
   function select(index,{focus=false,scroll=true}={}){
    current=Math.max(0,Math.min(items.length-1,index));
    const item=items[current];
    buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
-   position.value=`${current+1} of ${items.length}`;position.textContent=position.value;
-   selectedPosition.textContent=`Entry ${current+1} of ${items.length}`;
    previous.disabled=current===0;next.disabled=current===items.length-1;
-   year.textContent=item.year;description.textContent=item.description;
-   link.innerHTML=item.url?`<a class="history-link" href="${safeHref(item.url)}" target="_blank" rel="noopener noreferrer">${esc(item.linkLabel||'More information')} &#8599;</a>`:'';
-   if(item.image){const src=safeAsset(item.image);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else image.hidden=true}else{image.removeAttribute('src');image.alt='';image.hidden=true}
+   position.value=`${current+1} of ${items.length}`;position.textContent=position.value;
+   if(item.image){const src=safeAsset(item.image);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else{image.removeAttribute('src');image.alt='';image.hidden=true}}else{image.removeAttribute('src');image.alt='';image.hidden=true}
    const active=buttons[current];
    if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
    if(focus)active.focus({preventScroll:true});
@@ -357,7 +334,7 @@ function initPosterActions(){
   if(printImage.complete)printAndRemove();else printImage.addEventListener('load',printAndRemove,{once:true});
  }))
 }
-function fundraising(){$('#app').innerHTML=`<h1 class="page-title">Fundraising</h1><section class="card"><p>The fundraising committee welcomes members, suggestions and contributions. We will shortly be raising funds towards some major projects, including the extension of our fabulous clubhouse.</p><section aria-labelledby="easyfundraising-title"><h2 id="easyfundraising-title">Easyfundraising</h2><p>Our easyfundraising page is available all year round and can help make some funds for the club. It can be used to turn everyday online shopping into FREE donations when you use it to shop, with over 8,000 retailers such as eBay, John Lewis &amp; Partners, Argos, ASOS and Tesco.</p><p>Register here and we'll get an extra £5 when you reach your first £5 in donations:</p><a class="btn y" href="https://www.easyfundraising.org.uk/support-a-good-cause/step-1/?invite=ZI7EXX&amp;referral-campaign=c2s&amp;utm_campaign=web-referral&amp;utm_medium=referral&amp;utm_source=whatsapp&amp;char=186585" target="_blank" rel="noopener noreferrer">Register with Easyfundraising ↗</a></section></section>`}
+function fundraising(){$('#app').innerHTML=`<h1 class="page-title">Fundraising</h1><section class="card"><p>The fundraising committee welcomes members, suggestions and contributions. We will shortly be raising funds towards some major projects, including the extension of our fabulous clubhouse.</p></section><section class="card fundraising-sponsor" aria-labelledby="sponsor-title"><h2 id="sponsor-title">Join as a Sponsor</h2><p>Interested in supporting Penshurst Park Cricket Club? Get in touch to discuss sponsorship opportunities.</p><p><a class="btn y" href="mailto:jake_cheesman@yahoo.com?subject=Becoming%20a%20sponsor%20of%20PPCC">Join as a Sponsor</a></p></section><section class="card"><section aria-labelledby="easyfundraising-title"><h2 id="easyfundraising-title">Easyfundraising</h2><p>Our easyfundraising page is available all year round and can help make some funds for the club. It can be used to turn everyday online shopping into FREE donations when you use it to shop, with over 8,000 retailers such as eBay, John Lewis &amp; Partners, Argos, ASOS and Tesco.</p><p>Register here and we'll get an extra £5 when you reach your first £5 in donations:</p><a class="btn y" href="https://www.easyfundraising.org.uk/support-a-good-cause/step-1/?invite=ZI7EXX&amp;referral-campaign=c2s&amp;utm_campaign=web-referral&amp;utm_medium=referral&amp;utm_source=whatsapp&amp;char=186585" target="_blank" rel="noopener noreferrer">Register with Easyfundraising ↗</a></section></section>`}
 function admin(){
  $('#app').innerHTML=`<h1 class="page-title">Admin maintenance</h1><div class="note"><b>No external or browser data storage is used.</b> Permanent club content is stored directly in <code>app.js</code>.</div><div class="card"><h3>How to update the site</h3><ol><li>Open <code>app.js</code> in a text editor.</li><li>Find <code>CLUB_DATA</code> to update recent/upcoming events, the history timeline or the Useful links.</li><li>Find <code>CFG</code> to update club links, contact details, registration forms and sponsors.</li><li>Save the file and republish the site to replace the previous version.</li></ol><p class="mut">Fixtures, results and selections are handled in the external apps. The Booking and Availability/Selection links remain placeholders until those services are ready. Play-Cricket remains an external link only and is not used as a data source.</p></div>`;
 }

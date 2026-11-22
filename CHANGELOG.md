@@ -1,3 +1,16 @@
+#### 22 November 2026 - History missing-image treatment
+- History entries without a usable image now leave the image frame as a plain dark PPCC blue panel instead of showing a missing-image marker.
+
+#### 22 November 2026 - Compact History tabs and equal-height desktop panels
+- Restyled Club history and Team history as a compact tab strip to reduce vertical space above the History content.
+- Matched the History photograph and timeline panel heights on desktop, with the timeline list scrolling inside its available space.
+- Preserved the stacked mobile History layout and 44px tab targets on smaller screens.
+
+### 21 November 2026 - Fundraising sponsorship contact
+
+- Added a dedicated Join as a Sponsor panel to the Fundraising page.
+- The button opens an email to Jake Cheesman with the subject `Becoming a sponsor of PPCC`.
+
 ### 21 November 2026 - Team History rebuild
 
 - Rebuilt Team History using the same direct-selection pattern as Club History.

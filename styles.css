@@ -1374,9 +1374,9 @@ footer {
 @media(max-width:900px){.members-side-stack{position:static;width:100%}}
 
 /* History section tabs and team archive */
-.history-tabs{display:flex;gap:8px;margin:-4px 0 20px;padding:5px;border:1px solid color-mix(in srgb,var(--navy) 25%,transparent);border-radius:14px;background:color-mix(in srgb,var(--navy) 7%,transparent);width:max-content;max-width:100%}
-.history-tabs [role="tab"]{min-height:44px;padding:9px 18px;border:0;border-radius:10px;background:transparent;color:var(--navy);font-weight:800;box-shadow:none}
-.history-tabs [role="tab"][aria-selected="true"]{background:var(--navy);color:var(--yel)}
+.history-tabs{display:flex;align-items:flex-end;gap:2px;margin:-8px 0 12px;padding:0;border:0;border-bottom:2px solid color-mix(in srgb,var(--navy) 22%,transparent);background:transparent;width:100%;max-width:100%}
+.history-tabs [role="tab"]{min-height:38px;padding:6px 14px;border:0;border-bottom:3px solid transparent;border-radius:8px 8px 0 0;background:transparent;color:var(--navy);font-weight:800;box-shadow:none}
+.history-tabs [role="tab"][aria-selected="true"]{border-bottom-color:var(--yel);background:var(--navy);color:var(--yel)}
 .history-tabs [role="tab"]:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
 .team-season-label{margin:-6px 0 10px;color:var(--mut);font-weight:700}
 .team-history-season{margin:0 0 28px}.team-history-season h2{margin-bottom:12px}
@@ -1384,7 +1384,7 @@ footer {
 .team-history-card{margin:0;padding:10px;border:1px solid color-mix(in srgb,var(--navy) 18%,transparent);border-radius:16px;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
 .team-history-card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px}
 .team-history-card figcaption{padding:10px 4px 4px;color:var(--navy);font-weight:800}
-@media(max-width:700px){.history-tabs{width:100%}.history-tabs [role="tab"]{flex:1;padding-inline:10px}.team-history-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.history-tabs{width:100%;margin-bottom:10px}.history-tabs [role="tab"]{flex:1;min-height:44px;padding:7px 10px}.team-history-grid{grid-template-columns:1fr}}
 @media(prefers-color-scheme:dark){.history-tabs [role="tab"]{color:var(--yel)}.history-tabs [role="tab"][aria-selected="true"]{background:var(--yel);color:var(--navy)}.team-history-card figcaption{color:var(--yel)}}
 
 
@@ -1489,14 +1489,10 @@ footer {
 /* Rebuilt Club History timeline: explicit selectable entries, no selector-line geometry. */
 .history-rebuilt{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.85fr);gap:clamp(18px,3vw,34px);align-items:start}
 .history-rebuilt .history-visual{position:sticky;top:92px;display:grid;gap:14px;border-radius:0;overflow:visible}
-.history-rebuilt .history-image-frame{aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,var(--navy),var(--navy-2));box-shadow:var(--shadow-lg)}
+.history-rebuilt .history-image-frame{aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:var(--navy);box-shadow:var(--shadow-lg)}
 .history-rebuilt .history-image-frame img{display:block;width:100%;height:100%;object-fit:contain;background:#eef1f4}
-.history-selected-copy{padding:18px 20px;border:2px solid var(--yel);border-radius:16px;background:var(--card);box-shadow:var(--shadow)}
-.history-selected-copy h2{margin:0 0 6px;color:var(--navy);font-size:clamp(1.45rem,3vw,2rem)}
-.history-selected-copy p{margin:0 0 8px;line-height:1.5}
-.history-selected-copy p:last-child{margin-bottom:0}
-.history-selected-position{color:var(--mut);font-size:.83rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 .history-rebuilt .history-timeline-shell{position:relative;border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
+@media(min-width:761px){.history-rebuilt{--history-desktop-height:min(60vh,540px);align-items:stretch}.history-rebuilt .history-visual,.history-rebuilt .history-timeline-shell{height:var(--history-desktop-height)}.history-rebuilt .history-image-frame{height:100%;aspect-ratio:auto}.history-rebuilt .history-timeline-shell{display:grid;grid-template-rows:auto minmax(0,1fr)}.history-rebuilt .history-timeline{height:auto;min-height:0}}
 .history-rebuilt .history-controls{position:relative;z-index:2;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--card)}
 .history-rebuilt .history-timeline{height:min(66vh,620px);min-height:420px;overflow-y:auto;padding:10px;scrollbar-gutter:stable;overscroll-behavior:contain;scroll-behavior:smooth}
 .history-rebuilt .history-year{display:block;width:100%;min-height:0;margin:0 0 8px;padding:13px 14px;border:1px solid transparent;border-radius:13px;background:transparent;color:var(--fg);text-align:left;opacity:1;transform:none;cursor:pointer;transition:background .16s,border-color .16s,box-shadow .16s}
@@ -1512,16 +1508,20 @@ footer {
  .history-rebuilt{grid-template-columns:1fr;gap:14px}
  .history-rebuilt .history-visual{position:relative;top:auto}
  .history-rebuilt .history-image-frame{aspect-ratio:16/9}
- .history-selected-copy{padding:15px 16px}
  .history-rebuilt .history-timeline{height:min(58vh,460px);min-height:300px;padding:8px}
  .history-rebuilt .history-controls{padding:8px}
  .history-rebuilt .history-year{padding:12px}
 }
-@media(max-width:390px){.history-rebuilt .history-timeline{height:min(55vh,400px)}.history-selected-copy h2{font-size:1.35rem}}
+@media(max-width:390px){.history-rebuilt .history-timeline{height:min(55vh,400px)}}
 @media(prefers-reduced-motion:reduce){.history-rebuilt .history-year{transition:none}.history-rebuilt .history-timeline{scroll-behavior:auto}}
-@media(prefers-color-scheme:dark){.history-selected-copy h2,.history-rebuilt .history-year strong{color:var(--yel)}.history-rebuilt .history-year.is-active strong,.history-rebuilt .history-year.is-active span{color:var(--navy)}}
+@media(prefers-color-scheme:dark){.history-rebuilt .history-year strong{color:var(--yel)}.history-rebuilt .history-year.is-active strong,.history-rebuilt .history-year.is-active span{color:var(--navy)}}
 
 /* Team History uses the same explicit selection pattern as Club History. */
 .team-history-rebuilt .history-image-frame img{object-fit:cover}
 .team-history-rebuilt .history-year strong{font-size:1rem}
 .team-history-rebuilt .history-year span{font-size:.92rem}
+
+/* Fundraising sponsor call-to-action */
+.fundraising-sponsor{margin-top:18px}
+.fundraising-sponsor h2{margin-top:0}
+.fundraising-sponsor .btn{min-height:44px}

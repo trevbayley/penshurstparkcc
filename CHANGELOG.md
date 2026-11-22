@@ -1,3 +1,39 @@
+### 21 November 2026 - Team History rebuild
+
+- Rebuilt Team History using the same direct-selection pattern as Club History.
+- The first previous-season photograph is explicitly selected when the tab opens.
+- Added selected photograph/caption display, Previous/Next controls, click/tap selection and Arrow/Home/End keyboard navigation.
+- All unselected entries remain fully readable and the selected entry uses the club-yellow highlight.
+- Team History remains user-controlled rather than automatically advancing.
+
+### 21 November 2026 - Club History timeline rebuild
+
+- Replaced the selector-line/centred-scroll implementation with a clean selectable chronological list.
+- The first entry, 1719, is explicitly selected on render and can always be selected again.
+- Added a dedicated selected-entry panel beside the historical image.
+- Active entries use a solid club-yellow highlight; inactive dates remain fully readable rather than greyed out.
+- Previous/Next, click/tap, Arrow keys, Home/End and seven-second automatic progression are retained.
+- Mobile uses the same reliable selection model in a single-column layout.
+
+### 21 November 2026 - Precise History selector fix
+
+- Replaced the percentage-padding centring method with measured top and bottom edge spacing.
+- The first and final entries now have real reachable centre positions.
+- All entries use the same direct centre calculation: entry centre minus half the visible timeline height.
+- Recalculation runs after layout settles and whenever the viewport size changes.
+
+### 21 November 2026 - History timeline improvements
+
+- Corrected first-entry geometry by normalising each history item offset to the timeline scroll content, so the first item can be selected and centred reliably on desktop. Initial positioning now waits for two animation frames so layout measurements are settled.
+- Fixed initial desktop History positioning so the selector opens exactly on the first entry; initial alignment and subsequent scrolling now use the same target calculation.
+- Added visible Previous and Next controls with a live entry-position indicator.
+- Added Home and End keyboard support while retaining arrow-key, click, touch-scroll and automatic progression behaviour.
+- Strengthened the fixed yellow selection area and made the selected entry more visually prominent.
+- Reduced the prominence of surrounding entries and added gentle scroll snapping.
+- Improved the mobile timeline height, image ratio, touch controls and narrow-screen typography.
+- Kept the first and last entry limits, seven-second automatic progression and reduced-motion behaviour.
+- Mobile test review corrected the selector position so it remains centred in the scrollable timeline below the new control bar.
+
 ### 21 November 2026 - Code cleanup
 
 #### JavaScript

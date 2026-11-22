@@ -201,16 +201,120 @@ function history(){
  const tabs=[...document.querySelectorAll('.history-tabs [role="tab"]')],clubPanel=$('#clubHistoryPanel'),teamPanel=$('#teamHistoryPanel');
  function selectTab(tab,focus=true){tabs.forEach(button=>{const active=button===tab;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});const club=tab.id==='clubHistoryTab';clubPanel.hidden=!club;teamPanel.hidden=club;if(focus)tab.focus();if(club)renderClubHistory();else renderTeamHistory()}
  tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(tab,false));tab.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[next])})});
- function renderTeamHistory(){const displayedSeason=homeTeamSelection().season;const previous=(CFG.teamPhotos||[]).filter(x=>Number(x.season)<displayedSeason).sort((a,b)=>Number(b.season)-Number(a.season));if(!previous.length){teamPanel.innerHTML='<p class="mut">Previous-season team photographs will appear here.</p>';return}const groups=[...new Set(previous.map(x=>Number(x.season)))];teamPanel.innerHTML=groups.map(year=>`<section class="team-history-season" aria-labelledby="team-season-${year}"><h2 id="team-season-${year}">${year} season</h2><div class="team-history-grid">${previous.filter(x=>Number(x.season)===year).map(x=>`<figure class="team-history-card"><img src="${safeAsset(x.image)}" loading="lazy" decoding="async" alt="${esc(x.caption)}"><figcaption>${esc(x.caption)}</figcaption></figure>`).join('')}</div></section>`).join('')}
- function renderClubHistory(){if(clubPanel.dataset.ready)return;clubPanel.dataset.ready='true';const items=S.history.map((x,i)=>({year:x[0],description:x[1],image:x[2]||'',url:x[3]||'',linkLabel:x[4]||'',index:i}));clubPanel.innerHTML=`<section class="history-experience"><div class="history-visual" aria-live="polite"><div class="history-image-frame"><img id="historyImage" alt="" hidden></div></div><div class="history-timeline-shell"><div class="history-current-marker" aria-hidden="true"></div><div class="history-timeline" role="list" tabindex="0" aria-label="Club history. Scroll up or down to select a year.">${items.map((x,i)=>`<div class="history-year${i===0?' is-active':''}" data-history-index="${i}" role="listitem" tabindex="0" aria-current="${i===0?'true':'false'}"><span class="history-copy"><strong>${esc(x.year)}</strong><span class="history-description">${esc(x.description)}${x.url?` <a class="history-link" href="${safeHref(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.linkLabel||'More information')} ↗</a>`:''}</span></span></div>`).join('')}</div></div></section>`;
- const timeline=clubPanel.querySelector('.history-timeline'),buttons=[...clubPanel.querySelectorAll('.history-year')],image=clubPanel.querySelector('#historyImage'),marker=clubPanel.querySelector('.history-current-marker');let current=0,timer=null,scrollTimer=null,isProgrammatic=false;const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- function sizeMarker(index){const button=buttons[index];if(button&&marker)marker.style.height=`${button.offsetHeight}px`}
- function render(index){current=Math.max(0,Math.min(items.length-1,index));const item=items[current];sizeMarker(current);buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-current',String(active))});if(item.image){const src=safeAsset(item.image);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else image.hidden=true}else{image.removeAttribute('src');image.alt='';image.hidden=true}}
- function scrollToYear(index,behaviour=reduceMotion?'auto':'smooth'){index=Math.max(0,Math.min(items.length-1,index));const button=buttons[index];if(!button)return;isProgrammatic=true;render(index);const markerTop=timeline.clientHeight*.5-button.offsetHeight/2;timeline.scrollTo({top:button.offsetTop-markerTop,behavior:behaviour});clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{isProgrammatic=false},700)}
- function nearestYear(){const target=timeline.getBoundingClientRect().top+timeline.clientHeight*.5;let nearest=0,distance=Infinity;buttons.forEach((button,i)=>{const d=Math.abs((button.getBoundingClientRect().top+button.offsetHeight/2)-target);if(d<distance){distance=d;nearest=i}});return nearest}
- function scheduleNext(){clearTimeout(timer);if(items.length>1&&!reduceMotion)timer=setTimeout(()=>{scrollToYear(current<items.length-1?current+1:0);scheduleNext()},7000)}
- function clampTimeline(){const first=buttons[0],last=buttons[buttons.length-1];if(!first||!last)return;const centre=timeline.clientHeight/2;const min=Math.max(0,first.offsetTop-centre+first.offsetHeight/2);const max=Math.max(min,last.offsetTop-centre+last.offsetHeight/2);if(timeline.scrollTop<min)timeline.scrollTop=min;else if(timeline.scrollTop>max)timeline.scrollTop=max}
- timeline.addEventListener('scroll',()=>{if(isProgrammatic)return;clampTimeline();clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{const next=nearestYear();if(next!==current)render(next);scheduleNext()},40)},{passive:true});buttons.forEach((button,i)=>{button.addEventListener('click',e=>{if(!e.target.closest('a')){scrollToYear(i);scheduleNext()}});button.addEventListener('keydown',e=>{if(!e.target.closest('a')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();scrollToYear(i);scheduleNext()}})});timeline.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();scrollToYear(current+(e.key==='ArrowDown'?1:-1));scheduleNext()}});const onResize=()=>{clampTimeline();sizeMarker(current)};window.addEventListener('resize',onResize);registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(scrollTimer);window.removeEventListener('resize',onResize)});requestAnimationFrame(()=>{const first=buttons[0];if(first){sizeMarker(0);timeline.scrollTop=first.offsetTop-(timeline.clientHeight*.5-first.offsetHeight/2)}clampTimeline();render(0);scheduleNext()})}
+ function renderTeamHistory(){
+  if(teamPanel.dataset.ready)return;
+  teamPanel.dataset.ready='true';
+  const displayedSeason=homeTeamSelection().season;
+  const items=(CFG.teamPhotos||[]).filter(x=>Number(x.season)<displayedSeason).sort((a,b)=>Number(b.season)-Number(a.season));
+  if(!items.length){teamPanel.innerHTML='<p class="mut">Previous-season team photographs will appear here.</p>';return}
+  teamPanel.innerHTML=`<section class="history-experience history-rebuilt team-history-rebuilt">
+   <div class="history-visual" aria-live="polite">
+    <div class="history-image-frame"><img id="teamHistoryImage" alt=""></div>
+    <div class="history-selected-copy">
+     <p class="history-selected-position" id="teamHistoryPosition"></p>
+     <h2 id="teamHistorySeason"></h2>
+     <p id="teamHistoryCaption"></p>
+    </div>
+   </div>
+   <div class="history-timeline-shell">
+    <div class="history-controls" aria-label="Team History controls">
+     <button class="history-step team-history-prev" type="button">&#8593;<span>Previous</span></button>
+     <output class="history-position" aria-live="polite">1 of ${items.length}</output>
+     <button class="history-step team-history-next" type="button"><span>Next</span>&#8595;</button>
+    </div>
+    <div class="history-timeline team-history-list" role="listbox" tabindex="0" aria-label="Team History photographs">
+     ${items.map((x,i)=>`<button class="history-year team-history-entry" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-team-history-index="${i}"><strong>${esc(x.season)} season</strong><span>${esc(x.caption)}</span></button>`).join('')}
+    </div>
+   </div>
+  </section>`;
+  const list=teamPanel.querySelector('.team-history-list');
+  const buttons=[...teamPanel.querySelectorAll('.team-history-entry')];
+  const image=teamPanel.querySelector('#teamHistoryImage');
+  const season=teamPanel.querySelector('#teamHistorySeason');
+  const caption=teamPanel.querySelector('#teamHistoryCaption');
+  const previous=teamPanel.querySelector('.team-history-prev');
+  const next=teamPanel.querySelector('.team-history-next');
+  const position=teamPanel.querySelector('.history-position');
+  const selectedPosition=teamPanel.querySelector('#teamHistoryPosition');
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current=0;
+  function select(index,{focus=false,scroll=true}={}){
+   current=Math.max(0,Math.min(items.length-1,index));
+   const item=items[current];
+   buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
+   position.value=`${current+1} of ${items.length}`;position.textContent=position.value;
+   selectedPosition.textContent=`Photo ${current+1} of ${items.length}`;
+   previous.disabled=current===0;next.disabled=current===items.length-1;
+   season.textContent=`${item.season} season`;caption.textContent=item.caption;
+   const src=safeAsset(item.image);if(src){image.src=src;image.alt=item.caption;image.hidden=false}else{image.removeAttribute('src');image.alt='';image.hidden=true}
+   const active=buttons[current];if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});if(focus)active.focus({preventScroll:true});
+  }
+  buttons.forEach((button,i)=>button.addEventListener('click',()=>select(i)));
+  previous.addEventListener('click',()=>select(current-1,{focus:true}));
+  next.addEventListener('click',()=>select(current+1,{focus:true}));
+  list.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true})});
+  select(0,{scroll:false});
+ }
+ function renderClubHistory(){
+  if(clubPanel.dataset.ready)return;
+  clubPanel.dataset.ready='true';
+  const items=S.history.map((x,i)=>({year:x[0],description:x[1],image:x[2]||'',url:x[3]||'',linkLabel:x[4]||'',index:i}));
+  clubPanel.innerHTML=`<section class="history-experience history-rebuilt">
+   <div class="history-visual" aria-live="polite">
+    <div class="history-image-frame"><img id="historyImage" alt="" hidden></div>
+    <div class="history-selected-copy">
+     <p class="history-selected-position" id="historyPosition"></p>
+     <h2 id="historySelectedYear"></h2>
+     <p id="historySelectedDescription"></p>
+     <p id="historySelectedLink"></p>
+    </div>
+   </div>
+   <div class="history-timeline-shell">
+    <div class="history-controls" aria-label="History timeline controls">
+     <button class="history-step history-prev" type="button">&#8593;<span>Previous</span></button>
+     <output class="history-position" aria-live="polite">1 of ${items.length}</output>
+     <button class="history-step history-next" type="button"><span>Next</span>&#8595;</button>
+    </div>
+    <div class="history-timeline" role="listbox" tabindex="0" aria-label="Club history entries">
+     ${items.map((x,i)=>`<button class="history-year" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-history-index="${i}"><strong>${esc(x.year)}</strong><span>${esc(x.description)}</span></button>`).join('')}
+    </div>
+   </div>
+  </section>`;
+  const timeline=clubPanel.querySelector('.history-timeline');
+  const buttons=[...clubPanel.querySelectorAll('.history-year')];
+  const image=clubPanel.querySelector('#historyImage');
+  const year=clubPanel.querySelector('#historySelectedYear');
+  const description=clubPanel.querySelector('#historySelectedDescription');
+  const link=clubPanel.querySelector('#historySelectedLink');
+  const previous=clubPanel.querySelector('.history-prev');
+  const next=clubPanel.querySelector('.history-next');
+  const position=clubPanel.querySelector('.history-position');
+  const selectedPosition=clubPanel.querySelector('#historyPosition');
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current=0,timer=null;
+  function select(index,{focus=false,scroll=true}={}){
+   current=Math.max(0,Math.min(items.length-1,index));
+   const item=items[current];
+   buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
+   position.value=`${current+1} of ${items.length}`;position.textContent=position.value;
+   selectedPosition.textContent=`Entry ${current+1} of ${items.length}`;
+   previous.disabled=current===0;next.disabled=current===items.length-1;
+   year.textContent=item.year;description.textContent=item.description;
+   link.innerHTML=item.url?`<a class="history-link" href="${safeHref(item.url)}" target="_blank" rel="noopener noreferrer">${esc(item.linkLabel||'More information')} &#8599;</a>`:'';
+   if(item.image){const src=safeAsset(item.image);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else image.hidden=true}else{image.removeAttribute('src');image.alt='';image.hidden=true}
+   const active=buttons[current];
+   if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
+   if(focus)active.focus({preventScroll:true});
+  }
+  function restart(){clearTimeout(timer);if(items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)}
+  buttons.forEach((button,i)=>button.addEventListener('click',()=>{select(i);restart()}));
+  previous.addEventListener('click',()=>{select(current-1,{focus:true});restart()});
+  next.addEventListener('click',()=>{select(current+1,{focus:true});restart()});
+  timeline.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true});restart()});
+  registerRouteCleanup(()=>clearTimeout(timer));
+  select(0,{scroll:false});
+  restart();
+ }
  renderClubHistory()
 }
 function members(){$('#app').innerHTML=`<h1 class="page-title">Members area</h1><div class="members-layout"><div class="members-main"><details class="card training-season"><summary>Winter training schedules</summary><div class="training-season-content"><section aria-labelledby="junior-training-title"><h3 id="junior-training-title">Junior training</h3><div class="scroll"><table class="training-table"><caption class="sr-only">Junior winter training schedule</caption><thead><tr><th scope="col">Age group</th><th scope="col">Venue</th><th scope="col">Time</th><th scope="col">Dates</th></tr></thead><tbody><tr><th scope="row">U6/7</th><td rowspan="2">Holmewood House</td><td>13:00–14:00</td><td rowspan="2">24th, 31st Jan; 7th, 14th, 21st, 28th Feb; 14th, 21st Mar</td></tr><tr><th scope="row">U8/9/10</th><td>14:00–15:00</td></tr><tr><th scope="row">U11</th><td rowspan="2">The Judd School</td><td>14:00–15:00</td><td rowspan="2">1st, 15th, 29th Nov; 13th Dec; 10th, 17th, 24th, 31st Jan; 7th, 14th, 21st, 28th Feb; 7th, 14th, 21st Mar</td></tr><tr><th scope="row">U13s and U15 girls</th><td>15:00–16:00</td></tr></tbody></table></div></section><section class="senior-training" aria-labelledby="senior-training-title"><h3 id="senior-training-title">Senior training</h3><div class="scroll"><table class="training-table"><caption class="sr-only">Senior winter training schedule</caption><thead><tr><th scope="col">Group</th><th scope="col">Venue</th><th scope="col">Time</th><th scope="col">Dates</th></tr></thead><tbody><tr><th scope="row">Ladies hardball</th><td>The Judd School</td><td>17:30–18:30</td><td>9th, 23rd Jan; 6th, 20th Feb; 6th, 20th Mar</td></tr><tr><th scope="row">Ladies softball</th><td>Details will follow</td><td>Details will follow</td><td>Details will follow</td></tr><tr><th scope="row">U15 boys, invited players and men</th><td>Holmewood House</td><td>19:00–20:30</td><td>15th, 22nd, 29th Jan; 5th, 12th, 19th, 26th Feb; 5th, 12th, 19th, 26th Mar; 2nd, 9th, 16th Apr</td></tr></tbody></table></div></section></div></details>

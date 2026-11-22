@@ -78,3 +78,12 @@ After substantial work, update this file and the change log before creating the 
 
 ## Baseline validation
 The foundation build should be considered authoritative only together with its included files. JavaScript syntax and referenced local media were checked when the package was produced.
+
+### Rebuilt Team History
+
+Team History now uses the same robust direct-selection model as Club History: a selected photograph and caption alongside a chronological list, with club-yellow active highlighting, Previous/Next buttons, click/tap selection and Arrow/Home/End keyboard navigation. Team History is intentionally user-controlled and does not auto-advance.
+
+### Rebuilt Club History timeline
+
+The former fixed selector-line design has been retired. Club History now uses a straightforward chronological list of selectable entries alongside the image and a dedicated selected-entry summary. The first entry (1719) is explicitly active when the page opens. Active entries are highlighted in club yellow, while all other dates remain clearly readable. Previous/Next, click/tap, Arrow keys, Home/End and seven-second automatic progression remain available on desktop and mobile.
+

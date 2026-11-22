@@ -1416,6 +1416,24 @@ footer {
 @media(max-width:600px){.teams-group>summary{padding:13px 14px}.teams-count{display:none}.teams-grid{padding:0 10px 12px}.team-directory-card{grid-template-columns:1fr}.team-directory-card>img,.team-photo-placeholder{min-height:0;aspect-ratio:16/10}.team-directory-copy{padding:14px}}
 @media(prefers-color-scheme:dark){.teams-group>summary,.team-directory-copy h3{color:var(--yel)}}
 
+
+/* Coaching team directory */
+.coaching-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:0 16px 18px}
+.coach-card{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;min-width:0;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--bg)}
+.coach-photo,.coach-photo-placeholder{display:block;width:76px;height:92px;border-radius:12px;object-fit:cover;background:linear-gradient(135deg,var(--navy),var(--navy-2))}
+.coach-photo-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px;color:#fff;text-align:center}
+.coach-photo-placeholder img{display:block;width:42px;height:auto;object-fit:contain;filter:drop-shadow(0 3px 7px rgba(0,0,0,.18))}
+.coach-photo-placeholder small{font-size:.68rem;line-height:1.15}
+.coach-copy{min-width:0}
+.coach-copy h3{margin:1px 0 8px;color:var(--navy);font-size:1rem;line-height:1.2}
+.coach-copy dl{margin:0}
+.coach-copy dl div+div{margin-top:6px}
+.coach-copy dt{color:var(--mut);font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:.045em}
+.coach-copy dd{margin:1px 0 0;font-size:.88rem;font-weight:700;line-height:1.3;overflow-wrap:anywhere}
+@media(max-width:850px){.coaching-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.coaching-grid{grid-template-columns:1fr;padding:0 10px 12px}.coach-card{grid-template-columns:68px minmax(0,1fr)}.coach-photo,.coach-photo-placeholder{width:68px;height:82px}}
+@media(prefers-color-scheme:dark){.coach-copy h3{color:var(--yel)}}
+
 /* Discourage casual saving of club photographs. */
 .history-image-frame img,.team-history-card img,.team-directory-card>img,.event-media img{-webkit-user-drag:none;user-select:none}
 

@@ -1,1 +1,1 @@
-// Full application content was inadvertently overwritten; restore required from prior blob.
+PLACEHOLDER

@@ -7,6 +7,8 @@ The site now includes a browser-enforced CSP meta policy, URL scheme validation,
 - `_headers`: use on platforms that support a Netlify-style headers file.
 - `staticwebapp.config.json`: use when deploying to Azure Static Web Apps.
 
+- The CSP uses `form-action 'none'` because the current site has no forms; this prevents form submissions if form markup were injected.
+
 ## GitHub Pages
 
 - Enforce HTTPS in the repository Pages settings.

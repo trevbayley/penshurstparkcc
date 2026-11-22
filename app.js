@@ -38,8 +38,8 @@ history:[
   ['1719','Penshurst cricketers at bowling practice','media/history/1719.webp'],
   ['1723','The club is founded, as is shown on our crest.','media/history/1723-club-crest.webp'],
   ['1724','First recorded match at Penshurst Park (Penshurst, Tonbridge & Wadhurst v Dartford).'],
-  ['1728',"Kent vs. Sussex Matches: Kent patron Edwin Stead organised two matches at Penshurst Park (then the seat of John Sidney, 6th Earl of Leicester) against the 2nd Duke of Richmond's XI and Sir William Gage's XI."],
-  ['1729',"Stead's XI played Gage's XI at Penshurst Park for 100 guineas, with reports in the British Journal noting what is believed to be the earliest known innings victory in cricket."],
+  ['1728',"Edwin Stead's XI played two matches at Penshurst Park, against the 2nd Duke of Richmond's XI and Sir William Gage's XI. Stead's XI defeated Gage's XI by 7 runs in a match played for 50 guineas."],
+  ['1729',"Stead's XI played Sir William Gage's XI at Penshurst Park for 100 guineas. Gage's XI achieved what is believed to be the earliest known innings victory in cricket; a contemporary report appeared in the Norwich Gazette of 30 August 1729."],
   ['1747',"George Vertue's print of 1747, with new dedication, included in Volume I of Hasted's Kent in 1778.",'media/history/1747.webp'],
   ['1760',"Dukes, of Penshurst, credited with manufacturing the first ‘modern’ cricket ball."],
   ['1949','Britain from the Air image.','media/history/1949.webp'],
@@ -197,9 +197,14 @@ function initTeamGallery(teamPhotos){
 }
 function aboutUs(){$('#app').innerHTML=`<h1 class="page-title">About us</h1><div class="grid location-grid"><section class="card about-contact" aria-labelledby="club-location-title"><h2 id="club-location-title">Address</h2><address>Penshurst Park Cricket Club<br>Penshurst Place, Penshurst<br>Tonbridge, Kent TN11 8DH</address><div class="about-location-actions"><a class="w3w-link" href="${safeHref(CFG.w3w)}" target="_blank" rel="noopener noreferrer" title="Open ///crisp.dates.daily in what3words"><span class="w3w-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5"/><path d="M9.1 6.6 6.2 17.4M13.6 6.6l-2.9 10.8M18.1 6.6l-2.9 10.8"/></svg></span><span>///crisp.dates.daily</span></a><a class="btn about-directions" href="${safeHref('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(CFG.mapQ))}" target="_blank" rel="noopener noreferrer">Get directions ↗</a></div><h2>Contact</h2><div class="about-contact-actions"><a class="phone-line phone-link" href="${safeHref('tel:'+CFG.phone.replace(/\s+/g,''),['tel:'])}" title="Call ${esc(CFG.phone)}"><span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.6 3.1 3.5 5 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.7c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg></span><span>${esc(CFG.phone)}</span></a><a class="email-link" href="${safeHref('mailto:'+CFG.email,['mailto:'])}" title="Email ${esc(CFG.email)}"><span class="email-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l9 5.6 9-5.6V7H3Zm18 10V9.8l-8.47 5.27a1 1 0 0 1-1.06 0L3 9.8V17h18Z"/></svg></span><span>${esc(CFG.email)}</span></a></div><p><a class="btn" href="${safeHref('https://penshurstpark.play-cricket.com/Aboutus#collapseTwo')}" target="_blank" rel="noopener noreferrer" title="Open Penshurst Park CC club officials on Play-Cricket">Club officials ↗</a></p></section><iframe class="location-map" title="Map showing Penshurst Park Cricket Club at Penshurst Place" loading="lazy" src="https://www.google.com/maps?q=${encodeURIComponent(CFG.mapQ)}&output=embed"></iframe></div>`}
 function history(){
- $('#app').innerHTML=`<h1 class="page-title">History</h1><div class="history-tabs" role="tablist" aria-label="History sections"><button type="button" role="tab" id="clubHistoryTab" aria-controls="clubHistoryPanel" aria-selected="true">Club history</button><button type="button" role="tab" id="teamHistoryTab" aria-controls="teamHistoryPanel" aria-selected="false" tabindex="-1">Team history</button></div><section id="clubHistoryPanel" role="tabpanel" aria-labelledby="clubHistoryTab"></section><section id="teamHistoryPanel" role="tabpanel" aria-labelledby="teamHistoryTab" hidden></section>`;
+ $('#app').innerHTML=`<h1 class="page-title">History</h1><div class="history-toolbar"><div class="history-tabs" role="tablist" aria-label="History sections"><button type="button" role="tab" id="clubHistoryTab" aria-controls="clubHistoryPanel" aria-selected="true">Club history</button><button type="button" role="tab" id="teamHistoryTab" aria-controls="teamHistoryPanel" aria-selected="false" tabindex="-1">Team history</button></div><div class="history-toolbar-controls" aria-label="History entry controls"><button class="history-step history-toolbar-prev" type="button">&#8593;<span>Previous</span></button><output class="history-position history-toolbar-position" aria-live="polite">1 of 1</output><button class="history-step history-toolbar-next" type="button"><span>Next</span>&#8595;</button></div></div><section id="clubHistoryPanel" role="tabpanel" aria-labelledby="clubHistoryTab"></section><section id="teamHistoryPanel" role="tabpanel" aria-labelledby="teamHistoryTab" hidden></section>`;
  const tabs=[...document.querySelectorAll('.history-tabs [role="tab"]')],clubPanel=$('#clubHistoryPanel'),teamPanel=$('#teamHistoryPanel');
- function selectTab(tab,focus=true){tabs.forEach(button=>{const active=button===tab;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});const club=tab.id==='clubHistoryTab';clubPanel.hidden=!club;teamPanel.hidden=club;if(focus)tab.focus();if(club)renderClubHistory();else renderTeamHistory()}
+  const toolbarPrevious=$('.history-toolbar-prev'),toolbarNext=$('.history-toolbar-next'),toolbarPosition=$('.history-toolbar-position');
+  let activeHistoryControls=null;
+  function setHistoryToolbar(state){activeHistoryControls=state;toolbarPrevious.disabled=state.current===0;toolbarNext.disabled=state.current===state.length-1;toolbarPosition.value=`${state.current+1} of ${state.length}`;toolbarPosition.textContent=toolbarPosition.value}
+  toolbarPrevious.addEventListener('click',()=>{if(activeHistoryControls)activeHistoryControls.select(activeHistoryControls.current-1,{focus:true})});
+  toolbarNext.addEventListener('click',()=>{if(activeHistoryControls)activeHistoryControls.select(activeHistoryControls.current+1,{focus:true})});
+ function selectTab(tab,focus=true){tabs.forEach(button=>{const active=button===tab;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});const club=tab.id==='clubHistoryTab';clubPanel.hidden=!club;teamPanel.hidden=club;if(focus)tab.focus();if(club){renderClubHistory();clubPanel.querySelector('.history-year.is-active')?.click()}else{renderTeamHistory();teamPanel.querySelector('.history-year.is-active')?.click()}}
  tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(tab,false));tab.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[next])})});
  function renderTeamHistory(){
   if(teamPanel.dataset.ready)return;
@@ -212,11 +217,6 @@ function history(){
     <div class="history-image-frame"><img id="teamHistoryImage" alt=""></div>
    </div>
    <div class="history-timeline-shell">
-    <div class="history-controls" aria-label="Team History controls">
-     <button class="history-step team-history-prev" type="button">&#8593;<span>Previous</span></button>
-     <output class="history-position" aria-live="polite">1 of ${items.length}</output>
-     <button class="history-step team-history-next" type="button"><span>Next</span>&#8595;</button>
-    </div>
     <div class="history-timeline team-history-list" role="listbox" tabindex="0" aria-label="Team History photographs">
      ${items.map((x,i)=>`<button class="history-year team-history-entry" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-team-history-index="${i}"><strong>${esc(x.season)} season</strong><span>${esc(x.caption)}</span></button>`).join('')}
     </div>
@@ -225,24 +225,19 @@ function history(){
   const list=teamPanel.querySelector('.team-history-list');
   const buttons=[...teamPanel.querySelectorAll('.team-history-entry')];
   const image=teamPanel.querySelector('#teamHistoryImage');
-  const previous=teamPanel.querySelector('.team-history-prev');
-  const next=teamPanel.querySelector('.team-history-next');
-  const position=teamPanel.querySelector('.history-position');
-  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const imageFrame=image.closest('.history-image-frame');
+    const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current=0;
   function select(index,{focus=false,scroll=true}={}){
    current=Math.max(0,Math.min(items.length-1,index));
    const item=items[current];
    buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
-   previous.disabled=current===0;next.disabled=current===items.length-1;
-   position.value=`${current+1} of ${items.length}`;position.textContent=position.value;
-   const src=safeAsset(item.image);if(src){image.src=src;image.alt=item.caption;image.hidden=false}else{image.removeAttribute('src');image.alt='';image.hidden=true}
+   if(!teamPanel.hidden)setHistoryToolbar({current,length:items.length,select});
+   const src=safeAsset(item.image);imageFrame.classList.toggle('is-empty',!src);if(src){image.src=src;image.alt=item.caption;image.hidden=false}else{image.removeAttribute('src');image.alt='';image.hidden=true}
    const active=buttons[current];if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});if(focus)active.focus({preventScroll:true});
   }
   buttons.forEach((button,i)=>button.addEventListener('click',()=>select(i)));
-  previous.addEventListener('click',()=>select(current-1,{focus:true}));
-  next.addEventListener('click',()=>select(current+1,{focus:true}));
-  list.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true})});
+    list.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true})});
   select(0,{scroll:false});
  }
  function renderClubHistory(){
@@ -254,11 +249,6 @@ function history(){
     <div class="history-image-frame"><img id="historyImage" alt="" hidden></div>
    </div>
    <div class="history-timeline-shell">
-    <div class="history-controls" aria-label="History timeline controls">
-     <button class="history-step history-prev" type="button">&#8593;<span>Previous</span></button>
-     <output class="history-position" aria-live="polite">1 of ${items.length}</output>
-     <button class="history-step history-next" type="button"><span>Next</span>&#8595;</button>
-    </div>
     <div class="history-timeline" role="listbox" tabindex="0" aria-label="Club history entries">
      ${items.map((x,i)=>`<button class="history-year" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-history-index="${i}"><strong>${esc(x.year)}</strong><span>${esc(x.description)}</span></button>`).join('')}
     </div>
@@ -267,27 +257,22 @@ function history(){
   const timeline=clubPanel.querySelector('.history-timeline');
   const buttons=[...clubPanel.querySelectorAll('.history-year')];
   const image=clubPanel.querySelector('#historyImage');
-  const previous=clubPanel.querySelector('.history-prev');
-  const next=clubPanel.querySelector('.history-next');
-  const position=clubPanel.querySelector('.history-position');
-  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const imageFrame=image.closest('.history-image-frame');
+    const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let current=0,timer=null;
   function select(index,{focus=false,scroll=true}={}){
    current=Math.max(0,Math.min(items.length-1,index));
    const item=items[current];
    buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
-   previous.disabled=current===0;next.disabled=current===items.length-1;
-   position.value=`${current+1} of ${items.length}`;position.textContent=position.value;
-   if(item.image){const src=safeAsset(item.image);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else{image.removeAttribute('src');image.alt='';image.hidden=true}}else{image.removeAttribute('src');image.alt='';image.hidden=true}
+   if(!clubPanel.hidden)setHistoryToolbar({current,length:items.length,select});
+   const src=item.image?safeAsset(item.image):'';imageFrame.classList.toggle('is-empty',!src);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else{image.removeAttribute('src');image.alt='';image.hidden=true}
    const active=buttons[current];
    if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
    if(focus)active.focus({preventScroll:true});
   }
   function restart(){clearTimeout(timer);if(items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)}
   buttons.forEach((button,i)=>button.addEventListener('click',()=>{select(i);restart()}));
-  previous.addEventListener('click',()=>{select(current-1,{focus:true});restart()});
-  next.addEventListener('click',()=>{select(current+1,{focus:true});restart()});
-  timeline.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true});restart()});
+    timeline.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true});restart()});
   registerRouteCleanup(()=>clearTimeout(timer));
   select(0,{scroll:false});
   restart();

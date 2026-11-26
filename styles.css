@@ -1477,3 +1477,413 @@ footer {
   .social-btn .social-facebook { width:48px; height:48px; flex:0 0 48px; }
   .social-btn[title*="YouTube"] { background:transparent; }
 }
+
+/* Mobile Home ordering and compact spacing */
+@media (max-width: 760px) {
+  .home-upcoming { order: -1; }
+}
+@media (max-width: 430px) {
+  main { padding-left: 12px; padding-right: 12px; }
+  .card, .poster-card { padding: 14px; }
+}
+
+/* History entry external links */
+.history-entry-link{display:inline-block;margin-top:8px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+/* ==========================================================
+   Reusable seasonal theme foundation
+   ========================================================== */
+html[class$="-mode"]{
+  --season-panel-bg:#fff;
+  --season-panel-text:var(--text,#17233b);
+  --season-panel-radius:16px;
+  --season-panel-shadow:0 3px 12px rgba(20,34,52,.12)
+}
+html[class$="-mode"] main{background:transparent!important}
+html[class$="-mode"] .home-grid{align-items:start!important}
+
+/* Standard seasonal content surfaces. Wallpaper remains visible between panels. */
+html[class$="-mode"] .home-panel.home-about,
+html[class$="-mode"] .home-panel.home-teams{
+  align-self:start!important;height:auto!important;min-height:0!important;
+  padding:18px!important;background:var(--season-panel-bg)!important;background-image:none!important;
+  color:var(--season-panel-text)!important;border:0!important;outline:0!important;
+  border-radius:var(--season-panel-radius)!important;box-shadow:var(--season-panel-shadow)!important
+}
+html[class$="-mode"] .home-panel.home-about :is(h1,h2,h3,h4,p,li,span,strong),
+html[class$="-mode"] .home-panel.home-teams :is(h1,h2,h3,h4,p,li,span,strong){
+  color:inherit!important;opacity:1!important;visibility:visible!important;text-shadow:none!important
+}
+html[class$="-mode"] .home-panel.home-about>:is(h1,h2,h3,p),
+html[class$="-mode"] .home-panel.home-teams>:is(h1,h2,h3,p){
+  margin-top:0;background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important
+}
+
+/* Events preserve the normal composition: protected title, then native event card. */
+html[class$="-mode"] .home-panel.home-recent,
+html[class$="-mode"] .home-panel.home-upcoming{
+  align-self:start!important;height:auto!important;min-height:0!important;padding:0!important;
+  background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important
+}
+html[class$="-mode"] .home-panel.home-recent>h2,
+html[class$="-mode"] .home-panel.home-upcoming>h2{
+  display:table!important;width:auto!important;max-width:100%;margin:0 0 12px!important;padding:7px 12px!important;
+  background:rgba(255,255,255,.96)!important;color:var(--season-panel-text)!important;
+  border:0!important;border-radius:12px!important;box-shadow:0 2px 8px rgba(20,34,52,.12)!important;
+  opacity:1!important;visibility:visible!important;text-shadow:none!important
+}
+html[class$="-mode"] #recentEventCycle,
+html[class$="-mode"] #upcomingEventCycle,
+html[class$="-mode"] #recentEventCycle .event-cycle-content,
+html[class$="-mode"] #upcomingEventCycle .event-cycle-content{
+  padding:0!important;background:transparent!important;border:0!important;outline:0!important;box-shadow:none!important
+}
+html[class$="-mode"] #recentEventCycle .event-cycle-content>.card,
+html[class$="-mode"] #upcomingEventCycle .event-cycle-content>.card{
+  position:relative;background:var(--card,#fff)!important;color:var(--season-panel-text)!important;
+  border:0!important;outline:0!important;border-radius:18px!important;box-shadow:var(--shadow)!important
+}
+html[class$="-mode"] #recentEventCycle .event-cycle-content>.card::before,
+html[class$="-mode"] #upcomingEventCycle .event-cycle-content>.card::before{
+  content:""!important;display:block!important;position:absolute!important;inset:0 auto 0 0!important;
+  width:5px!important;background:linear-gradient(var(--yel),#f2b800)!important;
+  border:0!important;outline:0!important;box-shadow:none!important
+}
+
+/* ==========================================================
+   Christmas implementation: 20 December to 1 January
+   ========================================================== */
+html.christmas-mode body{
+  --season-page-bg:#0d3a20;
+  background-color:var(--season-page-bg)!important;
+  background-image:linear-gradient(rgba(8,42,22,.08),rgba(8,42,22,.08)),
+    url('media/seasonal/green-christmas-wrapping-paper.webp')!important;
+  background-size:auto,450px 450px!important;background-repeat:repeat!important;background-attachment:fixed!important
+}
+
+/* Snow is created by JavaScript and stays inside the Welcome banner. */
+html.christmas-mode .hero{position:relative;overflow:hidden}
+html:not(.christmas-mode) .christmas-snow{display:none!important}
+html.christmas-mode .christmas-snow{display:block;position:absolute;z-index:7;pointer-events:none;inset:0;overflow:hidden}
+.christmas-flake{
+  position:absolute;left:var(--x);top:-28px;color:#fff;font-size:var(--size);line-height:1;opacity:var(--op);
+  text-shadow:0 1px 3px rgba(25,47,58,.55);
+  animation:ppccRealFlake var(--dur) linear var(--delay) infinite;will-change:transform
+}
+@keyframes ppccRealFlake{
+  0%{transform:translate3d(0,-28px,0) rotate(0)}
+  35%{transform:translate3d(calc(var(--drift)*.45),82px,0) rotate(115deg)}
+  68%{transform:translate3d(calc(var(--drift)*-.32),165px,0) rotate(235deg)}
+  100%{transform:translate3d(var(--drift),275px,0) rotate(360deg)}
+}
+
+/* Decorative lower-right cricket/toy detail. */
+html.christmas-mode .home-grid::after{
+  content:"";position:fixed;pointer-events:none;z-index:1;right:0;bottom:0;width:260px;height:215px;
+  background:url('media/seasonal/victorian-christmas-decorations.webp') 100% 100%/850px auto no-repeat;
+  filter:drop-shadow(0 3px 5px rgba(55,35,12,.18))
+}
+html.christmas-mode .home-grid>*{position:relative;z-index:2}
+
+/* Festive Social Media artwork. */
+html.christmas-mode .follow{
+  position:relative!important;isolation:isolate;overflow:hidden;min-height:220px!important;padding:22px!important;
+  color:#fff!important;border:2px solid var(--gold)!important;border-radius:16px!important;
+  box-shadow:0 7px 20px rgba(28,39,64,.2)!important
+}
+html.christmas-mode .follow::before{
+  content:"";position:absolute;z-index:-2;inset:0;
+  background:#071c3d url('media/seasonal/victorian-social-panel.webp') center/cover no-repeat
+}
+html.christmas-mode .follow::after{
+  content:"";position:absolute;z-index:-1;right:0;top:0;bottom:0;width:23%;pointer-events:none;
+  background:linear-gradient(90deg,rgba(7,28,61,0),rgba(7,28,61,.18) 30%,rgba(7,28,61,.48))
+}
+html.christmas-mode .follow>h3,
+html.christmas-mode .follow>#soc{
+  position:absolute!important;z-index:10!important;right:18px!important;left:auto!important;
+  width:24%!important;box-sizing:border-box!important;margin:0!important;background:transparent!important;
+  border:0!important;box-shadow:none!important;text-align:center!important
+}
+html.christmas-mode .follow>h3{
+  top:50%!important;transform:translateY(-62px)!important;padding:0 4px 6px!important;
+  color:#fff!important;white-space:nowrap!important;text-shadow:0 2px 5px rgba(0,0,0,.85)!important
+}
+html.christmas-mode .follow>#soc{
+  top:50%!important;transform:translateY(-19px)!important;padding:4px!important;
+  display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+  justify-content:center!important;align-items:center!important;gap:8px!important
+}
+html.christmas-mode .follow>#soc .social-btn{position:relative!important;flex:0 0 auto!important;margin:0!important}
+
+@media(max-width:1100px) and (min-width:761px){
+  html.christmas-mode .follow>h3,
+  html.christmas-mode .follow>#soc{width:30%!important;right:12px!important}
+}
+@media(max-width:760px){
+  html.christmas-mode body{background-size:auto,330px 330px!important}
+  .christmas-flake:nth-child(2n){display:none}
+  html.christmas-mode .home-grid::after{width:118px;height:110px;background-size:520px auto;opacity:.82}
+  html.christmas-mode .follow{min-height:190px!important;padding:18px 18px 78px!important}
+  html.christmas-mode .follow::before{background-position:41% center}
+  html.christmas-mode .follow::after{left:0;right:0;top:auto;bottom:0;width:auto;height:72px;
+    background:linear-gradient(0deg,rgba(7,28,61,.78),rgba(7,28,61,.25),transparent)}
+  html.christmas-mode .follow>h3,
+  html.christmas-mode .follow>#soc{position:relative!important;right:auto!important;top:auto!important;
+    transform:none!important;width:auto!important;max-width:none!important}
+}
+@media(prefers-reduced-motion:reduce){.christmas-flake{animation:none;top:var(--x);opacity:.24}}
+
+/* Development seasonal trigger: invisible but clickable in the header.
+   Reusable for testing Christmas, Easter and future seasonal settings. */
+.christmas-toggle{
+  opacity:0 !important;
+  color:transparent !important;
+  background:transparent !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+.christmas-toggle:hover,
+.christmas-toggle:focus,
+.christmas-toggle:active,
+.christmas-toggle[aria-pressed="true"]{
+  opacity:0 !important;
+  color:transparent !important;
+  background:transparent !important;
+  border-color:transparent !important;
+  box-shadow:none !important;
+}
+
+/* ==========================================================
+   Easter seasonal preview
+   Uses the same reusable panel/readability foundation as Christmas.
+   ========================================================== */
+html.easter-mode body{
+  --season-page-bg:#cfeeff;
+  background-color:var(--season-page-bg)!important;
+  background-image:url('media/seasonal/easter-wrapping-paper.webp')!important;
+  background-size:450px 450px!important;
+  background-repeat:repeat!important;
+  background-attachment:fixed!important;
+}
+
+/* Easter Social Media artwork. */
+html.easter-mode .follow{
+  position:relative!important;isolation:isolate;overflow:hidden;min-height:220px!important;padding:22px!important;
+  color:#183b58!important;border:2px solid var(--gold)!important;border-radius:16px!important;
+  box-shadow:0 7px 20px rgba(70,118,148,.18)!important
+}
+html.easter-mode .follow::before{
+  content:"";position:absolute;z-index:-2;inset:0;
+  background:#d9f2ff url('media/seasonal/easter-social-panel.webp') center/cover no-repeat
+}
+html.easter-mode .follow::after{content:none!important}
+html.easter-mode .follow>h3,
+html.easter-mode .follow>#soc{
+  position:absolute!important;z-index:10!important;right:18px!important;left:auto!important;
+  width:24%!important;box-sizing:border-box!important;margin:0!important;background:transparent!important;
+  border:0!important;box-shadow:none!important;text-align:center!important
+}
+html.easter-mode .follow>h3{
+  top:50%!important;transform:translateY(-62px)!important;padding:0 4px 6px!important;
+  color:#244b67!important;white-space:nowrap!important;text-shadow:0 1px 2px rgba(255,255,255,.95)!important
+}
+html.easter-mode .follow>#soc{
+  top:50%!important;transform:translateY(-19px)!important;padding:4px!important;
+  display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;
+  justify-content:center!important;align-items:center!important;gap:8px!important
+}
+html.easter-mode .follow>#soc .social-btn{position:relative!important;flex:0 0 auto!important;margin:0!important}
+
+/* Light extra spring detail in empty lower-right gutter, deliberately subtle. */
+html.easter-mode .home-grid::after{
+  content:"";position:fixed;pointer-events:none;z-index:1;right:10px;bottom:5px;width:170px;height:120px;
+  background:url('media/seasonal/easter-social-panel.webp') 100% 100%/760px auto no-repeat;opacity:.72
+}
+html.easter-mode .home-grid>*{position:relative;z-index:2}
+
+@media(max-width:1100px) and (min-width:761px){
+  html.easter-mode .follow>h3,
+  html.easter-mode .follow>#soc{width:30%!important;right:12px!important}
+}
+@media(max-width:760px){
+  html.easter-mode body{background-size:330px 330px!important}
+  html.easter-mode .home-grid::after{display:none}
+  html.easter-mode .follow{min-height:190px!important;padding:18px 18px 78px!important}
+  html.easter-mode .follow::before{background-position:40% center}
+  html.easter-mode .follow>h3,
+  html.easter-mode .follow>#soc{position:relative!important;right:auto!important;top:auto!important;
+    transform:none!important;width:auto!important;max-width:none!important}
+}
+
+/* Invisible development hotspot: each click advances Normal -> Christmas -> Easter -> Normal. */
+.christmas-toggle{display:none!important}
+.season-next{width:44px;height:38px;padding:0!important;margin:0 4px!important;opacity:0!important;color:transparent!important;background:transparent!important;border:0!important;box-shadow:none!important;cursor:pointer!important}
+.season-next:hover,.season-next:focus,.season-next:active{opacity:0!important;color:transparent!important;background:transparent!important;border:0!important;box-shadow:none!important;outline:0!important}
+
+/* Easter Welcome-banner animation: slow flapping chicks drifting down instead of snow. */
+html.easter-mode .hero{position:relative;overflow:hidden}
+html:not(.easter-mode) .easter-chicks{display:none!important}
+html.easter-mode .easter-chicks{display:block;position:absolute;z-index:7;pointer-events:none;inset:0;overflow:hidden}
+.easter-chick{
+ position:absolute;left:var(--x);top:-44px;width:var(--size);height:var(--size);
+ background-image:url('media/seasonal/easter-chick-sprites.webp');
+ background-repeat:no-repeat;background-size:400% 100%;
+ background-position-x:calc(var(--frame) * -100%);background-position-y:center;
+ filter:drop-shadow(0 2px 2px rgba(56,75,60,.18));
+ animation:easterChickFall var(--dur) ease-in-out var(--delay) infinite,easterChickFlap .58s steps(1,end) var(--delay) infinite;
+ will-change:transform,background-position
+}
+@keyframes easterChickFall{
+ 0%{transform:translate3d(0,-38px,0) rotate(-4deg)}
+ 24%{transform:translate3d(var(--sway),55px,0) rotate(5deg)}
+ 51%{transform:translate3d(calc(var(--drift)*.38),125px,0) rotate(-3deg)}
+ 76%{transform:translate3d(calc(var(--drift)*.7),195px,0) rotate(4deg)}
+ 100%{transform:translate3d(var(--drift),285px,0) rotate(-2deg)}
+}
+@keyframes easterChickFlap{
+ 0%,100%{background-position-x:0%}
+ 25%{background-position-x:33.333%}
+ 50%{background-position-x:66.666%}
+ 75%{background-position-x:100%}
+}
+@media(prefers-reduced-motion:reduce){.easter-chick{animation:none;opacity:.28}}
+@media(max-width:760px){.easter-chick:nth-child(2n){display:none}}
+/* ==========================================================
+   Consolidated seasonal themes
+   ========================================================== */
+
+/* Complete the shared seasonal foundation above with one final,
+   authoritative rule set for Halloween, sponsors and hero assets. */
+
+/* Shared seasonal sponsor heading */
+html:is(.christmas-mode,.easter-mode,.halloween-mode) #sponsors-title{
+  display:table;width:auto;max-width:100%;margin:0 auto 12px;padding:7px 12px;
+  color:var(--text,#17233b);text-align:center;background:rgba(255,255,255,.96);
+  border:0;border-radius:12px;box-shadow:0 2px 8px rgba(20,34,52,.12);
+  opacity:1;visibility:visible;text-shadow:none
+}
+
+/* Shared substitute objects */
+html:is(.christmas-mode,.easter-mode,.halloween-mode) .hero img[src*="pink-cricket-ball"],
+html:is(.christmas-mode,.easter-mode,.halloween-mode) .hero img[src*="red-cricket-ball"]{
+  opacity:0!important;visibility:hidden!important
+}
+.seasonal-hero-objects{position:absolute;inset:0;z-index:5;overflow:hidden;pointer-events:none}
+.seasonal-object{
+  position:absolute;bottom:0;width:clamp(94px,10vw,126px);height:clamp(78px,8.8vw,108px);
+  background-repeat:no-repeat;background-position:center bottom;background-size:contain;
+  filter:drop-shadow(0 4px 4px rgba(0,0,0,.22))
+}
+.seasonal-left{left:clamp(8px,2vw,24px)}
+.seasonal-right{right:clamp(8px,2vw,24px)}
+html.christmas-mode .seasonal-left{background-image:url('media/seasonal/christmas-pink-pudding-2026-new.webp')}
+html.christmas-mode .seasonal-right{background-image:url('media/seasonal/christmas-red-pudding-2026-new.webp')}
+html.easter-mode .seasonal-left{background-image:url('media/seasonal/easter-pink-egg-2026-new.webp')}
+html.easter-mode .seasonal-right{background-image:url('media/seasonal/easter-red-egg-2026-new.webp')}
+html.halloween-mode .seasonal-left{background-image:url('media/seasonal/halloween-pink-pumpkin.webp');animation:pinkPumpkinFlicker 2.15s ease-in-out infinite alternate}
+html.halloween-mode .seasonal-right{background-image:url('media/seasonal/halloween-red-pumpkin.webp');animation:redPumpkinFlicker 1.8s ease-in-out infinite alternate}
+@keyframes pinkPumpkinFlicker{0%{filter:drop-shadow(0 4px 4px rgba(0,0,0,.22)) brightness(.97)}35%{filter:drop-shadow(0 0 9px rgba(255,38,157,.44)) brightness(1.07)}100%{filter:drop-shadow(0 0 14px rgba(255,38,157,.3)) brightness(1.01)}}
+@keyframes redPumpkinFlicker{0%{filter:drop-shadow(0 4px 4px rgba(0,0,0,.22)) brightness(.96)}48%{filter:drop-shadow(0 0 10px rgba(230,35,22,.48)) brightness(1.09)}100%{filter:drop-shadow(0 0 15px rgba(230,35,22,.28)) brightness(1.02)}}
+
+/* Halloween: one full-page image, no stale wallpaper overrides */
+html.halloween-mode,html.halloween-mode body{background-color:#101820!important}
+html.halloween-mode body{
+  background-image:url('media/seasonal/halloween-page-background.webp')!important;
+  background-repeat:no-repeat!important;background-position:center top!important;
+  background-size:100% auto!important;background-attachment:scroll!important
+}
+html.halloween-mode body::before{content:none!important;display:none!important;background:none!important}
+html.halloween-mode .home-grid::before{
+  content:"";position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(135deg,rgba(210,210,210,.13),transparent 10%) top left/190px 190px no-repeat,
+             linear-gradient(225deg,rgba(210,210,210,.1),transparent 10%) top right/170px 170px no-repeat;
+  opacity:.55
+}
+html.halloween-mode .home-grid>*{position:relative;z-index:2}
+html.halloween-mode body::after{
+  content:"";position:fixed;left:4%;bottom:5%;z-index:0;width:110px;height:150px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 80%,rgba(255,119,24,.2),transparent 62%);
+  animation:halloweenFlicker 2.4s ease-in-out infinite alternate
+}
+@keyframes halloweenFlicker{0%{opacity:.45;transform:scale(.97)}45%{opacity:.8}100%{opacity:.55;transform:scale(1.04)}}
+
+/* Halloween social area is deliberately transparent */
+html.halloween-mode .follow{
+  position:relative;isolation:isolate;overflow:hidden;min-height:220px;padding:22px;
+  color:#fff;background:transparent!important;border:2px solid rgba(215,178,74,.72);
+  border-radius:16px;box-shadow:none!important;backdrop-filter:none
+}
+html.halloween-mode .follow::before,html.halloween-mode .follow::after{content:none!important;display:none!important;background:none!important}
+html.halloween-mode .follow>h3,html.halloween-mode .follow>#soc{
+  position:absolute;right:18px;left:auto;z-index:10;box-sizing:border-box;width:24%;margin:0;text-align:center;
+  background:transparent;border:0;box-shadow:none
+}
+html.halloween-mode .follow>h3{top:50%;padding:0 4px 6px;color:#ffe7ad;white-space:nowrap;transform:translateY(-62px);text-shadow:0 2px 5px rgba(0,0,0,.95)}
+html.halloween-mode .follow>#soc{top:50%;display:flex;flex-flow:row nowrap;align-items:center;justify-content:center;gap:8px;padding:4px;transform:translateY(-19px)}
+html.halloween-mode .follow>#soc .social-btn{position:relative;flex:0 0 auto;margin:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}
+
+/* Halloween spiders */
+html.halloween-mode .hero{position:relative;overflow:hidden}
+html:not(.halloween-mode) .halloween-spiders{display:none!important}
+html.halloween-mode .halloween-spiders{position:absolute;inset:0;z-index:8;display:block;overflow:hidden;pointer-events:none}
+.halloween-spider-drop{position:absolute;top:-8px;left:var(--x);width:var(--size);height:calc(100% + 8px);animation:spiderDrop var(--dur) linear var(--delay) infinite;will-change:transform}
+.spider-thread{position:absolute;top:0;left:50%;width:1px;height:calc(100% - 25px);background:rgba(215,215,215,.55);transform-origin:top}
+.spider-body{position:absolute;bottom:14px;left:0;width:var(--size);height:var(--size);background:url('media/seasonal/halloween-spider-sprites.webp') 0 center/400% 100% no-repeat;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6));animation:spiderLegs .62s steps(1,end) infinite,spiderRun var(--dur) linear var(--delay) infinite}
+@keyframes spiderDrop{0%{transform:translateY(-95%)}62%,76%,100%{transform:translateY(0)}}
+@keyframes spiderRun{0%,72%{translate:0 0}100%{translate:var(--run) 0}}
+@keyframes spiderLegs{0%,100%{background-position-x:0}25%{background-position-x:33.333%}50%{background-position-x:66.666%}75%{background-position-x:100%}}
+
+@media(max-width:1100px) and (min-width:761px){
+  html.halloween-mode .follow>h3,html.halloween-mode .follow>#soc{right:12px;width:30%}
+}
+@media(max-width:760px){
+  .seasonal-object{width:76px;height:66px}.seasonal-left{left:5px}.seasonal-right{right:5px}
+  html.halloween-mode body{background-position:center top!important;background-size:100% auto!important;background-attachment:scroll!important}
+  html.halloween-mode .follow{min-height:190px;padding:18px 18px 78px}
+  html.halloween-mode .follow>h3,html.halloween-mode .follow>#soc{position:relative;top:auto;right:auto;left:auto;width:auto;max-width:none;transform:none}
+  .halloween-spider-drop:nth-child(even){display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .halloween-spider-drop,.spider-body,html.halloween-mode body::after,html.halloween-mode .seasonal-object{animation:none!important}
+  .halloween-spider-drop{display:none!important}
+}
+
+/* Seasonal readability: history navigation must remain legible over wallpapers. */
+html:is(.christmas-mode,.easter-mode,.halloween-mode) .history-toolbar{
+  padding:10px 12px;
+  background:#fff;
+  border:1px solid rgba(23,45,77,.14);
+  border-radius:14px;
+  box-shadow:0 3px 12px rgba(20,34,52,.12);
+}
+html:is(.christmas-mode,.easter-mode,.halloween-mode) .history-tabs{
+  padding:3px;
+  background:#fff;
+  border-radius:10px;
+}
+html:is(.christmas-mode,.easter-mode,.halloween-mode) .history-tabs [role="tab"]{
+  background:#eef2f6;
+  color:var(--navy);
+  border-bottom-color:transparent;
+}
+html:is(.christmas-mode,.easter-mode,.halloween-mode) .history-tabs [role="tab"][aria-selected="true"]{
+  background:var(--navy);
+  color:var(--yel);
+  border-bottom-color:var(--yel);
+}
+html:is(.christmas-mode,.easter-mode,.halloween-mode) .history-toolbar-controls{
+  padding:3px;
+  background:#fff;
+  border-radius:10px;
+}
+html:is(.christmas-mode,.easter-mode,.halloween-mode) .history-step{
+  background:#fff;
+  color:var(--navy);
+}
+@media(prefers-color-scheme:dark){
+  html:is(.christmas-mode,.easter-mode,.halloween-mode) .history-step{
+    border-color:rgba(23,45,77,.2);
+  }
+}

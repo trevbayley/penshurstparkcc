@@ -1,3 +1,38 @@
+// Seasonal theme controller: invisible header hotspot cycles Normal -> Christmas -> Easter.
+(function initSeasonThemes(){
+ const modes=['normal','christmas','easter','halloween'];
+ const now=new Date(),m=now.getMonth()+1,d=now.getDate();
+ function easterSunday(year){
+  // Gregorian computus (Meeus/Jones/Butcher), returned in local time.
+  const a=year%19,b=Math.floor(year/100),c=year%100,d=Math.floor(b/4),e=b%4;
+  const f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3);
+  const h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4;
+  const l=(32+2*e+2*i-h-k)%7,m2=Math.floor((a+11*h+22*l)/451);
+  const month=Math.floor((h+l-7*m2+114)/31),day=((h+l-7*m2+114)%31)+1;
+  return new Date(year,month-1,day);
+ }
+ function isEnglandWalesEasterWeekend(date){
+  const easter=easterSunday(date.getFullYear());
+  const goodFriday=new Date(easter);goodFriday.setDate(easter.getDate()-2);
+  const easterMonday=new Date(easter);easterMonday.setDate(easter.getDate()+1);
+  const today=new Date(date.getFullYear(),date.getMonth(),date.getDate());
+  return today>=goodFriday&&today<=easterMonday;
+ }
+ const automatic=((m===12&&d>=20)||(m===1&&d<=1))?'christmas':(isEnglandWalesEasterWeekend(now)?'easter':(((m===10&&d===31)||(m===11&&d<=5))?'halloween':'normal'));
+ let current=automatic;
+ try{const saved=localStorage.getItem('ppcc-season-preview');if(modes.includes(saved))current=saved}catch(e){}
+ function apply(mode){
+  current=modes.includes(mode)?mode:'normal';
+  document.documentElement.classList.toggle('christmas-mode',current==='christmas');
+  document.documentElement.classList.toggle('easter-mode',current==='easter');
+  document.documentElement.classList.toggle('halloween-mode',current==='halloween');
+  try{localStorage.setItem('ppcc-season-preview',current)}catch(e){}
+  window.dispatchEvent(new CustomEvent('ppcc:season',{detail:{mode:current}}));
+  window.dispatchEvent(new CustomEvent('ppcc:christmas',{detail:{active:current==='christmas'}}));
+ }
+ window.PPCCSeason={get mode(){return current},next(){apply(modes[(modes.indexOf(current)+1)%modes.length])},apply,reset(){try{localStorage.removeItem('ppcc-season-preview')}catch(e){}apply(automatic)}};
+ apply(current);
+})();
 
 // ===== CONFIG: replace these with real values =====
 const CFG={w3w:'https://what3words.com/crisp.dates.daily',
@@ -35,24 +70,27 @@ const CLUB_DATA={
   {id:'event-4',type:'event',date:'2027-02-06',time:'18:30',title:'2027 Club quiz',detail:'Venue: Penshurst Village Hall',url:'https://wa.me/447917730761?text=I%20would%20like%20to%20book%20a%20table%20for%20a%20quiz%20team%20on%20the%206th%20Feb.%20Our%20team%20has%206%20members%20and%20our%20Team%20name%20is%3A',action:'Book a quiz table on WhatsApp',photo:'media/events/quiz-night.webp'}
  ],
 history:[
-  ['1719','Penshurst cricketers at bowling practice','media/history/1719.webp'],
-  ['1723','The club is founded, as is shown on our crest.','media/history/1723-club-crest.webp'],
-  ['1724','First recorded match at Penshurst Park (Penshurst, Tonbridge & Wadhurst v Dartford).'],
-  ['1728',"Edwin Stead's XI played two matches at Penshurst Park, against the 2nd Duke of Richmond's XI and Sir William Gage's XI. Stead's XI defeated Gage's XI by 7 runs in a match played for 50 guineas."],
-  ['1729',"Stead's XI played Sir William Gage's XI at Penshurst Park for 100 guineas. Gage's XI achieved what is believed to be the earliest known innings victory in cricket; a contemporary report appeared in the Norwich Gazette of 30 August 1729."],
-  ['1760',"Dukes, of Penshurst, credited with manufacturing the first ‘modern’ cricket ball."],
-  ['1949','Britain from the Air image.','media/history/1949.webp'],
-  ['1960','A home game played c.1960.','media/history/1960.webp'],
-  ['1969 & 1972','Club hosts the visiting Toronto Cricket Club.'],
+  ['1719','An illustration records Penshurst cricketers practising their bowling in 1719.','media/history/1719.webp'],
+  ['1723','Penshurst Park Cricket Club traces its foundation to 1723, the date carried on the club crest.','media/history/1723-club-crest.webp'],
+  ['1724','On Monday, 10 August 1724, a match described in a contemporary diary as "a great cricket match" featured the combined parishes of Penshurst, Tonbridge and Wadhurst against Dartford. This is recorded as the first known match associated with Penshurst Park.'],
+  ['1728',"In 1728, Edwin Stead's XI played two matches at Penshurst Park against Sussex-backed sides. A return match against the XI of Charles Lennox, 2nd Duke of Richmond, was followed by a match against Sir William Gage's XI, which Stead's XI won by seven runs for a stake of 50 guineas.",'media/history/1728-charles-lennox.webp'],
+  ['1729',"On 28 August 1729, Edwin Stead's XI met Sir William Gage's XI at Penshurst Park for a stake of 100 guineas. Gage's XI achieved what is believed to be the earliest known innings victory in cricket.",'media/history/1729-sir-william-gage.webp'],
+  ['1760',"Dukes of Penshurst (est. 1760) are traditionally credited with manufacturing the first ‘modern’ cricket ball around this period.",'media/history/1760-dukes-of-penshurst.webp'],
+  ['1850–1855','Cricket records show Penshurst playing regularly at Penshurst Park during the 1850s, including matches against Town Malling, Wateringbury and Beverley.'],
+  ['1934','On 1 August 1934, cricket at Penshurst was photographed during preparations for play at Penshurst Castle in Kent.','media/history/1934-cricket-at-penshurst.webp'],
+  ['1949','An aerial photograph records Penshurst Place and the surrounding estate in 1949.','media/history/1949.webp'],
+  ['1960','A home match at Penshurst Park, photographed around 1960.','media/history/1960.webp'],
+  ['1969 & 1972','Penshurst Park hosted touring teams from Toronto Cricket Club in 1969 and 1972.'],
+  ['1992',"Celebrity cricket match in aid of the Royal Marsdens Children's Cancer Fund. Batsman Roger Daltry. Bowler Bill Wyman. 16th August 1992",'media/history/1992-celebrity-cricket-royal-marsden.webp'],
   ['1996','Club begins unbroken spell in the top division of the Kent County Village League.'],
-  ['2012–2014','Three consecutive league titles.'],
+  ['2012–2014','The Senior 1st XI won three consecutive league titles between 2012 and 2014.'],
   ['2019','Singapore CC touring side v Penshurst Park. Ladies and junior cricket (re)introduced; junior section grows from 32 to c. 90.','media/history/2019.webp'],
-  ['2022','Jake wins another award - Kent Cricket Innovators Award 2022.','media/history/2022-kent-cricket-innovators-award.webp'],
-  ['2023',"Third consecutive Kent Women's Softball League title; hosts the Finals Day."],
-  ['2024',"The club marked 300 years of cricket at Penshurst Park in July 2024 with a celebratory week and a 25-over match between a President's XI (featuring Penshurst Place heir Dr Hon Phillip Sidney) and a Penshurst Park XI.",'media/history/2024-presidents-day.webp'],
-    ['2024','Opening of Net 1 by Russell Hammond, son of George Hammond, a long standing Chairman of the club.','media/history/2024-net-1-opening.webp'],
+  ['2022','Jake Cheesman received the Kent Cricket Innovators Award.','media/history/2022-kent-cricket-innovators-award.webp'],
+  ['2023',"The women’s softball team won its third consecutive Kent Women’s Softball League title, with Penshurst Park hosting Finals Day.",'media/teams/2023-ladies-softball-three-time-winners.webp'],
+  ['2024 | 300th anniversary',"The club celebrated the 300th anniversary of the first known match associated with Penshurst Park with a week of events and a 25-over match between a President's XI and a Penshurst Park XI.",'media/history/2024-presidents-day.webp'],
+    ['2024 | Net 1','The club’s first permanent practice net, Net 1, was officially opened by Russell Hammond, whose father, George Hammond, was a long-standing club chairman.','media/history/2024-net-1-opening.webp'],
   ['2025',"Great Estates from Above: a film crew visits the estate on President's Match Day.",'media/history/2025-great-estates-from-above.webp','https://www.channel4.com/programmes/great-estates-from-above/on-demand/77687-003','Watch on Channel 4'],
-  ['2026',"Ladies 1st XI win Kent Women's Championship League title.",'media/history/2026-ladies-1st-xi.webp']
+  ['2026',"The Women’s 1st XI won the Kent Women’s Championship title.",'media/history/2026-ladies-1st-xi.webp']
  ],
 links:[
   {title:'Cricket resources',items:[
@@ -183,12 +221,12 @@ function evLine(e){const photo=e.photo?`<div class="event-media"><img src="${saf
 function home(){const homeTeams=homeTeamSelection();const recent=S.ev.filter(e=>e.date<today).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
  const upcoming=S.ev.filter(e=>e.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,7);
  $('#app').innerHTML=`<section class="hero"><div class="txt"><div class="hero-heading"><h1 class="hero-title">Welcome to Penshurst Park Cricket Club</h1></div><div class="hero-marks"><img src="media/club/club-crest.webp" alt="" width="70" class="hero-logo"></div><img class="hero-ball-grass" src="media/club/red-cricket-ball-grass.webp" alt="Red cricket ball resting on short-cut grass"><img class="hero-ball-grass hero-ball-grass-pink" src="media/club/pink-cricket-ball-grass.webp" alt="Pink cricket ball resting on short-cut grass"></div></section>
- <div class="grid"><aside><h2>Recent events</h2><div id="recentEventCycle"></div></aside>
- <section><h2>About the club</h2><p>One of England’s oldest cricket venues, Penshurst Park has hosted cricket since the early 18th century, with its first recorded match played here in 1724. More than 300 years later, cricket continues in the historic surroundings of Penshurst Place.</p><p>Today, Penshurst Park is a thriving village club with men’s, women’s and junior cricket for a wide range of ages and abilities. Our women’s section has grown from softball cricket to become <a href="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/" target="_blank" rel="noopener noreferrer">2026 Kent Women’s Cricket League Championship winners</a>, while our expanding junior section is helping introduce a new generation to the game.</p><p><a class="btn" href="#aboutUs">More about us</a></p>
+ <div class="grid"><aside class="home-panel home-recent"><h2>Recent events</h2><div id="recentEventCycle"></div></aside>
+ <section class="home-panel home-about"><h2>About the club</h2><p>One of England’s oldest cricket venues, Penshurst Park has hosted cricket since the early 18th century, with its first recorded match played here in 1724. More than 300 years later, cricket continues in the historic surroundings of Penshurst Place.</p><p>Today, Penshurst Park is a thriving village club with men’s, women’s and junior cricket for a wide range of ages and abilities. Our women’s section has grown from softball cricket to become <a href="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/" target="_blank" rel="noopener noreferrer">2026 Kent Women’s Cricket League Championship winners</a>, while our expanding junior section is helping introduce a new generation to the game.</p><p><a class="btn" href="#aboutUs">More about us</a></p>
  <section class="team-gallery" aria-labelledby="team-gallery-title"><h3 id="team-gallery-title">Our teams</h3><p class="team-season-label">${esc(homeTeams.season)} season</p><div id="teamGallery"></div><p class="home-team-action"><a class="btn y" href="#teams">View all our teams</a></p></section>
  
 </section>
- <aside class="home-upcoming"><h2><span class="home-upcoming-mark" aria-hidden="true"></span>Upcoming events</h2><div id="upcomingEventCycle"></div></aside></div>`;initEventCycle('#recentEventCycle',recent,true);initEventCycle('#upcomingEventCycle',upcoming,false);initTeamGallery(homeTeams.photos)}
+ <aside class="home-panel home-upcoming"><h2><span class="home-upcoming-mark" aria-hidden="true"></span>Upcoming events</h2><div id="upcomingEventCycle"></div></aside></div>`;initEventCycle('#recentEventCycle',recent,true);initEventCycle('#upcomingEventCycle',upcoming,false);initTeamGallery(homeTeams.photos)}
 function initEventCycle(selector,events,isRecent){const host=$(selector);if(!host)return;if(!events.length){host.innerHTML=isRecent?'<div class="photo" aria-hidden="true"></div><p class="mut">No recent events yet.</p>':'<p class="mut">No upcoming events at the moment.</p>';return}let current=0,timer=null,fadeTimer=null;const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;host.innerHTML='<div class="event-cycle-content"></div>';const content=host.querySelector('.event-cycle-content');function render(index){current=(index+events.length)%events.length;content.innerHTML=evLine(events[current])}function show(index){clearTimeout(fadeTimer);if(reduceMotion){render(index);return}content.classList.add('is-fading');fadeTimer=setTimeout(()=>{render(index);requestAnimationFrame(()=>content.classList.remove('is-fading'))},500)}function start(){if(events.length>1&&!reduceMotion)timer=setInterval(()=>show(current+1),12000)}registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(fadeTimer)});render(0);start()}
 
 function initTeamGallery(teamPhotos){
@@ -257,7 +295,7 @@ function history(){
    </div>
    <div class="history-timeline-shell">
     <div class="history-timeline" role="listbox" tabindex="0" aria-label="Club history entries">
-     ${items.map((x,i)=>`<button class="history-year" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-history-index="${i}"><strong>${esc(x.year)}</strong><span>${esc(x.description)}</span></button>`).join('')}
+     ${items.map((x,i)=>`<button class="history-year" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-history-index="${i}"><strong>${esc(x.year)}</strong><span>${esc(x.description)}</span>${x.url?`<a class="history-entry-link" href="${safeHref(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.linkLabel||'Open link')} ↗</a>`:''}</button>`).join('')}
     </div>
    </div>
   </section>`;
@@ -278,7 +316,7 @@ function history(){
    if(focus)active.focus({preventScroll:true});
   }
   function restart(){clearTimeout(timer);if(items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)}
-  buttons.forEach((button,i)=>button.addEventListener('click',()=>{select(i);restart()}));
+  buttons.forEach((button,i)=>button.addEventListener('click',e=>{if(e.target.closest('.history-entry-link'))return;select(i);restart()}));
     timeline.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true});restart()});
   registerRouteCleanup(()=>clearTimeout(timer));
   select(0,{scroll:false});
@@ -356,3 +394,94 @@ document.addEventListener('dragstart',e=>{
  const src=img.getAttribute('src')||'';
  if(src.startsWith('media/history/')||src.startsWith('media/teams/')||img.closest('.event-media'))e.preventDefault();
 });
+
+document.addEventListener('DOMContentLoaded',()=>{
+ if(document.getElementById('seasonNext'))return;
+ const target=document.querySelector('header .header-inner, header nav, header'); if(!target)return;
+ const b=document.createElement('button'); b.id='seasonNext'; b.type='button'; b.className='season-next';
+ const sync=()=>{const mode=window.PPCCSeason?.mode||'normal';b.textContent='Next season';b.setAttribute('aria-label',`Next seasonal preview. Current: ${mode}`);b.title=`Next seasonal preview. Current: ${mode}`};
+ b.onclick=()=>{window.PPCCSeason?.next();sync()}; sync(); target.appendChild(b);
+});
+
+function setupChristmasSnow(){
+  const hero=document.querySelector('.hero');
+  if(!hero||hero.querySelector('.christmas-snow'))return;
+  const layer=document.createElement('div');layer.className='christmas-snow';layer.setAttribute('aria-hidden','true');
+  const glyphs=['❄','❅','❆'];
+  for(let i=0;i<42;i++){
+    const f=document.createElement('span');f.className='christmas-flake';f.textContent=glyphs[i%3];
+    f.style.setProperty('--x',`${(i*37)%101}%`);
+    f.style.setProperty('--size',`${9+(i*7)%11}px`);
+    f.style.setProperty('--dur',`${5.4+(i%8)*.72}s`);
+    f.style.setProperty('--delay',`${-(i%13)*.63}s`);
+    f.style.setProperty('--drift',`${-22+(i*19)%45}px`);
+    f.style.setProperty('--op',`${.48+(i%5)*.11}`);
+    layer.appendChild(f);
+  }
+  hero.appendChild(layer);
+}
+function setSeasonalPanelRoles(){document.querySelectorAll('.follow').forEach(x=>x.classList.add('seasonal-art-panel'));}
+function refreshChristmasVisuals(){
+  const active=document.documentElement.classList.contains('christmas-mode');
+  const existing=document.querySelector('.christmas-snow');
+  if(active){setupChristmasSnow();}
+  else if(existing){existing.remove();}
+}
+document.addEventListener('DOMContentLoaded',()=>{setSeasonalPanelRoles();refreshChristmasVisuals()});
+window.addEventListener('ppcc:christmas',()=>{setSeasonalPanelRoles();refreshChristmasVisuals()});
+
+
+function setupEasterChicks(){
+ const hero=document.querySelector('.hero');
+ if(!hero)return;
+ const old=hero.querySelector('.easter-chicks');
+ if(!document.documentElement.classList.contains('easter-mode')){if(old)old.remove();return}
+ if(old)return;
+ const layer=document.createElement('div');layer.className='easter-chicks';layer.setAttribute('aria-hidden','true');
+ for(let i=0;i<16;i++){
+  const chick=document.createElement('span');chick.className='easter-chick';
+  chick.style.setProperty('--x',`${3+(i*29)%94}%`);
+  chick.style.setProperty('--size',`${22+(i*7)%13}px`);
+  chick.style.setProperty('--dur',`${10+(i%7)*1.35}s`);
+  chick.style.setProperty('--delay',`${-(i%11)*1.1}s`);
+  chick.style.setProperty('--drift',`${-55+(i*23)%111}px`);
+  chick.style.setProperty('--sway',`${-16+(i*17)%33}px`);
+  chick.style.setProperty('--frame',`${i%4}`);
+  layer.appendChild(chick);
+ }
+ hero.appendChild(layer);
+}
+function refreshEasterVisuals(){setupEasterChicks()}
+document.addEventListener('DOMContentLoaded',refreshEasterVisuals);
+window.addEventListener('ppcc:season',refreshEasterVisuals);
+
+function setupHalloweenSpiders(){
+ const hero=document.querySelector('.hero'); if(!hero)return;
+ const old=hero.querySelector('.halloween-spiders');
+ if(!document.documentElement.classList.contains('halloween-mode')){if(old)old.remove();return}
+ if(old)return;
+ const layer=document.createElement('div');layer.className='halloween-spiders';layer.setAttribute('aria-hidden','true');
+ for(let i=0;i<10;i++){
+  const wrap=document.createElement('span');wrap.className='halloween-spider-drop';
+  wrap.style.setProperty('--x',`${5+(i*31)%90}%`);wrap.style.setProperty('--size',`${18+(i*5)%10}px`);
+  wrap.style.setProperty('--dur',`${9+(i%6)*1.4}s`);wrap.style.setProperty('--delay',`${-(i%8)*1.35}s`);
+  wrap.style.setProperty('--run',`${i%2?45:-45}px`);
+  const thread=document.createElement('i');thread.className='spider-thread';
+  const spider=document.createElement('b');spider.className='spider-body';wrap.append(thread,spider);layer.appendChild(wrap);
+ }
+ hero.appendChild(layer);
+}
+function refreshHalloweenVisuals(){setupHalloweenSpiders()}
+document.addEventListener('DOMContentLoaded',refreshHalloweenVisuals);
+window.addEventListener('ppcc:season',refreshHalloweenVisuals);
+
+function setupSeasonalHeroObjects(){
+ const hero=document.querySelector('.hero'); if(!hero)return;
+ let layer=hero.querySelector('.seasonal-hero-objects');
+ const mode=document.documentElement.classList.contains('christmas-mode')?'christmas':document.documentElement.classList.contains('easter-mode')?'easter':document.documentElement.classList.contains('halloween-mode')?'halloween':'normal';
+ if(mode==='normal'){if(layer)layer.remove();return}
+ if(!layer){layer=document.createElement('div');layer.className='seasonal-hero-objects';layer.setAttribute('aria-hidden','true');layer.innerHTML='<span class="seasonal-object seasonal-left"></span><span class="seasonal-object seasonal-right"></span>';hero.appendChild(layer)}
+ layer.dataset.season=mode;
+}
+document.addEventListener('DOMContentLoaded',setupSeasonalHeroObjects);
+window.addEventListener('ppcc:season',setupSeasonalHeroObjects);

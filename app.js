@@ -45,7 +45,7 @@ const CFG={w3w:'https://what3words.com/crisp.dates.daily',
   {image:'media/teams/ladies-1st-xi-2026.webp',caption:'Ladies 1st XI 2026',season:2026},
   {image:'media/teams/sunday-1st-xi-2026.webp',caption:'Sunday 1st XI 2026',season:2026},
   {image:'media/teams/sunday-2nd-xi-2026.webp',caption:'Sunday 2nd XI 2026',season:2026},
-  {image:'media/teams/u13-girls-kent-champions.webp',caption:'U13 Girls Kent Champions',season:2026},
+  {image:'media/teams/u13-girls-kent-champions.webp',caption:'2024 U13 Girls Kent Champions',season:2024},
   {image:'media/teams/2024-ladies-softball-team-lords.webp',caption:"2024 Ladies Softball team go to Lord's",season:2024},
   {image:'media/teams/2023-touring-side-boys-go-dutch.webp',caption:'2023 Touring side - Boys go Dutch',season:2023},
   {image:'media/teams/2023-ladies-softball-three-time-winners.webp',caption:'Ladies Softball three-time winners - 2021, 2022 and 2023',season:2023},
@@ -77,10 +77,20 @@ history:[
   ['1729',"On 28 August 1729, Edwin Stead's XI met Sir William Gage's XI at Penshurst Park for a stake of 100 guineas. Gage's XI achieved what is believed to be the earliest known innings victory in cricket.",'media/history/1729-sir-william-gage.webp'],
   ['1760',"Dukes of Penshurst (est. 1760) are traditionally credited with manufacturing the first ‘modern’ cricket ball around this period.",'media/history/1760-dukes-of-penshurst.webp'],
   ['1850–1855','Cricket records show Penshurst playing regularly at Penshurst Park during the 1850s, including matches against Town Malling, Wateringbury and Beverley.'],
+  ['1901 | 1st XI','1901 Penshurst Park 1st XI','media/history/1901-penshurst-park-1st-xi.webp'],
+  ['1901 | 2nd XI',"1901 Penshurst Park 2nd XI",'media/history/1901-penshurst-park-senior-mens-2nd-xi.webp'],
+  ['Early 1900s | Date unverified','Penshurst Park Cricket Club team photograph, early 20th century','media/history/early-1900s-penshurst-park-cricket-club.webp'],
+  ['1911',"1911 Penshurst Park CC Senior Men's 1st XI",'media/history/1911-penshurst-park-senior-mens-1st-xi.webp'],
+  ['1933','1933 Penshurst Park v Tonbridge Trade scorecard - Penshurst won by 3 wickets','media/history/1933-penshurst-park-v-tonbridge-trade-scorecard.webp'],
   ['1934','On 1 August 1934, cricket at Penshurst was photographed during preparations for play at Penshurst Castle in Kent.','media/history/1934-cricket-at-penshurst.webp'],
   ['1949','An aerial photograph records Penshurst Place and the surrounding estate in 1949.','media/history/1949.webp'],
+  ['1952','1952 Cricket match clipping from the Tunbridge Wells Advertiser','media/history/1952-tunbridge-wells-advertiser.webp'],
+  ['1954',"1954 Penshurst Park v Hartfield 'Advertiser' and 'Courier' Final",'media/history/1954-penshurst-park-v-hartfield-final.webp'],
+  ['1959',"1959 Penshurst Park CC winners 'Advertiser' Shield",'media/history/1959-penshurst-park-advertiser-shield.webp'],
   ['1960','A home match at Penshurst Park, photographed around 1960.','media/history/1960.webp'],
-  ['1969 & 1972','Penshurst Park hosted touring teams from Toronto Cricket Club in 1969 and 1972.'],
+  ['1961','1961 Australia v England at Penshurst Park, team photograph and signed miniature bats','media/history/1961-australia-v-england-penshurst-park.webp'],
+  ['1969 & 1972','Toronto CC toured Penshurst Park in 1969 and 1972. Photograph from the 1969 tour.','media/history/1969-toronto-cc-penshurst-park.webp'],
+  ['1974','1974 Kent County v Whitbread Wanderers at Penshurst Park',['media/history/1974-kent-county-whitbread-wanderers-1.webp','media/history/1974-kent-county-whitbread-wanderers-2.webp']],
   ['1992',"Celebrity cricket match in aid of the Royal Marsdens Children's Cancer Fund. Batsman Roger Daltry. Bowler Bill Wyman. 16th August 1992",'media/history/1992-celebrity-cricket-royal-marsden.webp'],
   ['1996','Club begins unbroken spell in the top division of the Kent County Village League.'],
   ['2012–2014','The Senior 1st XI won three consecutive league titles between 2012 and 2014.'],
@@ -241,14 +251,27 @@ function initTeamGallery(teamPhotos){
  registerRouteCleanup(()=>{clearTimeout(timer);clearTimeout(fadeTimer)});render(0);start()
 }
 function aboutUs(){$('#app').innerHTML=`<h1 class="page-title">About us</h1><div class="grid location-grid"><section class="card about-contact" aria-labelledby="club-location-title"><h2 id="club-location-title">Address</h2><address>Penshurst Park Cricket Club<br>Penshurst Place, Penshurst<br>Tonbridge, Kent TN11 8DH</address><div class="about-location-actions"><a class="w3w-link" href="${safeHref(CFG.w3w)}" target="_blank" rel="noopener noreferrer" title="Open ///crisp.dates.daily in what3words"><span class="w3w-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5"/><path d="M9.1 6.6 6.2 17.4M13.6 6.6l-2.9 10.8M18.1 6.6l-2.9 10.8"/></svg></span><span>///crisp.dates.daily</span></a><a class="btn about-directions" href="${safeHref('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(CFG.mapQ))}" target="_blank" rel="noopener noreferrer">Get directions ↗</a></div><h2>Contact</h2><div class="about-contact-actions"><a class="phone-line phone-link" href="${safeHref('tel:'+CFG.phone.replace(/\s+/g,''),['tel:'])}" title="Call ${esc(CFG.phone)}"><span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.6 3.1 3.5 5 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.7c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg></span><span>${esc(CFG.phone)}</span></a><a class="email-link" href="${safeHref('mailto:'+CFG.email,['mailto:'])}" title="Email ${esc(CFG.email)}"><span class="email-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l9 5.6 9-5.6V7H3Zm18 10V9.8l-8.47 5.27a1 1 0 0 1-1.06 0L3 9.8V17h18Z"/></svg></span><span>${esc(CFG.email)}</span></a></div><p><a class="btn" href="${safeHref('https://penshurstpark.play-cricket.com/Aboutus#collapseTwo')}" target="_blank" rel="noopener noreferrer" title="Open Penshurst Park CC club officials on Play-Cricket">Club officials ↗</a></p></section><iframe class="location-map" title="Map showing Penshurst Park Cricket Club at Penshurst Place" loading="lazy" src="https://www.google.com/maps?q=${encodeURIComponent(CFG.mapQ)}&output=embed"></iframe></div>`}
+function wireHistoryZoom(dialog){
+ const img=dialog.querySelector('.history-dialog-viewport img');if(!img)return;
+ const level=dialog.querySelector('.history-zoom-level'),minus=dialog.querySelector('.history-zoom-out'),plus=dialog.querySelector('.history-zoom-in'),reset=dialog.querySelector('.history-zoom-reset');
+ let zoom=1;const apply=()=>{img.style.width=`${zoom*100}%`;img.style.maxWidth='none';level.value=`${Math.round(zoom*100)}%`;level.textContent=level.value;minus.disabled=zoom<=1;plus.disabled=zoom>=4};
+ const setZoom=value=>{zoom=Math.max(1,Math.min(4,Math.round(value*4)/4));apply()};
+ minus?.addEventListener('click',()=>setZoom(zoom-.25));plus?.addEventListener('click',()=>setZoom(zoom+.25));reset?.addEventListener('click',()=>setZoom(1));
+ const viewport=dialog.querySelector('.history-dialog-viewport');let pinchStart=0,pinchZoom=1;
+ const distance=touches=>Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY);
+ viewport?.addEventListener('touchstart',e=>{if(e.touches.length===2){pinchStart=distance(e.touches);pinchZoom=zoom}},{passive:true});
+ viewport?.addEventListener('touchmove',e=>{if(e.touches.length===2&&pinchStart>0){e.preventDefault();setZoom(pinchZoom*(distance(e.touches)/pinchStart))}},{passive:false});
+ viewport?.addEventListener('touchend',e=>{if(e.touches.length<2)pinchStart=0},{passive:true});
+ dialog.addEventListener('close',()=>{pinchStart=0;setZoom(1)});apply();
+}
 function history(){
  $('#app').innerHTML=`<h1 class="page-title">History</h1><div class="history-toolbar"><div class="history-tabs" role="tablist" aria-label="History sections"><button type="button" role="tab" id="clubHistoryTab" aria-controls="clubHistoryPanel" aria-selected="true">Club history</button><button type="button" role="tab" id="teamHistoryTab" aria-controls="teamHistoryPanel" aria-selected="false" tabindex="-1">Team history</button></div><div class="history-toolbar-controls" aria-label="History entry controls"><button class="history-step history-toolbar-prev" type="button">&#8593;<span>Previous</span></button><output class="history-position history-toolbar-position" aria-live="polite">1 of 1</output><button class="history-step history-toolbar-next" type="button"><span>Next</span>&#8595;</button></div></div><section id="clubHistoryPanel" role="tabpanel" aria-labelledby="clubHistoryTab"></section><section id="teamHistoryPanel" role="tabpanel" aria-labelledby="teamHistoryTab" hidden></section>`;
  const tabs=[...document.querySelectorAll('.history-tabs [role="tab"]')],clubPanel=$('#clubHistoryPanel'),teamPanel=$('#teamHistoryPanel');
   const toolbarPrevious=$('.history-toolbar-prev'),toolbarNext=$('.history-toolbar-next'),toolbarPosition=$('.history-toolbar-position');
   let activeHistoryControls=null;
   function setHistoryToolbar(state){activeHistoryControls=state;toolbarPrevious.disabled=state.current===0;toolbarNext.disabled=state.current===state.length-1;toolbarPosition.value=`${state.current+1} of ${state.length}`;toolbarPosition.textContent=toolbarPosition.value}
-  toolbarPrevious.addEventListener('click',()=>{if(activeHistoryControls)activeHistoryControls.select(activeHistoryControls.current-1,{focus:true})});
-  toolbarNext.addEventListener('click',()=>{if(activeHistoryControls)activeHistoryControls.select(activeHistoryControls.current+1,{focus:true})});
+  toolbarPrevious.addEventListener('click',()=>{if(activeHistoryControls){activeHistoryControls.stopAuto?.();activeHistoryControls.select(activeHistoryControls.current-1,{focus:true})}});
+  toolbarNext.addEventListener('click',()=>{if(activeHistoryControls){activeHistoryControls.stopAuto?.();activeHistoryControls.select(activeHistoryControls.current+1,{focus:true})}});
  function selectTab(tab,focus=true){tabs.forEach(button=>{const active=button===tab;button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});const club=tab.id==='clubHistoryTab';clubPanel.hidden=!club;teamPanel.hidden=club;if(focus)tab.focus();if(club){renderClubHistory();clubPanel.querySelector('.history-year.is-active')?.click()}else{renderTeamHistory();teamPanel.querySelector('.history-year.is-active')?.click()}}
  tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(tab,false));tab.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[next])})});
  function renderTeamHistory(){
@@ -288,10 +311,10 @@ function history(){
  function renderClubHistory(){
   if(clubPanel.dataset.ready)return;
   clubPanel.dataset.ready='true';
-  const items=S.history.map((x,i)=>({year:x[0],description:x[1],image:x[2]||'',url:x[3]||'',linkLabel:x[4]||'',index:i}));
+  const items=S.history.map((x,i)=>({year:x[0],description:x[1],images:Array.isArray(x[2])?x[2]:(x[2]?[x[2]]:[]),url:x[3]||'',linkLabel:x[4]||'',index:i}));
   clubPanel.innerHTML=`<section class="history-experience history-rebuilt">
    <div class="history-visual" aria-live="polite">
-    <div class="history-image-frame"><img id="historyImage" alt="" hidden></div>
+    <div class="history-image-frame" id="historyImageFrame"></div>
    </div>
    <div class="history-timeline-shell">
     <div class="history-timeline" role="listbox" tabindex="0" aria-label="Club history entries">
@@ -301,23 +324,23 @@ function history(){
   </section>`;
   const timeline=clubPanel.querySelector('.history-timeline');
   const buttons=[...clubPanel.querySelectorAll('.history-year')];
-  const image=clubPanel.querySelector('#historyImage');
-  const imageFrame=image.closest('.history-image-frame');
+  const imageFrame=clubPanel.querySelector('#historyImageFrame');
     const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let current=0,timer=null;
+  let current=0,timer=null,autoStopped=false;
+  function stopAuto(){autoStopped=true;clearTimeout(timer)}
   function select(index,{focus=false,scroll=true}={}){
    current=Math.max(0,Math.min(items.length-1,index));
    const item=items[current];
    buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
-   if(!clubPanel.hidden)setHistoryToolbar({current,length:items.length,select});
-   const src=item.image?safeAsset(item.image):'';imageFrame.classList.toggle('is-empty',!src);if(src){image.src=src;image.alt=`${item.year}: ${item.description}`;image.hidden=false}else{image.removeAttribute('src');image.alt='';image.hidden=true}
+   if(!clubPanel.hidden)setHistoryToolbar({current,length:items.length,select,stopAuto});
+   const sources=item.images.map(safeAsset).filter(Boolean);imageFrame.classList.toggle('is-empty',!sources.length);imageFrame.classList.toggle('is-scorebook',sources.length>1);if(!sources.length){imageFrame.innerHTML=''}else if(sources.length===1){const alt=`${item.year}: ${item.description}`;imageFrame.innerHTML=`<button type="button" class="history-zoom-image" aria-label="Open larger view of ${esc(item.year)} image"><img src="${sources[0]}" alt="${esc(alt)}"></button><dialog class="history-scorebook-dialog history-image-dialog"><div class="history-dialog-tools" aria-label="Image zoom controls"><button type="button" class="history-zoom-out" aria-label="Zoom out">−</button><output class="history-zoom-level" aria-live="polite">100%</output><button type="button" class="history-zoom-in" aria-label="Zoom in">+</button><button type="button" class="history-zoom-reset">Reset</button></div><button type="button" class="history-scorebook-close" aria-label="Close enlarged image">Close</button><div class="history-dialog-viewport"><img src="${sources[0]}" alt="${esc(alt)}"></div></dialog>`;const open=imageFrame.querySelector('.history-zoom-image'),dialog=imageFrame.querySelector('.history-image-dialog'),close=dialog.querySelector('.history-scorebook-close');wireHistoryZoom(dialog);open.addEventListener('click',()=>{stopAuto();dialog.showModal()});close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()})}else{let page=0;imageFrame.innerHTML=`<button type="button" class="history-scorebook-image" aria-label="Open larger view of scorebook page 1"><img alt=""></button><div class="history-scorebook-controls"><button type="button" class="history-scorebook-prev" aria-label="Previous scorebook page">‹ <span>Previous</span></button><span class="history-scorebook-position" aria-live="polite"></span><button type="button" class="history-scorebook-next"><span>Next</span> ›</button></div><dialog class="history-scorebook-dialog"><div class="history-dialog-tools" aria-label="Image zoom controls"><button type="button" class="history-zoom-out" aria-label="Zoom out">−</button><output class="history-zoom-level" aria-live="polite">100%</output><button type="button" class="history-zoom-in" aria-label="Zoom in">+</button><button type="button" class="history-zoom-reset">Reset</button></div><button type="button" class="history-scorebook-close" aria-label="Close enlarged scorebook">Close</button><div class="history-dialog-viewport"><img alt=""></div></dialog>`;const img=imageFrame.querySelector('.history-scorebook-image img'),position=imageFrame.querySelector('.history-scorebook-position'),prev=imageFrame.querySelector('.history-scorebook-prev'),next=imageFrame.querySelector('.history-scorebook-next'),open=imageFrame.querySelector('.history-scorebook-image'),dialog=imageFrame.querySelector('.history-scorebook-dialog'),large=dialog.querySelector('img'),close=dialog.querySelector('.history-scorebook-close');wireHistoryZoom(dialog);const showPage=n=>{page=Math.max(0,Math.min(sources.length-1,n));const alt=`${item.year}: ${item.description} (page ${page+1} of ${sources.length})`;img.src=sources[page];img.alt=alt;position.textContent=`Page ${page+1} of ${sources.length}`;prev.disabled=page===0;next.disabled=page===sources.length-1;open.setAttribute('aria-label',`Open larger view of scorebook page ${page+1}`)};prev.addEventListener('click',()=>{stopAuto();showPage(page-1)});next.addEventListener('click',()=>{stopAuto();showPage(page+1)});open.addEventListener('click',()=>{large.src=sources[page];large.alt=img.alt;dialog.showModal()});close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});showPage(0)}
    const active=buttons[current];
    if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
    if(focus)active.focus({preventScroll:true});
   }
-  function restart(){clearTimeout(timer);if(items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)}
-  buttons.forEach((button,i)=>button.addEventListener('click',e=>{if(e.target.closest('.history-entry-link'))return;select(i);restart()}));
-    timeline.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true});restart()});
+  function restart(){clearTimeout(timer);if(!autoStopped&&items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)}
+  buttons.forEach((button,i)=>button.addEventListener('click',e=>{if(e.target.closest('.history-entry-link'))return;stopAuto();select(i)}));
+    timeline.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);stopAuto();select(target,{focus:true})});
   registerRouteCleanup(()=>clearTimeout(timer));
   select(0,{scroll:false});
   restart();

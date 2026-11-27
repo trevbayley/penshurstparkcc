@@ -1792,7 +1792,7 @@ html.halloween-mode,html.halloween-mode body{background-color:#101820!important}
 html.halloween-mode body{
   background-image:url('media/seasonal/halloween-page-background.webp')!important;
   background-repeat:no-repeat!important;background-position:center top!important;
-  background-size:100% auto!important;background-attachment:scroll!important
+  background-size:100% 100%!important;background-attachment:scroll!important
 }
 html.halloween-mode body::before{content:none!important;display:none!important;background:none!important}
 html.halloween-mode .home-grid::before{
@@ -1840,7 +1840,7 @@ html.halloween-mode .halloween-spiders{position:absolute;inset:0;z-index:8;displ
 }
 @media(max-width:760px){
   .seasonal-object{width:76px;height:66px}.seasonal-left{left:5px}.seasonal-right{right:5px}
-  html.halloween-mode body{background-position:center top!important;background-size:100% auto!important;background-attachment:scroll!important}
+  html.halloween-mode body{background-position:center top!important;background-size:100% 100%!important;background-attachment:scroll!important}
   html.halloween-mode .follow{min-height:190px;padding:18px 18px 78px}
   html.halloween-mode .follow>h3,html.halloween-mode .follow>#soc{position:relative;top:auto;right:auto;left:auto;width:auto;max-width:none;transform:none}
   .halloween-spider-drop:nth-child(even){display:none}

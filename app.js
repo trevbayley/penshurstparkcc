@@ -240,10 +240,10 @@ function home(){const homeTeams=homeTeamSelection();const recentCutoff=recentEve
  $('#app').innerHTML=`<section class="hero"><div class="txt"><div class="hero-heading"><h1 class="hero-title" style="user-select:none;-webkit-user-select:none">Welcome to Penshurst Park Cricket Club</h1></div><div class="hero-marks"><img src="media/club/club-crest.webp" alt="" width="70" class="hero-logo"></div><img class="hero-ball-grass" src="media/club/red-cricket-ball-grass.webp" alt="Red cricket ball resting on short-cut grass"><img class="hero-ball-grass hero-ball-grass-pink" src="media/club/pink-cricket-ball-grass.webp" alt="Pink cricket ball resting on short-cut grass"></div></section>
  <div class="grid home-grid"><aside class="home-panel home-recent"><h2>Recent events</h2><div id="recentEventCycle"></div></aside>
  <section class="home-panel home-about"><h2>About the club</h2><p>One of England’s oldest cricket venues, Penshurst Park has hosted cricket since the early 18th century, with its first recorded match played here in 1724. More than 300 years later, cricket continues in the historic surroundings of Penshurst Place.</p><p>Today, Penshurst Park is a thriving village club with men’s, women’s and junior cricket for a wide range of ages and abilities. Our women’s section has grown from softball cricket to become <a href="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/" target="_blank" rel="noopener noreferrer">2026 Kent Women’s Cricket League Championship winners</a>, while our expanding junior section is helping introduce a new generation to the game.</p><p><a class="btn" href="#aboutUs">More about us</a></p>
- <section class="team-gallery" aria-labelledby="team-gallery-title"><h3 id="team-gallery-title">Our teams</h3><p class="team-season-label">${esc(homeTeams.season)} season</p><div id="teamGallery"></div><p class="home-team-action"><a class="btn y" href="#teams">View all our teams</a></p></section>
+ <details class="teams-group home-teams-group"><summary><span>Our teams</span></summary><div class="home-teams-content"><p class="team-season-label">${esc(homeTeams.season)} season</p><div id="teamGallery"></div><p class="home-team-action"><a class="btn y" href="#teams">View all our teams</a></p></div></details>
  
 </section>
- <aside class="home-panel home-upcoming"><h2><span class="home-upcoming-mark" aria-hidden="true"></span>Upcoming events</h2><div id="upcomingEventCycle"></div></aside></div>`;initEventCycle('#recentEventCycle',recent,true);initEventCycle('#upcomingEventCycle',upcoming,false);initTeamGallery(homeTeams.photos)}
+ <aside class="home-panel home-upcoming"><h2><span class="home-upcoming-mark" aria-hidden="true"></span>Upcoming events</h2><div id="upcomingEventCycle"></div></aside></div>`;initEventCycle('#recentEventCycle',recent,true);initEventCycle('#upcomingEventCycle',upcoming,false);const homeTeamsGroup=$('.home-teams-group');let homeTeamsReady=false;homeTeamsGroup?.addEventListener('toggle',()=>{if(homeTeamsGroup.open&&!homeTeamsReady){homeTeamsReady=true;initTeamGallery(homeTeams.photos)}})}
 function createAutoCycle({length,render,fadeTarget}){
  let current=0,timer=null,fadeTimer=null;
  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -318,19 +318,20 @@ function history(){
   if(focus)tab.focus();
   if(panel===clubPanel)renderClubHistory();else if(panel===teamPanel)renderTeamHistory();else renderEventsHistory();
   const controls=historyControls.get(panel);
-  if(controls){setHistoryToolbar(controls);controls.revealCurrent?.()}
+  if(controls){setHistoryToolbar(controls);requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!panel.hidden)controls.revealCurrent?.()}))}
  }
  tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(tab,false));tab.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[next])})});
- function bindHistoryListNavigation({items,buttons,list,panel,onSelect}){
+ function bindHistoryListNavigation({items,buttons,list,panel,onSelect,ignoreClickSelector}){
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;let current=0,timer=null,autoStopped=reduceMotion;
   const syncToolbar=()=>{const controls=historyControls.get(panel);if(!panel.hidden&&controls)setHistoryToolbar(controls)};
   const stopAuto=()=>{autoStopped=true;clearTimeout(timer);syncToolbar()};
   const restart=()=>{clearTimeout(timer);if(!autoStopped&&items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)};
   const startAuto=()=>{if(reduceMotion||items.length<2)return;autoStopped=false;select(current<items.length-1?current+1:0);restart();syncToolbar()};
   const isAutoPlaying=()=>!autoStopped&&!reduceMotion&&items.length>1;
-  const revealCurrent=()=>buttons[current]?.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
-  function select(index,{focus=false,scroll=true,user=false}={}){if(user)stopAuto();current=Math.max(0,Math.min(items.length-1,index));buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});if(!panel.hidden){const controls=historyControls.get(panel);if(controls)setHistoryToolbar(controls)}onSelect(items[current],current,stopAuto);const active=buttons[current];if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});if(focus)active.focus({preventScroll:true})}
-  buttons.forEach((button,i)=>button.addEventListener('click',()=>select(i,{user:true})));
+  const scrollCurrentToTop=()=>{const active=buttons[current];if(!active)return;list.scrollTo({top:active.offsetTop,behavior:reduceMotion?'auto':'smooth'})};
+  const revealCurrent=scrollCurrentToTop;
+  function select(index,{focus=false,scroll=true,user=false}={}){if(user)stopAuto();current=Math.max(0,Math.min(items.length-1,index));buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});if(!panel.hidden){const controls=historyControls.get(panel);if(controls)setHistoryToolbar(controls)}onSelect(items[current],current,stopAuto);const active=buttons[current];if(scroll)scrollCurrentToTop();if(focus)active.focus({preventScroll:true})}
+  buttons.forEach((button,i)=>button.addEventListener('click',e=>{if(ignoreClickSelector&&e.target.closest(ignoreClickSelector))return;select(i,{user:true})}));
   list.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true,user:true})});
   registerRouteCleanup(()=>clearTimeout(timer));select(0,{scroll:false});restart();const controls={select,stopAuto,startAuto,isAutoPlaying,revealCurrent,autoAvailable:!reduceMotion,get current(){return current},length:items.length};historyControls.set(panel,controls);return controls;
  }
@@ -383,45 +384,41 @@ function history(){
   clubPanel.dataset.ready='true';
   const items=S.history.map((x,i)=>({year:x[0],description:x[1],images:Array.isArray(x[2])?x[2]:(x[2]?[x[2]]:[]),url:x[3]||'',linkLabel:x[4]||'',index:i}));
   clubPanel.innerHTML=`<section class="history-experience history-rebuilt">
-   <div class="history-visual" aria-live="polite">
-    <div class="history-image-frame" id="historyImageFrame"></div>
-   </div>
-   <div class="history-timeline-shell">
-    <div class="history-timeline" role="listbox" tabindex="0" aria-label="Club history entries">
-     ${items.map((x,i)=>`<button class="history-year" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-history-index="${i}"><strong>${esc(x.year)}</strong><span>${esc(x.description)}</span>${x.url?`<a class="history-entry-link" href="${safeHref(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.linkLabel||'Open link')} ↗</a>`:''}</button>`).join('')}
-    </div>
-   </div>
+   <div class="history-visual" aria-live="polite"><div class="history-image-frame" id="historyImageFrame"></div></div>
+   <div class="history-timeline-shell"><div class="history-timeline" role="listbox" tabindex="0" aria-label="Club history entries">
+    ${items.map((x,i)=>`<button class="history-year" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-history-index="${i}"><strong>${esc(x.year)}</strong><span>${esc(x.description)}</span>${x.url?`<a class="history-entry-link" href="${safeHref(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.linkLabel||'Open link')} ↗</a>`:''}</button>`).join('')}
+   </div></div>
   </section>`;
   const timeline=clubPanel.querySelector('.history-timeline');
   const buttons=[...clubPanel.querySelectorAll('.history-year')];
   const imageFrame=clubPanel.querySelector('#historyImageFrame');
-    const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let current=0,timer=null,autoStopped=reduceMotion;
-  function syncToolbar(){const controls=historyControls.get(clubPanel);if(!clubPanel.hidden&&controls)setHistoryToolbar(controls)}
-  function stopAuto(){autoStopped=true;clearTimeout(timer);syncToolbar()}
-  function startAuto(){if(reduceMotion||items.length<2)return;autoStopped=false;select(current<items.length-1?current+1:0);restart();syncToolbar()}
-  function isAutoPlaying(){return !autoStopped&&!reduceMotion&&items.length>1}
-  function revealCurrent(){buttons[current]?.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'})}
-  function select(index,{focus=false,scroll=true}={}){
-   current=Math.max(0,Math.min(items.length-1,index));
-   const item=items[current];
-   buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
-   if(!clubPanel.hidden){const controls=historyControls.get(clubPanel);if(controls)setHistoryToolbar(controls)}
-   const sources=item.images.map(safeAsset).filter(Boolean);imageFrame.classList.toggle('is-empty',!sources.length);imageFrame.classList.toggle('is-scorebook',sources.length>1);if(!sources.length){imageFrame.innerHTML=''}else if(sources.length===1){const alt=`${item.year}: ${item.description}`;renderHistoryImageViewer(imageFrame,{src:sources[0],alt,openLabel:`Open larger view of ${item.year} image`,onOpen:stopAuto})}else{let page=0;imageFrame.innerHTML=`<button type="button" class="history-scorebook-image" aria-label="Open larger view of scorebook page 1"><img alt=""></button><div class="history-scorebook-controls"><button type="button" class="history-scorebook-prev" aria-label="Previous scorebook page">‹ <span>Previous</span></button><span class="history-scorebook-position" aria-live="polite"></span><button type="button" class="history-scorebook-next"><span>Next</span> ›</button></div>${historyZoomDialog({closeLabel:'Close enlarged scorebook',dialogClass:'history-scorebook-dialog'})}`;const img=imageFrame.querySelector('.history-scorebook-image img'),position=imageFrame.querySelector('.history-scorebook-position'),prev=imageFrame.querySelector('.history-scorebook-prev'),next=imageFrame.querySelector('.history-scorebook-next'),open=imageFrame.querySelector('.history-scorebook-image'),dialog=imageFrame.querySelector('.history-scorebook-dialog'),large=dialog.querySelector('img'),close=dialog.querySelector('.history-scorebook-close');wireHistoryZoom(dialog,stopAuto);const showPage=n=>{page=Math.max(0,Math.min(sources.length-1,n));const alt=`${item.year}: ${item.description} (page ${page+1} of ${sources.length})`;img.src=sources[page];img.alt=alt;position.textContent=`Page ${page+1} of ${sources.length}`;prev.disabled=page===0;next.disabled=page===sources.length-1;open.setAttribute('aria-label',`Open larger view of scorebook page ${page+1}`)};prev.addEventListener('click',()=>{stopAuto();showPage(page-1)});next.addEventListener('click',()=>{stopAuto();showPage(page+1)});open.addEventListener('click',()=>{stopAuto();large.src=sources[page];large.alt=img.alt;dialog.showModal()});close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});showPage(0)}
-   const active=buttons[current];
-   if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
-   if(focus)active.focus({preventScroll:true});
+  function renderClubItem(item,currentIndex,stopAuto){
+   const sources=item.images.map(safeAsset).filter(Boolean);
+   imageFrame.classList.toggle('is-empty',!sources.length);
+   imageFrame.classList.toggle('is-scorebook',sources.length>1);
+   if(!sources.length){imageFrame.innerHTML='';return}
+   if(sources.length===1){
+    const alt=`${item.year}: ${item.description}`;
+    renderHistoryImageViewer(imageFrame,{src:sources[0],alt,openLabel:`Open larger view of ${item.year} image`,onOpen:stopAuto});
+    return;
+   }
+   let page=0;
+   imageFrame.innerHTML=`<button type="button" class="history-scorebook-image" aria-label="Open larger view of scorebook page 1"><img alt=""></button><div class="history-scorebook-controls"><button type="button" class="history-scorebook-prev" aria-label="Previous scorebook page">‹ <span>Previous</span></button><span class="history-scorebook-position" aria-live="polite"></span><button type="button" class="history-scorebook-next"><span>Next</span> ›</button></div>${historyZoomDialog({closeLabel:'Close enlarged scorebook',dialogClass:'history-scorebook-dialog'})}`;
+   const img=imageFrame.querySelector('.history-scorebook-image img'),position=imageFrame.querySelector('.history-scorebook-position'),prev=imageFrame.querySelector('.history-scorebook-prev'),next=imageFrame.querySelector('.history-scorebook-next'),open=imageFrame.querySelector('.history-scorebook-image'),dialog=imageFrame.querySelector('.history-scorebook-dialog'),large=dialog.querySelector('img'),close=dialog.querySelector('.history-scorebook-close');
+   wireHistoryZoom(dialog,stopAuto);
+   const showPage=n=>{page=Math.max(0,Math.min(sources.length-1,n));const alt=`${item.year}: ${item.description} (page ${page+1} of ${sources.length})`;img.src=sources[page];img.alt=alt;position.textContent=`Page ${page+1} of ${sources.length}`;prev.disabled=page===0;next.disabled=page===sources.length-1;open.setAttribute('aria-label',`Open larger view of scorebook page ${page+1}`)};
+   prev.addEventListener('click',()=>{stopAuto();showPage(page-1)});
+   next.addEventListener('click',()=>{stopAuto();showPage(page+1)});
+   open.addEventListener('click',()=>{stopAuto();large.src=sources[page];large.alt=img.alt;dialog.showModal()});
+   close.addEventListener('click',()=>dialog.close());
+   dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
+   showPage(0);
   }
-  function restart(){clearTimeout(timer);if(!autoStopped&&items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)}
-  buttons.forEach((button,i)=>button.addEventListener('click',e=>{if(e.target.closest('.history-entry-link'))return;stopAuto();select(i)}));
-    timeline.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);stopAuto();select(target,{focus:true})});
-  registerRouteCleanup(()=>clearTimeout(timer));
-  select(0,{scroll:false});
-  restart();
-  historyControls.set(clubPanel,{select,stopAuto,startAuto,isAutoPlaying,revealCurrent,autoAvailable:!reduceMotion,get current(){return current},length:items.length});
-  syncToolbar();
+  bindHistoryListNavigation({items,buttons,list:timeline,panel:clubPanel,onSelect:renderClubItem,ignoreClickSelector:'.history-entry-link'});
  }
  renderClubHistory()
+ const initialControls=historyControls.get(clubPanel);
+ if(initialControls)setHistoryToolbar(initialControls);
 }
 function members(){
  const today=new Date();
@@ -526,7 +523,7 @@ function refreshChristmasVisuals(){
   if(active){setupChristmasSnow();}
   else if(existing){existing.remove();}
 }
-document.addEventListener('DOMContentLoaded',()=>{setSeasonalPanelRoles();refreshChristmasVisuals()});
+
 window.addEventListener('ppcc:christmas',()=>{setSeasonalPanelRoles();refreshChristmasVisuals()});
 
 
@@ -551,7 +548,7 @@ function setupEasterChicks(){
  hero.appendChild(layer);
 }
 function refreshEasterVisuals(){setupEasterChicks()}
-document.addEventListener('DOMContentLoaded',refreshEasterVisuals);
+
 
 
 function setupHalloweenSpiders(){
@@ -571,7 +568,7 @@ function setupHalloweenSpiders(){
  hero.appendChild(layer);
 }
 function refreshHalloweenVisuals(){setupHalloweenSpiders()}
-document.addEventListener('DOMContentLoaded',refreshHalloweenVisuals);
+
 
 
 function setupSeasonalHeroObjects(){
@@ -582,7 +579,7 @@ function setupSeasonalHeroObjects(){
  if(!layer){layer=document.createElement('div');layer.className='seasonal-hero-objects';layer.setAttribute('aria-hidden','true');layer.innerHTML='<span class="seasonal-object seasonal-left"></span><span class="seasonal-object seasonal-right"></span>';hero.appendChild(layer)}
  layer.dataset.season=mode;
 }
-document.addEventListener('DOMContentLoaded',setupSeasonalHeroObjects);
+document.addEventListener('DOMContentLoaded',()=>{setSeasonalPanelRoles();refreshChristmasVisuals();refreshEasterVisuals();refreshHalloweenVisuals();setupSeasonalHeroObjects()});
 window.addEventListener('ppcc:season',()=>{
  refreshEasterVisuals();
  refreshHalloweenVisuals();

@@ -1422,7 +1422,7 @@ footer {
 /* History page: toolbar, tabs, rebuilt timelines and team archive */
 .history-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:-8px 0 12px;padding:0 0 2px;border-bottom:2px solid color-mix(in srgb,var(--navy) 22%,transparent)}
 .history-tabs{display:flex;align-items:flex-end;gap:2px;margin:0;padding:0;border:0;background:transparent;min-width:0}
-.history-toolbar-controls{display:grid;grid-template-columns:auto minmax(54px,auto) auto;align-items:center;gap:8px;margin-left:auto}
+.history-toolbar-controls{display:grid;grid-template-columns:auto auto minmax(54px,auto) auto;align-items:center;gap:8px;margin-left:auto}
 .history-tabs [role="tab"]{min-height:38px;padding:6px 14px;border:0;border-bottom:3px solid transparent;border-radius:8px 8px 0 0;background:transparent;color:var(--navy);font-weight:800;box-shadow:none}
 .history-tabs [role="tab"][aria-selected="true"]{border-bottom-color:var(--yel);background:var(--navy);color:var(--yel)}
 .history-tabs [role="tab"]:focus-visible{outline:3px solid var(--yel);outline-offset:2px}

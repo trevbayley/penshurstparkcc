@@ -302,11 +302,13 @@ function renderHistoryImageViewer(imageFrame,{src,alt,openLabel,onOpen}){
  dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
 }
 function history(){
- $('#app').innerHTML=`<h1 class="page-title">History</h1><div class="history-toolbar"><div class="history-tabs" role="tablist" aria-label="History sections"><button type="button" role="tab" id="clubHistoryTab" aria-controls="clubHistoryPanel" aria-selected="true">Club history</button><button type="button" role="tab" id="teamHistoryTab" aria-controls="teamHistoryPanel" aria-selected="false" tabindex="-1">Team history</button><button type="button" role="tab" id="eventsHistoryTab" aria-controls="eventsHistoryPanel" aria-selected="false" tabindex="-1">Events history</button></div><div class="history-toolbar-controls" aria-label="History entry controls"><button class="history-step history-toolbar-prev" type="button">&#8593;<span>Previous</span></button><output class="history-position history-toolbar-position" aria-live="polite">1 of 1</output><button class="history-step history-toolbar-next" type="button"><span>Next</span>&#8595;</button></div></div><section id="clubHistoryPanel" role="tabpanel" aria-labelledby="clubHistoryTab"></section><section id="teamHistoryPanel" role="tabpanel" aria-labelledby="teamHistoryTab" hidden></section><section id="eventsHistoryPanel" role="tabpanel" aria-labelledby="eventsHistoryTab" hidden></section>`;
+ $('#app').innerHTML=`<h1 class="page-title">History</h1><div class="history-toolbar"><div class="history-tabs" role="tablist" aria-label="History sections"><button type="button" role="tab" id="clubHistoryTab" aria-controls="clubHistoryPanel" aria-selected="true">Club history</button><button type="button" role="tab" id="teamHistoryTab" aria-controls="teamHistoryPanel" aria-selected="false" tabindex="-1">Team history</button><button type="button" role="tab" id="eventsHistoryTab" aria-controls="eventsHistoryPanel" aria-selected="false" tabindex="-1">Events history</button></div><div class="history-toolbar-controls" aria-label="History entry controls"><button class="history-step history-toolbar-autoplay" type="button" aria-pressed="true">Pause</button><button class="history-step history-toolbar-prev" type="button">&#8593;<span>Previous</span></button><output class="history-position history-toolbar-position" aria-live="polite">1 of 1</output><button class="history-step history-toolbar-next" type="button"><span>Next</span>&#8595;</button></div></div><section id="clubHistoryPanel" role="tabpanel" aria-labelledby="clubHistoryTab"></section><section id="teamHistoryPanel" role="tabpanel" aria-labelledby="teamHistoryTab" hidden></section><section id="eventsHistoryPanel" role="tabpanel" aria-labelledby="eventsHistoryTab" hidden></section>`;
  const tabs=[...document.querySelectorAll('.history-tabs [role="tab"]')],clubPanel=$('#clubHistoryPanel'),teamPanel=$('#teamHistoryPanel'),eventsPanel=$('#eventsHistoryPanel');
-  const toolbarPrevious=$('.history-toolbar-prev'),toolbarNext=$('.history-toolbar-next'),toolbarPosition=$('.history-toolbar-position');
+  const toolbarAuto=$('.history-toolbar-autoplay'),toolbarPrevious=$('.history-toolbar-prev'),toolbarNext=$('.history-toolbar-next'),toolbarPosition=$('.history-toolbar-position');
   let activeHistoryControls=null;
-  function setHistoryToolbar(state){activeHistoryControls=state;toolbarPrevious.disabled=state.current===0;toolbarNext.disabled=state.current===state.length-1;toolbarPosition.value=`${state.current+1} of ${state.length}`;toolbarPosition.textContent=toolbarPosition.value}
+  const historyControls=new Map();
+  function setHistoryToolbar(state){activeHistoryControls=state;toolbarPrevious.disabled=state.current===0;toolbarNext.disabled=state.current===state.length-1;toolbarPosition.value=`${state.current+1} of ${state.length}`;toolbarPosition.textContent=toolbarPosition.value;const playing=state.isAutoPlaying?.()??false;toolbarAuto.textContent=playing?'Pause':'Play';toolbarAuto.setAttribute('aria-pressed',String(playing));toolbarAuto.disabled=state.length<2||state.autoAvailable===false}
+  toolbarAuto.addEventListener('click',()=>{if(!activeHistoryControls)return;if(activeHistoryControls.isAutoPlaying?.())activeHistoryControls.stopAuto?.();else activeHistoryControls.startAuto?.();setHistoryToolbar(activeHistoryControls)});
   toolbarPrevious.addEventListener('click',()=>{if(activeHistoryControls){activeHistoryControls.stopAuto?.();activeHistoryControls.select(activeHistoryControls.current-1,{focus:true})}});
   toolbarNext.addEventListener('click',()=>{if(activeHistoryControls){activeHistoryControls.stopAuto?.();activeHistoryControls.select(activeHistoryControls.current+1,{focus:true})}});
  function selectTab(tab,focus=true){
@@ -315,17 +317,21 @@ function history(){
   [clubPanel,teamPanel,eventsPanel].forEach(item=>item.hidden=item!==panel);
   if(focus)tab.focus();
   if(panel===clubPanel)renderClubHistory();else if(panel===teamPanel)renderTeamHistory();else renderEventsHistory();
-  if(panel===clubPanel)panel.querySelector('.history-year.is-active')?.click();
+  const controls=historyControls.get(panel);
+  if(controls)setHistoryToolbar(controls);
  }
  tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(tab,false));tab.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[next])})});
  function bindHistoryListNavigation({items,buttons,list,panel,onSelect}){
-  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;let current=0,timer=null,autoStopped=false;
-  const stopAuto=()=>{autoStopped=true;clearTimeout(timer)};
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;let current=0,timer=null,autoStopped=reduceMotion;
+  const syncToolbar=()=>{const controls=historyControls.get(panel);if(!panel.hidden&&controls)setHistoryToolbar(controls)};
+  const stopAuto=()=>{autoStopped=true;clearTimeout(timer);syncToolbar()};
   const restart=()=>{clearTimeout(timer);if(!autoStopped&&items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)};
-  function select(index,{focus=false,scroll=true,user=false}={}){if(user)stopAuto();current=Math.max(0,Math.min(items.length-1,index));buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});if(!panel.hidden)setHistoryToolbar({get current(){return current},length:items.length,select,stopAuto});onSelect(items[current],current,stopAuto);const active=buttons[current];if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});if(focus)active.focus({preventScroll:true})}
+  const startAuto=()=>{if(reduceMotion||items.length<2)return;autoStopped=false;restart();syncToolbar()};
+  const isAutoPlaying=()=>!autoStopped&&!reduceMotion&&items.length>1;
+  function select(index,{focus=false,scroll=true,user=false}={}){if(user)stopAuto();current=Math.max(0,Math.min(items.length-1,index));buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});if(!panel.hidden){const controls=historyControls.get(panel);if(controls)setHistoryToolbar(controls)}onSelect(items[current],current,stopAuto);const active=buttons[current];if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});if(focus)active.focus({preventScroll:true})}
   buttons.forEach((button,i)=>button.addEventListener('click',()=>select(i,{user:true})));
   list.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true,user:true})});
-  registerRouteCleanup(()=>clearTimeout(timer));select(0,{scroll:false});restart();return {select,stopAuto,get current(){return current}};
+  registerRouteCleanup(()=>clearTimeout(timer));select(0,{scroll:false});restart();const controls={select,stopAuto,startAuto,isAutoPlaying,autoAvailable:!reduceMotion,get current(){return current},length:items.length};historyControls.set(panel,controls);return controls;
  }
 
  function renderTeamHistory(){
@@ -389,13 +395,16 @@ function history(){
   const buttons=[...clubPanel.querySelectorAll('.history-year')];
   const imageFrame=clubPanel.querySelector('#historyImageFrame');
     const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let current=0,timer=null,autoStopped=false;
-  function stopAuto(){autoStopped=true;clearTimeout(timer)}
+  let current=0,timer=null,autoStopped=reduceMotion;
+  function syncToolbar(){const controls=historyControls.get(clubPanel);if(!clubPanel.hidden&&controls)setHistoryToolbar(controls)}
+  function stopAuto(){autoStopped=true;clearTimeout(timer);syncToolbar()}
+  function startAuto(){if(reduceMotion||items.length<2)return;autoStopped=false;restart();syncToolbar()}
+  function isAutoPlaying(){return !autoStopped&&!reduceMotion&&items.length>1}
   function select(index,{focus=false,scroll=true}={}){
    current=Math.max(0,Math.min(items.length-1,index));
    const item=items[current];
    buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
-   if(!clubPanel.hidden)setHistoryToolbar({current,length:items.length,select,stopAuto});
+   if(!clubPanel.hidden){const controls=historyControls.get(clubPanel);if(controls)setHistoryToolbar(controls)}
    const sources=item.images.map(safeAsset).filter(Boolean);imageFrame.classList.toggle('is-empty',!sources.length);imageFrame.classList.toggle('is-scorebook',sources.length>1);if(!sources.length){imageFrame.innerHTML=''}else if(sources.length===1){const alt=`${item.year}: ${item.description}`;renderHistoryImageViewer(imageFrame,{src:sources[0],alt,openLabel:`Open larger view of ${item.year} image`,onOpen:stopAuto})}else{let page=0;imageFrame.innerHTML=`<button type="button" class="history-scorebook-image" aria-label="Open larger view of scorebook page 1"><img alt=""></button><div class="history-scorebook-controls"><button type="button" class="history-scorebook-prev" aria-label="Previous scorebook page">‹ <span>Previous</span></button><span class="history-scorebook-position" aria-live="polite"></span><button type="button" class="history-scorebook-next"><span>Next</span> ›</button></div>${historyZoomDialog({closeLabel:'Close enlarged scorebook',dialogClass:'history-scorebook-dialog'})}`;const img=imageFrame.querySelector('.history-scorebook-image img'),position=imageFrame.querySelector('.history-scorebook-position'),prev=imageFrame.querySelector('.history-scorebook-prev'),next=imageFrame.querySelector('.history-scorebook-next'),open=imageFrame.querySelector('.history-scorebook-image'),dialog=imageFrame.querySelector('.history-scorebook-dialog'),large=dialog.querySelector('img'),close=dialog.querySelector('.history-scorebook-close');wireHistoryZoom(dialog);const showPage=n=>{page=Math.max(0,Math.min(sources.length-1,n));const alt=`${item.year}: ${item.description} (page ${page+1} of ${sources.length})`;img.src=sources[page];img.alt=alt;position.textContent=`Page ${page+1} of ${sources.length}`;prev.disabled=page===0;next.disabled=page===sources.length-1;open.setAttribute('aria-label',`Open larger view of scorebook page ${page+1}`)};prev.addEventListener('click',()=>{stopAuto();showPage(page-1)});next.addEventListener('click',()=>{stopAuto();showPage(page+1)});open.addEventListener('click',()=>{large.src=sources[page];large.alt=img.alt;dialog.showModal()});close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});showPage(0)}
    const active=buttons[current];
    if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
@@ -407,6 +416,8 @@ function history(){
   registerRouteCleanup(()=>clearTimeout(timer));
   select(0,{scroll:false});
   restart();
+  historyControls.set(clubPanel,{select,stopAuto,startAuto,isAutoPlaying,autoAvailable:!reduceMotion,get current(){return current},length:items.length});
+  syncToolbar();
  }
  renderClubHistory()
 }

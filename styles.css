@@ -166,26 +166,6 @@ textarea:focus-visible {
   border: 0;
   border-radius: 10px;
 }
-@keyframes fade {
-  0% {
-    opacity: 0;
-    transform: scale(1);
-  }
-  8% {
-    opacity: 1;
-  }
-  33% {
-    opacity: 1;
-  }
-  41% {
-    opacity: 0;
-    transform: scale(1.18);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.18);
-  }
-}
 /* ==========================================================
    3. GRID, CARDS & GENERAL COMPONENTS
    ========================================================== */
@@ -711,9 +691,6 @@ footer {
 .social-btn .social-facebook {
   width: 42px;
   height: 42px;
-}
-.social-btn[title*="Instagram"] svg {
-  fill: url(#igGradient);
 }
 .social-btn[title*="YouTube"] {
   background: #ff0000;
@@ -1454,7 +1431,7 @@ footer {
 .history-rebuilt .history-year.is-active strong,.history-rebuilt .history-year.is-active span{color:var(--navy)}
 
 @media(min-width:761px){.history-rebuilt{--history-desktop-height:min(60vh,540px);align-items:stretch}.history-rebuilt .history-visual,.history-rebuilt .history-timeline-shell{height:var(--history-desktop-height)}.history-rebuilt .history-image-frame{height:100%;aspect-ratio:auto}.history-rebuilt .history-timeline-shell{display:grid;grid-template-rows:minmax(0,1fr)}.history-rebuilt .history-timeline{height:auto;min-height:0}}
-@media(max-width:760px){.history-toolbar{flex-wrap:wrap;gap:8px;margin-bottom:10px}.history-tabs{width:100%}.history-tabs [role="tab"]{flex:1;min-height:44px;padding:7px 10px}.history-toolbar-controls{width:100%;grid-template-columns:minmax(44px,auto) 1fr minmax(44px,auto);margin-left:0}.history-toolbar-controls .history-step{min-height:44px;padding:8px 10px}.history-toolbar-controls .history-step span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.history-rebuilt{grid-template-columns:1fr;gap:14px}.history-rebuilt .history-visual{position:relative;top:auto}.history-rebuilt .history-image-frame{aspect-ratio:16/9}.history-rebuilt .history-timeline{height:min(58vh,460px);min-height:300px;padding:8px}.history-rebuilt .history-year{padding:12px}}
+@media(max-width:760px){.history-toolbar{flex-wrap:wrap;gap:8px;margin-bottom:10px}.history-tabs{width:100%}.history-tabs [role="tab"]{flex:1;min-height:44px;padding:7px 10px}.history-toolbar-controls{width:100%;grid-template-columns:auto auto minmax(54px,1fr) auto;margin-left:0}.history-toolbar-controls .history-step{min-height:44px;padding:8px 10px}.history-toolbar-controls .history-step span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.history-rebuilt{grid-template-columns:1fr;gap:14px}.history-rebuilt .history-visual{position:relative;top:auto}.history-rebuilt .history-image-frame{aspect-ratio:16/9}.history-rebuilt .history-timeline{height:min(58vh,460px);min-height:300px;padding:8px}.history-rebuilt .history-year{padding:12px}}
 @media(max-width:390px){.history-rebuilt .history-timeline{height:min(55vh,400px)}}
 @media(prefers-reduced-motion:reduce){.history-rebuilt .history-year{transition:none}.history-rebuilt .history-timeline{scroll-behavior:auto}}
 @media(prefers-color-scheme:dark){.history-tabs [role="tab"]{color:var(--yel)}.history-tabs [role="tab"][aria-selected="true"]{background:var(--yel);color:var(--navy)}.history-rebuilt .history-timeline-shell{border-color:rgba(255,255,255,.15)}.history-step{border-color:rgba(255,255,255,.2);color:var(--yel)}.history-step:hover:not(:disabled){background:var(--yel);color:var(--navy)}.history-rebuilt .history-year strong{color:var(--yel)}.history-rebuilt .history-year.is-active strong,.history-rebuilt .history-year.is-active span{color:var(--navy)}}
@@ -1588,7 +1565,7 @@ html.christmas-mode .home-grid>*{position:relative;z-index:2}
 /* Festive Social Media artwork. */
 html.christmas-mode .follow{
   position:relative!important;isolation:isolate;overflow:hidden;min-height:220px!important;padding:22px!important;
-  color:#fff!important;border:2px solid var(--gold)!important;border-radius:16px!important;
+  color:#fff!important;border:2px solid var(--yel)!important;border-radius:16px!important;
   box-shadow:0 7px 20px rgba(28,39,64,.2)!important
 }
 html.christmas-mode .follow::before{
@@ -1671,7 +1648,7 @@ html.easter-mode body{
 /* Easter Social Media artwork. */
 html.easter-mode .follow{
   position:relative!important;isolation:isolate;overflow:hidden;min-height:220px!important;padding:22px!important;
-  color:#183b58!important;border:2px solid var(--gold)!important;border-radius:16px!important;
+  color:#183b58!important;border:2px solid var(--yel)!important;border-radius:16px!important;
   box-shadow:0 7px 20px rgba(70,118,148,.18)!important
 }
 html.easter-mode .follow::before{
@@ -1917,5 +1894,3 @@ html:is(.christmas-mode,.easter-mode,.halloween-mode) .history-step{
 .history-dialog-viewport{width:100%;max-height:calc(94vh - 60px);overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;background:#eef1f4}
 .history-scorebook-dialog .history-dialog-viewport img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;transform-origin:top left}
 @media(max-width:520px){.history-dialog-tools{right:62px}.history-dialog-tools button{min-width:34px;padding:5px 7px}.history-zoom-level{min-width:50px}.history-zoom-reset{font-size:.82rem}}
-/* Mobile pinch-to-zoom: one-finger panning remains native; two-finger scaling is handled by History JS. */
-.history-dialog-viewport{touch-action:pan-x pan-y}

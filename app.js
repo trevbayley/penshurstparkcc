@@ -238,7 +238,7 @@ function evLine(e){const photo=e.photo?`<div class="event-media"><img src="${saf
 function home(){const homeTeams=homeTeamSelection();const recentCutoff=recentEventCutoff();const recent=S.ev.filter(e=>e.date<today&&e.date>=recentCutoff).sort((a,b)=>b.date.localeCompare(a.date));
  const upcoming=S.ev.filter(e=>e.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,7);
  $('#app').innerHTML=`<section class="hero"><div class="txt"><div class="hero-heading"><h1 class="hero-title" style="user-select:none;-webkit-user-select:none">Welcome to Penshurst Park Cricket Club</h1></div><div class="hero-marks"><img src="media/club/club-crest.webp" alt="" width="70" class="hero-logo"></div><img class="hero-ball-grass" src="media/club/red-cricket-ball-grass.webp" alt="Red cricket ball resting on short-cut grass"><img class="hero-ball-grass hero-ball-grass-pink" src="media/club/pink-cricket-ball-grass.webp" alt="Pink cricket ball resting on short-cut grass"></div></section>
- <div class="grid"><aside class="home-panel home-recent"><h2>Recent events</h2><div id="recentEventCycle"></div></aside>
+ <div class="grid home-grid"><aside class="home-panel home-recent"><h2>Recent events</h2><div id="recentEventCycle"></div></aside>
  <section class="home-panel home-about"><h2>About the club</h2><p>One of England’s oldest cricket venues, Penshurst Park has hosted cricket since the early 18th century, with its first recorded match played here in 1724. More than 300 years later, cricket continues in the historic surroundings of Penshurst Place.</p><p>Today, Penshurst Park is a thriving village club with men’s, women’s and junior cricket for a wide range of ages and abilities. Our women’s section has grown from softball cricket to become <a href="https://www.kentcricket.co.uk/news/kwcl-champions-tunbridge-wells-penshurst-park-cc/" target="_blank" rel="noopener noreferrer">2026 Kent Women’s Cricket League Championship winners</a>, while our expanding junior section is helping introduce a new generation to the game.</p><p><a class="btn" href="#aboutUs">More about us</a></p>
  <section class="team-gallery" aria-labelledby="team-gallery-title"><h3 id="team-gallery-title">Our teams</h3><p class="team-season-label">${esc(homeTeams.season)} season</p><div id="teamGallery"></div><p class="home-team-action"><a class="btn y" href="#teams">View all our teams</a></p></section>
  
@@ -277,15 +277,15 @@ function initTeamGallery(teamPhotos){
 }
 
 function aboutUs(){$('#app').innerHTML=`<h1 class="page-title">About us</h1><div class="grid location-grid"><section class="card about-contact" aria-labelledby="club-location-title"><h2 id="club-location-title">Address</h2><address>Penshurst Park Cricket Club<br>Penshurst Place, Penshurst<br>Tonbridge, Kent TN11 8DH</address><div class="about-location-actions"><a class="w3w-link" href="${safeHref(CFG.w3w)}" target="_blank" rel="noopener noreferrer" title="Open ///crisp.dates.daily in what3words"><span class="w3w-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect width="24" height="24" rx="5"/><path d="M9.1 6.6 6.2 17.4M13.6 6.6l-2.9 10.8M18.1 6.6l-2.9 10.8"/></svg></span><span>///crisp.dates.daily</span></a><a class="btn about-directions" href="${safeHref('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(CFG.mapQ))}" target="_blank" rel="noopener noreferrer">Get directions ↗</a></div><h2>Contact</h2><div class="about-contact-actions"><a class="phone-line phone-link" href="${safeHref('tel:'+CFG.phone.replace(/\s+/g,''),['tel:'])}" title="Call ${esc(CFG.phone)}"><span class="contact-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.6 3.1 3.5 5 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.7 21 3 13.3 3 3.7c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.2 2.2Z"/></svg></span><span>${esc(CFG.phone)}</span></a><a class="email-link" href="${safeHref('mailto:'+CFG.email,['mailto:'])}" title="Email ${esc(CFG.email)}"><span class="email-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.4l9 5.6 9-5.6V7H3Zm18 10V9.8l-8.47 5.27a1 1 0 0 1-1.06 0L3 9.8V17h18Z"/></svg></span><span>${esc(CFG.email)}</span></a></div><p><a class="btn" href="${safeHref('https://penshurstpark.play-cricket.com/Aboutus#collapseTwo')}" target="_blank" rel="noopener noreferrer" title="Open Penshurst Park CC club officials on Play-Cricket">Club officials ↗</a></p></section><iframe class="location-map" title="Map showing Penshurst Park Cricket Club at Penshurst Place" loading="lazy" src="https://www.google.com/maps?q=${encodeURIComponent(CFG.mapQ)}&output=embed"></iframe></div>`}
-function wireHistoryZoom(dialog){
+function wireHistoryZoom(dialog,onInteract){
  const img=dialog.querySelector('.history-dialog-viewport img');if(!img)return;
  const level=dialog.querySelector('.history-zoom-level'),minus=dialog.querySelector('.history-zoom-out'),plus=dialog.querySelector('.history-zoom-in'),reset=dialog.querySelector('.history-zoom-reset');
  let zoom=1;const apply=()=>{img.style.width=`${zoom*100}%`;img.style.maxWidth='none';level.value=`${Math.round(zoom*100)}%`;level.textContent=level.value;minus.disabled=zoom<=1;plus.disabled=zoom>=4};
  const setZoom=value=>{zoom=Math.max(1,Math.min(4,Math.round(value*4)/4));apply()};
- minus?.addEventListener('click',()=>setZoom(zoom-.25));plus?.addEventListener('click',()=>setZoom(zoom+.25));reset?.addEventListener('click',()=>setZoom(1));
+ minus?.addEventListener('click',()=>{onInteract?.();setZoom(zoom-.25)});plus?.addEventListener('click',()=>{onInteract?.();setZoom(zoom+.25)});reset?.addEventListener('click',()=>{onInteract?.();setZoom(1)});
  const viewport=dialog.querySelector('.history-dialog-viewport');let pinchStart=0,pinchZoom=1;
  const distance=touches=>Math.hypot(touches[0].clientX-touches[1].clientX,touches[0].clientY-touches[1].clientY);
- viewport?.addEventListener('touchstart',e=>{if(e.touches.length===2){pinchStart=distance(e.touches);pinchZoom=zoom}},{passive:true});
+ viewport?.addEventListener('touchstart',e=>{if(e.touches.length===2){onInteract?.();pinchStart=distance(e.touches);pinchZoom=zoom}},{passive:true});
  viewport?.addEventListener('touchmove',e=>{if(e.touches.length===2&&pinchStart>0){e.preventDefault();setZoom(pinchZoom*(distance(e.touches)/pinchStart))}},{passive:false});
  viewport?.addEventListener('touchend',e=>{if(e.touches.length<2)pinchStart=0},{passive:true});
  dialog.addEventListener('close',()=>{pinchStart=0;setZoom(1)});apply();
@@ -296,7 +296,7 @@ function historyZoomDialog({src='',alt='',closeLabel='Close enlarged image',dial
 function renderHistoryImageViewer(imageFrame,{src,alt,openLabel,onOpen}){
  imageFrame.innerHTML=`<button type="button" class="history-zoom-image" aria-label="${esc(openLabel)}"><img src="${src}" alt="${esc(alt)}"></button>${historyZoomDialog({src,alt})}`;
  const open=imageFrame.querySelector('.history-zoom-image'),dialog=imageFrame.querySelector('.history-image-dialog'),close=dialog.querySelector('.history-scorebook-close');
- wireHistoryZoom(dialog);
+ wireHistoryZoom(dialog,onOpen);
  open.addEventListener('click',()=>{onOpen?.();dialog.showModal()});
  close.addEventListener('click',()=>dialog.close());
  dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
@@ -307,7 +307,7 @@ function history(){
   const toolbarAuto=$('.history-toolbar-autoplay'),toolbarPrevious=$('.history-toolbar-prev'),toolbarNext=$('.history-toolbar-next'),toolbarPosition=$('.history-toolbar-position');
   let activeHistoryControls=null;
   const historyControls=new Map();
-  function setHistoryToolbar(state){activeHistoryControls=state;toolbarPrevious.disabled=state.current===0;toolbarNext.disabled=state.current===state.length-1;toolbarPosition.value=`${state.current+1} of ${state.length}`;toolbarPosition.textContent=toolbarPosition.value;const playing=state.isAutoPlaying?.()??false;toolbarAuto.textContent=playing?'Pause':'Play';toolbarAuto.setAttribute('aria-pressed',String(playing));toolbarAuto.disabled=state.length<2||state.autoAvailable===false}
+  function setHistoryToolbar(state){activeHistoryControls=state;toolbarPrevious.disabled=state.current===0;toolbarNext.disabled=state.current===state.length-1;toolbarPosition.value=state.length?`${state.current+1} of ${state.length}`:'0 of 0';toolbarPosition.textContent=toolbarPosition.value;const playing=state.isAutoPlaying?.()??false;toolbarAuto.textContent=playing?'Pause':'Play';toolbarAuto.setAttribute('aria-pressed',String(playing));toolbarAuto.disabled=state.length<2||state.autoAvailable===false}
   toolbarAuto.addEventListener('click',()=>{if(!activeHistoryControls)return;if(activeHistoryControls.isAutoPlaying?.())activeHistoryControls.stopAuto?.();else activeHistoryControls.startAuto?.();setHistoryToolbar(activeHistoryControls)});
   toolbarPrevious.addEventListener('click',()=>{if(activeHistoryControls){activeHistoryControls.stopAuto?.();activeHistoryControls.select(activeHistoryControls.current-1,{focus:true})}});
   toolbarNext.addEventListener('click',()=>{if(activeHistoryControls){activeHistoryControls.stopAuto?.();activeHistoryControls.select(activeHistoryControls.current+1,{focus:true})}});
@@ -318,7 +318,7 @@ function history(){
   if(focus)tab.focus();
   if(panel===clubPanel)renderClubHistory();else if(panel===teamPanel)renderTeamHistory();else renderEventsHistory();
   const controls=historyControls.get(panel);
-  if(controls)setHistoryToolbar(controls);
+  if(controls){setHistoryToolbar(controls);controls.revealCurrent?.()}
  }
  tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>selectTab(tab,false));tab.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectTab(tabs[next])})});
  function bindHistoryListNavigation({items,buttons,list,panel,onSelect}){
@@ -326,12 +326,13 @@ function history(){
   const syncToolbar=()=>{const controls=historyControls.get(panel);if(!panel.hidden&&controls)setHistoryToolbar(controls)};
   const stopAuto=()=>{autoStopped=true;clearTimeout(timer);syncToolbar()};
   const restart=()=>{clearTimeout(timer);if(!autoStopped&&items.length>1&&!reduceMotion)timer=setTimeout(()=>{select(current<items.length-1?current+1:0);restart()},7000)};
-  const startAuto=()=>{if(reduceMotion||items.length<2)return;autoStopped=false;restart();syncToolbar()};
+  const startAuto=()=>{if(reduceMotion||items.length<2)return;autoStopped=false;select(current<items.length-1?current+1:0);restart();syncToolbar()};
   const isAutoPlaying=()=>!autoStopped&&!reduceMotion&&items.length>1;
+  const revealCurrent=()=>buttons[current]?.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
   function select(index,{focus=false,scroll=true,user=false}={}){if(user)stopAuto();current=Math.max(0,Math.min(items.length-1,index));buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});if(!panel.hidden){const controls=historyControls.get(panel);if(controls)setHistoryToolbar(controls)}onSelect(items[current],current,stopAuto);const active=buttons[current];if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});if(focus)active.focus({preventScroll:true})}
   buttons.forEach((button,i)=>button.addEventListener('click',()=>select(i,{user:true})));
   list.addEventListener('keydown',e=>{const keys=['ArrowDown','ArrowUp','Home','End'];if(!keys.includes(e.key))return;e.preventDefault();const target=e.key==='Home'?0:e.key==='End'?items.length-1:current+(e.key==='ArrowDown'?1:-1);select(target,{focus:true,user:true})});
-  registerRouteCleanup(()=>clearTimeout(timer));select(0,{scroll:false});restart();const controls={select,stopAuto,startAuto,isAutoPlaying,autoAvailable:!reduceMotion,get current(){return current},length:items.length};historyControls.set(panel,controls);return controls;
+  registerRouteCleanup(()=>clearTimeout(timer));select(0,{scroll:false});restart();const controls={select,stopAuto,startAuto,isAutoPlaying,revealCurrent,autoAvailable:!reduceMotion,get current(){return current},length:items.length};historyControls.set(panel,controls);return controls;
  }
 
  function renderTeamHistory(){
@@ -367,7 +368,7 @@ function history(){
   eventsPanel.dataset.ready='true';
   const cutoff=recentEventCutoff();
   const items=S.ev.filter(event=>event.date<cutoff).sort((a,b)=>b.date.localeCompare(a.date));
-  if(!items.length){eventsPanel.innerHTML='<p class="mut">Older events will appear here once they move beyond the Recent Events window.</p>';toolbarPrevious.disabled=true;toolbarNext.disabled=true;toolbarPosition.value='0 of 0';toolbarPosition.textContent=toolbarPosition.value;return}
+  if(!items.length){eventsPanel.innerHTML='<p class="mut">Older events will appear here once they move beyond the Recent Events window.</p>';const controls={length:0,autoAvailable:false,get current(){return 0},select(){},stopAuto(){},startAuto(){},isAutoPlaying(){return false}};historyControls.set(eventsPanel,controls);setHistoryToolbar(controls);return}
   eventsPanel.innerHTML=`<section class="history-experience history-rebuilt event-history-rebuilt"><div class="history-visual" aria-live="polite"><div class="history-image-frame"></div></div><div class="history-timeline-shell"><div class="history-timeline event-history-list" role="listbox" tabindex="0" aria-label="Events history">${items.map((event,i)=>`<button class="history-year event-history-entry" type="button" role="option" aria-selected="${i===0?'true':'false'}" data-event-history-index="${i}"><strong>${esc(fmt(event.date))}</strong><span>${esc(event.title)}</span></button>`).join('')}</div></div></section>`;
   const list=eventsPanel.querySelector('.event-history-list'),buttons=[...eventsPanel.querySelectorAll('.event-history-entry')],imageFrame=eventsPanel.querySelector('.history-image-frame');
   function renderEvent(event,currentIndex,stopAuto){
@@ -398,14 +399,15 @@ function history(){
   let current=0,timer=null,autoStopped=reduceMotion;
   function syncToolbar(){const controls=historyControls.get(clubPanel);if(!clubPanel.hidden&&controls)setHistoryToolbar(controls)}
   function stopAuto(){autoStopped=true;clearTimeout(timer);syncToolbar()}
-  function startAuto(){if(reduceMotion||items.length<2)return;autoStopped=false;restart();syncToolbar()}
+  function startAuto(){if(reduceMotion||items.length<2)return;autoStopped=false;select(current<items.length-1?current+1:0);restart();syncToolbar()}
   function isAutoPlaying(){return !autoStopped&&!reduceMotion&&items.length>1}
+  function revealCurrent(){buttons[current]?.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'})}
   function select(index,{focus=false,scroll=true}={}){
    current=Math.max(0,Math.min(items.length-1,index));
    const item=items[current];
    buttons.forEach((button,i)=>{const active=i===current;button.classList.toggle('is-active',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1});
    if(!clubPanel.hidden){const controls=historyControls.get(clubPanel);if(controls)setHistoryToolbar(controls)}
-   const sources=item.images.map(safeAsset).filter(Boolean);imageFrame.classList.toggle('is-empty',!sources.length);imageFrame.classList.toggle('is-scorebook',sources.length>1);if(!sources.length){imageFrame.innerHTML=''}else if(sources.length===1){const alt=`${item.year}: ${item.description}`;renderHistoryImageViewer(imageFrame,{src:sources[0],alt,openLabel:`Open larger view of ${item.year} image`,onOpen:stopAuto})}else{let page=0;imageFrame.innerHTML=`<button type="button" class="history-scorebook-image" aria-label="Open larger view of scorebook page 1"><img alt=""></button><div class="history-scorebook-controls"><button type="button" class="history-scorebook-prev" aria-label="Previous scorebook page">‹ <span>Previous</span></button><span class="history-scorebook-position" aria-live="polite"></span><button type="button" class="history-scorebook-next"><span>Next</span> ›</button></div>${historyZoomDialog({closeLabel:'Close enlarged scorebook',dialogClass:'history-scorebook-dialog'})}`;const img=imageFrame.querySelector('.history-scorebook-image img'),position=imageFrame.querySelector('.history-scorebook-position'),prev=imageFrame.querySelector('.history-scorebook-prev'),next=imageFrame.querySelector('.history-scorebook-next'),open=imageFrame.querySelector('.history-scorebook-image'),dialog=imageFrame.querySelector('.history-scorebook-dialog'),large=dialog.querySelector('img'),close=dialog.querySelector('.history-scorebook-close');wireHistoryZoom(dialog);const showPage=n=>{page=Math.max(0,Math.min(sources.length-1,n));const alt=`${item.year}: ${item.description} (page ${page+1} of ${sources.length})`;img.src=sources[page];img.alt=alt;position.textContent=`Page ${page+1} of ${sources.length}`;prev.disabled=page===0;next.disabled=page===sources.length-1;open.setAttribute('aria-label',`Open larger view of scorebook page ${page+1}`)};prev.addEventListener('click',()=>{stopAuto();showPage(page-1)});next.addEventListener('click',()=>{stopAuto();showPage(page+1)});open.addEventListener('click',()=>{large.src=sources[page];large.alt=img.alt;dialog.showModal()});close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});showPage(0)}
+   const sources=item.images.map(safeAsset).filter(Boolean);imageFrame.classList.toggle('is-empty',!sources.length);imageFrame.classList.toggle('is-scorebook',sources.length>1);if(!sources.length){imageFrame.innerHTML=''}else if(sources.length===1){const alt=`${item.year}: ${item.description}`;renderHistoryImageViewer(imageFrame,{src:sources[0],alt,openLabel:`Open larger view of ${item.year} image`,onOpen:stopAuto})}else{let page=0;imageFrame.innerHTML=`<button type="button" class="history-scorebook-image" aria-label="Open larger view of scorebook page 1"><img alt=""></button><div class="history-scorebook-controls"><button type="button" class="history-scorebook-prev" aria-label="Previous scorebook page">‹ <span>Previous</span></button><span class="history-scorebook-position" aria-live="polite"></span><button type="button" class="history-scorebook-next"><span>Next</span> ›</button></div>${historyZoomDialog({closeLabel:'Close enlarged scorebook',dialogClass:'history-scorebook-dialog'})}`;const img=imageFrame.querySelector('.history-scorebook-image img'),position=imageFrame.querySelector('.history-scorebook-position'),prev=imageFrame.querySelector('.history-scorebook-prev'),next=imageFrame.querySelector('.history-scorebook-next'),open=imageFrame.querySelector('.history-scorebook-image'),dialog=imageFrame.querySelector('.history-scorebook-dialog'),large=dialog.querySelector('img'),close=dialog.querySelector('.history-scorebook-close');wireHistoryZoom(dialog,stopAuto);const showPage=n=>{page=Math.max(0,Math.min(sources.length-1,n));const alt=`${item.year}: ${item.description} (page ${page+1} of ${sources.length})`;img.src=sources[page];img.alt=alt;position.textContent=`Page ${page+1} of ${sources.length}`;prev.disabled=page===0;next.disabled=page===sources.length-1;open.setAttribute('aria-label',`Open larger view of scorebook page ${page+1}`)};prev.addEventListener('click',()=>{stopAuto();showPage(page-1)});next.addEventListener('click',()=>{stopAuto();showPage(page+1)});open.addEventListener('click',()=>{stopAuto();large.src=sources[page];large.alt=img.alt;dialog.showModal()});close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});showPage(0)}
    const active=buttons[current];
    if(scroll)active.scrollIntoView({block:'nearest',behavior:reduceMotion?'auto':'smooth'});
    if(focus)active.focus({preventScroll:true});
@@ -416,7 +418,7 @@ function history(){
   registerRouteCleanup(()=>clearTimeout(timer));
   select(0,{scroll:false});
   restart();
-  historyControls.set(clubPanel,{select,stopAuto,startAuto,isAutoPlaying,autoAvailable:!reduceMotion,get current(){return current},length:items.length});
+  historyControls.set(clubPanel,{select,stopAuto,startAuto,isAutoPlaying,revealCurrent,autoAvailable:!reduceMotion,get current(){return current},length:items.length});
   syncToolbar();
  }
  renderClubHistory()
